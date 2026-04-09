@@ -79,7 +79,18 @@
 
                         <!-- LABEL -->
                         <span class="text-[10px] mt-2 text-gray-400">
-                            {{ \Carbon\Carbon::parse($day)->format('D') }}
+                            @php
+                                $hariMap = [
+                                    'Mon' => 'Sen',
+                                    'Tue' => 'Sel',
+                                    'Wed' => 'Rab',
+                                    'Thu' => 'Kam',
+                                    'Fri' => 'Jum',
+                                    'Sat' => 'Sab',
+                                    'Sun' => 'Min',
+                                ];
+                            @endphp
+                            {{ $hariMap[\Carbon\Carbon::parse($day)->format('D')] }}
                         </span>
 
                         <!-- TOOLTIP -->
