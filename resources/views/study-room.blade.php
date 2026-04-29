@@ -139,58 +139,59 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             @foreach($studyGroups as $group)
-                <div class="relative group bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] p-6 shadow-lg hover:shadow-blue-200/50 transition-all duration-300 text-white overflow-hidden">
-                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all"></div>
+            <div class="relative group bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[32px] p-6 shadow-lg hover:shadow-blue-200/50 transition-all duration-300 text-white overflow-hidden flex flex-col h-full">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all"></div>
 
-                    <div class="flex justify-between items-start mb-6 relative z-10">
-                        <div class="flex flex-col gap-2">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase rounded-lg tracking-wider w-fit border border-white/20">
-                                {{ $group->subject }}
-                            </span>
-                            <div class="flex items-center gap-1.5 bg-green-400/20 backdrop-blur-md px-2.5 py-1 rounded-lg w-fit border border-green-400/30">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-                                <span class="text-[10px] font-bold text-green-400">AKTIF</span>
-                            </div>
-                        </div>
-
-                        @if(Auth::user()->role === 'admin' || Auth::id() === $group->created_by)
-                        <form action="{{ route('study.group.destroy', $group->id) }}" method="POST" class="m-0">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" 
-                                class="p-2.5 bg-white/10 text-white/80 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200 border border-white/10 backdrop-blur-sm"
-                                onclick="return confirm('Yakin ingin menghapus room ini?')">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
-                        </form>
-                        @endif
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="flex flex-col gap-2">
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase rounded-lg tracking-wider w-fit border border-white/20">
+                            {{ $group->subject }}
+                        </span>
                     </div>
 
-                    <div class="relative z-10">
-                        <h4 class="text-2xl font-extrabold text-white mb-1">{{ $group->name }}</h4>
-                        {{-- <p class="text-[11px] text-blue-100/70 mb-4 italic font-medium">Dibuat oleh: {{ $group->creator->name ?? 'User' }}</p> --}}
-                        <p class="text-sm text-blue-50/80 mb-8 line-clamp-2 leading-relaxed">Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.</p>
-                        
-                        <a href="https://meet.jit.si/{{ $group->slug }}#config.prejoinPageEnabled=false" 
-                        target="_blank" 
-                        class="block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]">
-                        Join Group
-                        </a>
-                    </div>
+                    @if(Auth::user()->role === 'admin' || Auth::id() === $group->created_by)
+                    <form action="{{ route('study.group.destroy', $group->id) }}" method="POST" class="m-0">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                            class="p-2.5 bg-white/10 text-white/80 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200 border border-white/10 backdrop-blur-sm"
+                            onclick="return confirm('Yakin ingin menghapus room ini?')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </form>
+                    @endif
                 </div>
-                @endforeach
+
+                <div class="relative z-10 flex-grow">
+                    <h4 class="text-2xl font-extrabold text-white mb-2 leading-tight break-words">
+                        {{ $group->name }}
+                    </h4>
+                    <p class="text-sm text-blue-50/80 mb-8 line-clamp-2 leading-relaxed">
+                        Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.
+                    </p>
+                </div>
+
+                <div class="relative z-10 mt-auto">
+                    <a href="https://meet.jit.si/{{ $group->slug }}#config.prejoinPageEnabled=false" 
+                    target="_blank" 
+                    class="block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]">
+                    Join Group
+                    </a>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 
     <div x-show="openCreateModal" 
          class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 scale-95"
-         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
          x-cloak>
         <div @click.away="openCreateModal = false" class="bg-white w-full max-w-md rounded-[32px] p-8 shadow-2xl">
             <h3 class="text-2xl font-bold text-gray-900 mb-2">Buat Study Room Baru</h3>
@@ -272,7 +273,21 @@
         <p id="modalDescription" class="mt-3 text-gray-500 leading-relaxed text-lg">Lanjut ke step berikutnya?</p>
         <div class="mt-8 space-y-3">
             <button id="modalPrimaryBtn" class="w-full px-5 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg shadow-blue-200">Lanjut</button>
-            <button id="modalSecondaryBtn" class="w-full px-5 py-4 rounded-2xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition">Tutup</button>
+        </div>
+    </div>
+</div>
+<div id="warningModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-[80] px-4 backdrop-blur-sm">
+    <div class="w-full max-w-sm bg-white rounded-[32px] shadow-2xl p-7 text-center">
+        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+        </div>
+        <h3 class="text-xl font-extrabold text-gray-900">Wah, bentar dulu!</h3>
+        <p class="mt-2 text-gray-500">Timer masih jalan, nih. Kalau kamu pindah sekarang, progress belajarmu bakal kereset.</p>
+        <div class="mt-6 flex flex-col gap-2">
+            <button id="cancelWarningBtn" class="w-full py-3.5 rounded-2xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition">Gak jadi, lanjut belajar</button>
+            <button id="confirmWarningBtn" class="w-full py-3.5 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition">Iya, reset aja</button>
         </div>
     </div>
 </div>

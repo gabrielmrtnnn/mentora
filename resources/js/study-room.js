@@ -2,25 +2,83 @@ const MODES = {
     pomodoro25: {
         key: 'pomodoro25',
         name: 'Pomodoro 25/5',
-        sequence: [
-            { type: 'study', duration: 25 * 60, label: 'Study 25 Menit', saveMinutes: 25 },
-            { type: 'break', duration: 5 * 60, label: 'Break 5 Menit', saveMinutes: 0 },
-            { type: 'study', duration: 25 * 60, label: 'Study 25 Menit', saveMinutes: 25 },
-            { type: 'break', duration: 5 * 60, label: 'Break 5 Menit', saveMinutes: 0 },
-            { type: 'study', duration: 25 * 60, label: 'Study 25 Menit', saveMinutes: 25 },
-            { type: 'break', duration: 5 * 60, label: 'Break 5 Menit', saveMinutes: 0 },
-            { type: 'study', duration: 25 * 60, label: 'Study 25 Menit', saveMinutes: 25 },
-            { type: 'long_break', duration: 30 * 60, label: 'Long Break 30 Menit', saveMinutes: 0 },
+        sequence: [{
+                type: 'study',
+                duration: 25 * 60,
+                label: 'Study 25 Menit',
+                saveMinutes: 25
+            },
+            {
+                type: 'break',
+                duration: 5 * 60,
+                label: 'Break 5 Menit',
+                saveMinutes: 0
+            },
+            {
+                type: 'study',
+                duration: 25 * 60,
+                label: 'Study 25 Menit',
+                saveMinutes: 25
+            },
+            {
+                type: 'break',
+                duration: 5 * 60,
+                label: 'Break 5 Menit',
+                saveMinutes: 0
+            },
+            {
+                type: 'study',
+                duration: 25 * 60,
+                label: 'Study 25 Menit',
+                saveMinutes: 25
+            },
+            {
+                type: 'break',
+                duration: 5 * 60,
+                label: 'Break 5 Menit',
+                saveMinutes: 0
+            },
+            {
+                type: 'study',
+                duration: 25 * 60,
+                label: 'Study 25 Menit',
+                saveMinutes: 25
+            },
+            {
+                type: 'long_break',
+                duration: 30 * 60,
+                label: 'Long Break 30 Menit',
+                saveMinutes: 0
+            },
         ],
     },
     deep50: {
         key: 'deep50',
         name: 'Deep 50/10',
-        sequence: [
-            { type: 'study', duration: 50 * 60, label: 'Study 50 Menit', saveMinutes: 50 },
-            { type: 'break', duration: 10 * 60, label: 'Break 10 Menit', saveMinutes: 0 },
-            { type: 'study', duration: 50 * 60, label: 'Study 50 Menit', saveMinutes: 50 },
-            { type: 'long_break', duration: 30 * 60, label: 'Long Break 30 Menit', saveMinutes: 0 },
+        sequence: [{
+                type: 'study',
+                duration: 50 * 60,
+                label: 'Study 50 Menit',
+                saveMinutes: 50
+            },
+            {
+                type: 'break',
+                duration: 10 * 60,
+                label: 'Break 10 Menit',
+                saveMinutes: 0
+            },
+            {
+                type: 'study',
+                duration: 50 * 60,
+                label: 'Study 50 Menit',
+                saveMinutes: 50
+            },
+            {
+                type: 'long_break',
+                duration: 30 * 60,
+                label: 'Long Break 30 Menit',
+                saveMinutes: 0
+            },
         ],
     },
 };
@@ -79,7 +137,12 @@ const modalSecondaryBtn = document.getElementById('modalSecondaryBtn');
 const todayMinutesEl = document.getElementById('todayMinutes');
 const todaySessionsEl = document.getElementById('todaySessions');
 
+const warningModal = document.getElementById('warningModal');
+const confirmWarningBtn = document.getElementById('confirmWarningBtn');
+const cancelWarningBtn = document.getElementById('cancelWarningBtn');
+
 const CIRCLE_LENGTH = 427;
+let pendingAction = null;
 
 function formatTime(t) {
     const m = String(Math.floor(t / 60)).padStart(2, '0');
@@ -203,7 +266,7 @@ function updateDisplay() {
     if (focusOverlayType) focusOverlayType.textContent = getTypeText(currentStep.type);
     if (focusOverlayNextBreakText) focusOverlayNextBreakText.textContent = next.label;
     if (focusOverlayStepCounter) focusOverlayStepCounter.textContent = `Session ${progress.current} / ${progress.total}`;
-    
+
     if (focusOverlayStatusText) {
         focusOverlayStatusText.textContent = statusTextContent;
     }
@@ -243,18 +306,22 @@ function resetCurrentStep() {
 }
 
 function switchMode(modeKey) {
-    stopTimer();
+    const doSwitch = () => {
+        stopTimer();
+        currentMode = MODES[modeKey];
+        currentStepIndex = 0;
+        currentStep = currentMode.sequence[0];
+        secondsLeft = currentStep.duration;
+        totalSeconds = currentStep.duration;
+        setStateText('Ready');
+        updateDisplay();
+    };
 
-    currentMode = MODES[modeKey];
-    currentStepIndex = 0;
-    currentStep = currentMode.sequence[0];
-    secondsLeft = currentStep.duration;
-    totalSeconds = currentStep.duration;
-
-    setStateText('Ready');
-    if (statusText) statusText.textContent = `${currentMode.name} dipilih.`;
-
-    updateDisplay();
+    if (isRunning) {
+        showWarning(doSwitch); // Panggil modal keren kita
+    } else {
+        doSwitch();
+    }
 }
 
 function nextStep() {
@@ -297,13 +364,12 @@ function openModal(title, desc, nextLabel) {
         modalPrimaryBtn.textContent = `Mulai ${nextLabel}`;
         modalPrimaryBtn.onclick = () => {
             closeModal();
-            nextStep();
-        };
-    }
+            nextStep(); // Pindah ke step berikutnya (break/study)
 
-    if (modalSecondaryBtn) {
-        modalSecondaryBtn.onclick = () => {
-            closeModal();
+            // Tambahkan ini supaya langsung jalan
+            setTimeout(() => {
+                startTimer();
+            }, 100);
         };
     }
 
@@ -365,7 +431,7 @@ async function handleSessionComplete() {
         if (statusText) statusText.textContent = 'Sesi fokus selesai.';
 
         openModal(
-            'Sesi fokus selesai 脂',
+            'Sesi fokus selesai',
             `${currentStep.label} selesai. Sekarang lanjut ke ${next.label}.`,
             next.label
         );
@@ -380,7 +446,7 @@ async function handleSessionComplete() {
         if (statusText) statusText.textContent = 'Break selesai.';
 
         openModal(
-            'Break selesai 笞｡',
+            'Break selesai',
             `Saatnya balik fokus. Step berikutnya: ${next.label}.`,
             next.label
         );
@@ -457,16 +523,16 @@ function exitFocusMode() {
 
 // --- LOGIKA AREA KLIK SAKTI ---
 
-window.handleAreaClick = function(event) {
+window.handleAreaClick = function (event) {
     // 1. Pastikan kita tidak mengganggu tombol Start/Pause/Reset
     // closest('button') akan mengecek apakah yang diklik itu tombol atau isi di dalam tombol
     if (event.target.closest('button')) {
-        return; 
+        return;
     }
 
     // 2. Cek status timer saat ini
     const state = stateText ? stateText.textContent.trim() : 'Ready';
-    
+
     // 3. Masuk Focus Mode hanya jika Running atau Paused
     if (state === 'Running' || state === 'Paused') {
         enterFocusMode();
@@ -479,7 +545,7 @@ window.handleAreaClick = function(event) {
     }
 };
 
-window.handleOverlayAreaClick = function(event) {
+window.handleOverlayAreaClick = function (event) {
     // Keluar mode fokus jika klik area kosong (bukan klik tombol di dalam overlay)
     if (!event.target.closest('button')) {
         exitFocusMode();
@@ -495,7 +561,25 @@ if (resetBtn) resetBtn.addEventListener('click', resetTimer);
 if (focusOverlayStartBtn) focusOverlayStartBtn.addEventListener('click', startTimer);
 if (focusOverlayPauseBtn) focusOverlayPauseBtn.addEventListener('click', pauseTimer);
 if (focusOverlayResetBtn) focusOverlayResetBtn.addEventListener('click', resetTimer);
-if (focusModeBtn) focusModeBtn.addEventListener('click', enterFocusMode);
+if (focusModeBtn) {
+    focusModeBtn.addEventListener('click', () => {
+        // Cek status timer saat ini
+        const state = stateText ? stateText.textContent.trim() : 'Ready';
+        
+        // Hanya izinkan masuk Focus Mode jika timer sedang jalan atau pause
+        if (state === 'Running' || state === 'Paused') {
+            enterFocusMode();
+        } else {
+            // Efek visual getar pada card utama kalau belum Start
+            const card = document.getElementById('timerCard');
+            if (card) {
+                card.classList.add('shake-subtle');
+                setTimeout(() => card.classList.remove('shake-subtle'), 400);
+            }
+            console.log("Timer belum berjalan, tombol Focus Mode terkunci.");
+        }
+    });
+}
 if (exitFocusModeBtn) exitFocusModeBtn.addEventListener('click', exitFocusMode);
 
 if (modal) {
@@ -518,3 +602,56 @@ if (timerDisplay) {
     switchMode('pomodoro25');
     updateDisplay();
 }
+
+// Listener untuk mencegah user pindah halaman saat timer aktif
+window.addEventListener('beforeunload', (event) => {
+    if (isRunning) {
+        event.preventDefault();
+        event.returnValue = ''; 
+    }
+});
+
+function showWarning(onConfirm) {
+    pendingAction = onConfirm;
+    if (warningModal) {
+        warningModal.classList.remove('hidden');
+        warningModal.classList.add('flex');
+    }
+}
+
+// Event listener tombol modal
+if (cancelWarningBtn) {
+    cancelWarningBtn.onclick = () => {
+        warningModal.classList.add('hidden');
+        warningModal.classList.remove('flex');
+        pendingAction = null;
+    };
+}
+
+if (confirmWarningBtn) {
+    confirmWarningBtn.onclick = () => {
+        warningModal.classList.add('hidden');
+        warningModal.classList.remove('flex');
+        if (pendingAction) pendingAction();
+    };
+}
+
+// Pantau semua link di halaman Mentora
+document.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    
+    // Jika yang diklik adalah link dan bukan link Jitsi/External
+    if (link && link.href && !link.target && isRunning) {
+        const targetUrl = link.href;
+        
+        // Jika link mengarah ke halaman lain (bukan anchor #)
+        if (!targetUrl.includes('#') && targetUrl !== window.location.href) {
+            event.preventDefault(); // Stop pindah halaman dulu
+            
+            showWarning(() => {
+                // Jika user klik 'Iya, reset aja' di modal
+                window.location.href = targetUrl;
+            });
+        }
+    }
+});
