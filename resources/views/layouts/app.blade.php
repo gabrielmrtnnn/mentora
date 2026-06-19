@@ -22,21 +22,6 @@
 
             <div id="mainContent"
                 class="flex-1 flex flex-col h-full ml-20 transition-all duration-300">
-                <div class="flex items-center gap-4 p-4 bg-white border-b">
-
-                    <button id="floatingBurger"
-                        class="fixed top-[35px] left-10 z-[60] p-2 transition hidden">
-                        
-                        <svg id="sidebarIcon" xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5 text-accent rotate-180 transition-transform duration-300"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-
-                </div>
                 <main class="flex-1 flex flex-col min-h-0 p-6 md:p-10">
                     @yield('content')
                 </main>
@@ -77,8 +62,10 @@
                 main.classList.remove('ml-20');
                 main.classList.add('ml-64');
 
-                banner.classList.remove('ml-20');
-                banner.classList.add('ml-64');
+                if(banner){
+                    banner.classList.remove('ml-20');
+                    banner.classList.add('ml-64');
+                }
 
                 texts.forEach(el => {
                     el.classList.remove('opacity-0', 'max-w-0');
@@ -98,8 +85,10 @@
                 main.classList.remove('ml-64');
                 main.classList.add('ml-20');
 
-                banner.classList.remove('ml-64');
-                banner.classList.add('ml-20');
+                if(banner){
+                    banner.classList.remove('ml-64');
+                    banner.classList.add('ml-20');
+                }
 
                 texts.forEach(el => {
                     el.classList.add('opacity-0', 'max-w-0');
