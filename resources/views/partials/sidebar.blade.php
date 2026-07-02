@@ -69,7 +69,7 @@
         </a>
 
         <!-- FORUM -->
-        <a href="#"
+        <a href="{{ route('forum') }}"
            class="group flex items-center px-3.5 py-3 rounded-xl transition-all
            {{ request()->routeIs('forum*') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
 
