@@ -8,6 +8,7 @@ use App\Http\Controllers\StudySessionController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ForumController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -55,9 +56,13 @@ Route::middleware('auth')->group(function () {
         
     // --- INI ROUTE BARUNYA ---
     Route::get('/study-room/join/{slug}', [StudySessionController::class, 'joinGroup'])->name('study-room.join');
-});
 
-// Forum
-Route::get('/forum', [ForumController::class, 'index'])->middleware('auth');
+    // Forum
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::post('/forum/like', [ForumController::class, 'toggleLike'])->name('forum.like');
+    Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
+    Route::post('/forum/{id}/reply', [ForumController::class, 'storeReply'])->name('forum.reply');
+});
 
 require __DIR__.'/auth.php';
