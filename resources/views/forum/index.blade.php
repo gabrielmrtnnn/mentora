@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto w-full pb-16" x-data="{ openCreateModal: {{ $errors->any() ? 'true' : 'false' }} }">
+<div class="max-w-4xl mx-auto w-full pb-16" x-data="{ openCreateModal: {{ $errors->any() ? 'true' : 'false' }}, imagePreview: null }">
 
     @if(session('success'))
         <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl font-bold flex items-center gap-2">
@@ -120,6 +120,10 @@
                     {{ $thread->body }}
                 </p>
 
+                @if($thread->image_url)
+                    <img src="{{ $thread->image_url }}" alt="" class="mt-3 rounded-xl max-h-56 w-full object-cover">
+                @endif
+
                 <!-- FOOTER -->
                 <div class="mt-4 pt-3 border-t border-gray-100 flex items-center gap-4 text-sm text-gray-400 font-medium">
                     <span>💬 {{ $thread->replies_count }} balasan</span>
@@ -178,7 +182,7 @@
                 </div>
             @endif
 
-            <form id="createThreadForm" method="POST" action="{{ route('forum.store') }}">
+            <form id="createThreadForm" method="POST" action="{{ route('forum.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="space-y-4">
                     <div>
@@ -198,6 +202,16 @@
                         <label class="block text-sm font-bold text-gray-700 mb-1">Isi</label>
                         <textarea name="body" rows="4" placeholder="Ceritain lebih detail di sini..." required
                             class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-3 px-4">{{ old('body') }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Foto (opsional)</label>
+                        <input type="file" name="image" accept="image/png, image/jpeg, image/webp"
+                            @change="imagePreview = $event.target.files.length ? URL.createObjectURL($event.target.files[0]) : null"
+                            class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 file:text-primary file:font-semibold hover:file:bg-blue-100">
+                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, atau WEBP, maks 2MB.</p>
+                        <template x-if="imagePreview">
+                            <img :src="imagePreview" alt="Preview" class="mt-3 rounded-xl max-h-40 w-full object-cover">
+                        </template>
                     </div>
                 </div>
 

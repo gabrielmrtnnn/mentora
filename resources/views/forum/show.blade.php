@@ -67,6 +67,10 @@
             {{ $thread->body }}
         </p>
 
+        @if($thread->image_url)
+            <img src="{{ $thread->image_url }}" alt="" class="rounded-2xl w-full max-h-[480px] object-cover mb-5">
+        @endif
+
         <!-- LIKE THREAD -->
         <div class="pt-4 border-t border-gray-100">
             <button

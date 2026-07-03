@@ -29,13 +29,21 @@ class ForumController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'category' => ['required', Rule::in(array_keys(ForumThread::CREATABLE_CATEGORIES))],
             'body' => ['required', 'string', 'max:5000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('forum', 'public');
+        }
 
         ForumThread::create([
             'user_id' => Auth::id(),
             'category' => $validated['category'],
             'title' => $validated['title'],
             'body' => $validated['body'],
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('forum')->with('success', 'Diskusi kamu berhasil diposting!');
