@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cegah konten "geser" horizontal pas scrollbar muncul/hilang
+   (misal waktu filter forum bikin halaman jadi pendek) */
+html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
 .transition-pop {
     transition: transform 0.2s ease;
 }
