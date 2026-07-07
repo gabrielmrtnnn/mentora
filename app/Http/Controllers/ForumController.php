@@ -15,7 +15,7 @@ class ForumController extends Controller
     {
         Carbon::setLocale('id');
 
-        $threads = ForumThread::with('user')
+        $threads = ForumThread::with(['user', 'images'])
             ->withCount(['replies', 'likes'])
             ->latest()
             ->get();
@@ -29,22 +29,24 @@ class ForumController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'category' => ['required', Rule::in(array_keys(ForumThread::CREATABLE_CATEGORIES))],
             'body' => ['required', 'string', 'max:5000'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $imagePath = null;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('forum', 'public');
-        }
-
-        ForumThread::create([
+        $thread = ForumThread::create([
             'user_id' => Auth::id(),
             'category' => $validated['category'],
             'title' => $validated['title'],
             'body' => $validated['body'],
-            'image' => $imagePath,
         ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $thread->images()->create([
+                    'path' => $imageFile->store('forum', 'public'),
+                ]);
+            }
+        }
 
         return redirect()->route('forum')->with('success', 'Diskusi kamu berhasil diposting!');
     }
@@ -53,7 +55,7 @@ class ForumController extends Controller
     {
         Carbon::setLocale('id');
 
-        $thread = ForumThread::with(['user', 'likes', 'replies.user', 'replies.likes'])
+        $thread = ForumThread::with(['user', 'likes', 'images', 'replies.user', 'replies.likes'])
             ->findOrFail($id);
 
         return view('forum.show', compact('thread'));

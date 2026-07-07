@@ -14,7 +14,6 @@ class ForumThread extends Model
         'category',
         'title',
         'body',
-        'image',
     ];
 
     /**
@@ -41,6 +40,11 @@ class ForumThread extends Model
         return $this->hasMany(ForumReply::class)->oldest();
     }
 
+    public function images()
+    {
+        return $this->hasMany(ForumThreadImage::class);
+    }
+
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category]['label'] ?? ucwords($this->category);
@@ -49,10 +53,5 @@ class ForumThread extends Model
     public function getCategoryColorAttribute(): string
     {
         return self::CATEGORIES[$this->category]['color'] ?? 'bg-gray-100 text-gray-600';
-    }
-
-    public function getImageUrlAttribute(): ?string
-    {
-        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
     }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-3xl mx-auto w-full pb-16">
+<div class="max-w-3xl mx-auto w-full pb-16" x-data="{ lightboxImage: null }" @keydown.escape.window="lightboxImage = null">
 
     <!-- BACK -->
     <div class="mb-6">
@@ -67,8 +67,14 @@
             {{ $thread->body }}
         </p>
 
-        @if($thread->image_url)
-            <img src="{{ $thread->image_url }}" alt="" class="rounded-2xl w-full max-h-[480px] object-cover mb-5">
+        @if($thread->images->isNotEmpty())
+            <div class="grid gap-2 mb-5 {{ $thread->images->count() === 1 ? 'grid-cols-1' : 'grid-cols-2' }}">
+                @foreach($thread->images as $image)
+                    <img src="{{ $image->url }}" alt=""
+                        class="rounded-2xl w-full max-h-[420px] object-cover cursor-zoom-in hover:opacity-90 transition"
+                        @click="lightboxImage = '{{ $image->url }}'">
+                @endforeach
+            </div>
         @endif
 
         <!-- LIKE THREAD -->
@@ -166,6 +172,21 @@
             </div>
         </form>
 
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div x-show="lightboxImage"
+         @click="lightboxImage = null"
+         class="fixed inset-0 bg-black/80 flex items-center justify-center z-[80] px-4 cursor-zoom-out"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-cloak>
+        <button @click="lightboxImage = null"
+            class="absolute top-6 right-6 text-white text-3xl font-bold leading-none hover:opacity-70 transition">
+            &times;
+        </button>
+        <img :src="lightboxImage" alt="" @click.stop class="max-w-full max-h-[90vh] rounded-2xl object-contain">
     </div>
 
 </div>
