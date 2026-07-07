@@ -84,6 +84,24 @@
             </span>
         </a>
 
+        @auth
+        @if(auth()->user()->isAdmin())
+            <!-- ADMIN: REPORT FORUM -->
+            <a href="{{ route('admin.reports') }}"
+               class="group flex items-center px-3.5 py-3 rounded-xl transition
+               {{ request()->routeIs('admin.reports') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
+
+                <span class="w-5 h-5 shrink-0 flex items-center justify-center">🚩</span>
+
+                <span class="sidebar-text ml-3
+                    max-w-0 opacity-0 overflow-hidden
+                    whitespace-nowrap transition-all duration-300">
+                    Report Forum
+                </span>
+            </a>
+        @endif
+        @endauth
+
     </nav>
 
     <!-- USER PROFILE -->
@@ -91,7 +109,7 @@
     <div id="profileWrapper" class="mt-auto relative">
 
         <div id="profileButton"
-             class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
+            class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
 
             <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}

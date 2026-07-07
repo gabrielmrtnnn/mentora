@@ -45,4 +45,15 @@ trait Likeable
 
         return $this->likes()->count();
     }
+
+    /**
+     * Kalau thread/reply-nya dihapus, like yang nempel ikut dihapus.
+     * Perlu manual karena relasi polymorphic gak bisa dikasih FK cascade di DB.
+     */
+    protected static function bootLikeable(): void
+    {
+        static::deleting(function ($model) {
+            $model->likes()->delete();
+        });
+    }
 }

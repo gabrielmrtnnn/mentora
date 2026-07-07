@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Concerns\Likeable;
+use App\Models\Concerns\Reportable;
 use Illuminate\Database\Eloquent\Model;
 
 class ForumReply extends Model
 {
-    use Likeable;
+    use Likeable, Reportable;
 
     protected $fillable = [
         'forum_thread_id',

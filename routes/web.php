@@ -51,6 +51,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])
         ->name('admin.approve');
 
+    // Admin lihat report diskusi & balasan forum
+    Route::get('/admin/reports', [AdminController::class, 'reports'])
+        ->name('admin.reports');
+
+    // Admin hapus konten yang dilaporkan
+    Route::delete('/admin/reports/{report}', [AdminController::class, 'destroyReportedContent'])
+        ->name('admin.reports.destroy');
+
+    // Admin abaikan report (report palsu, konten gak dihapus)
+    Route::post('/admin/reports/{report}/dismiss', [AdminController::class, 'dismissReports'])
+        ->name('admin.reports.dismiss');
+
     Route::get('/tutor/{id}', [TutorController::class, 'show'])
         ->name('tutor.show');
         
@@ -63,6 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/forum/like', [ForumController::class, 'toggleLike'])->name('forum.like');
     Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
     Route::post('/forum/{id}/reply', [ForumController::class, 'storeReply'])->name('forum.reply');
+    Route::delete('/forum/thread/{id}', [ForumController::class, 'destroyThread'])->name('forum.thread.destroy');
+    Route::delete('/forum/reply/{id}', [ForumController::class, 'destroyReply'])->name('forum.reply.destroy');
+    Route::post('/forum/report', [ForumController::class, 'storeReport'])->name('forum.report');
 });
 
 require __DIR__.'/auth.php';

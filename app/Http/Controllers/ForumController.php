@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ForumReply;
+use App\Models\ForumReport;
 use App\Models\ForumThread;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -109,5 +110,75 @@ class ForumController extends Controller
             'liked' => $liked,
             'count' => $model->likes()->count(),
         ]);
+    }
+
+    /**
+     * Hapus thread. Boleh sama pemilik thread ATAU admin.
+     */
+    public function destroyThread($id)
+    {
+        $thread = ForumThread::findOrFail($id);
+
+        abort_unless(
+            Auth::id() === $thread->user_id || Auth::user()->isAdmin(),
+            403,
+            'Kamu tidak punya izin untuk menghapus diskusi ini.'
+        );
+
+        $thread->delete();
+
+        return redirect()->route('forum')->with('success', 'Diskusi berhasil dihapus.');
+    }
+
+    /**
+     * Hapus reply. Boleh sama pemilik reply ATAU admin.
+     */
+    public function destroyReply($id)
+    {
+        $reply = ForumReply::findOrFail($id);
+
+        abort_unless(
+            Auth::id() === $reply->user_id || Auth::user()->isAdmin(),
+            403,
+            'Kamu tidak punya izin untuk menghapus balasan ini.'
+        );
+
+        $threadId = $reply->forum_thread_id;
+
+        $reply->delete();
+
+        return redirect()->route('forum.show', $threadId)->with('success', 'Balasan berhasil dihapus.');
+    }
+
+    /**
+     * Report thread ATAU reply (satu endpoint, dibedain lewat 'type', sama pola kayak toggleLike).
+     */
+    public function storeReport(Request $request)
+    {
+        $validated = $request->validate([
+            'type' => ['required', Rule::in(['thread', 'reply'])],
+            'id' => ['required', 'integer'],
+            'reason' => ['required', Rule::in(array_keys(ForumReport::REASONS))],
+            'description' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $model = $validated['type'] === 'thread'
+            ? ForumThread::findOrFail($validated['id'])
+            : ForumReply::findOrFail($validated['id']);
+
+        // Gak boleh report konten sendiri
+        abort_if($model->user_id === Auth::id(), 422, 'Kamu tidak bisa melaporkan konten milikmu sendiri.');
+
+        if ($model->isReportedBy(Auth::id())) {
+            return back()->with('error', 'Kamu sudah pernah melaporkan konten ini sebelumnya.');
+        }
+
+        $model->reports()->create([
+            'user_id' => Auth::id(),
+            'reason' => $validated['reason'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        return back()->with('success', 'Laporan kamu sudah dikirim, terima kasih sudah bantu jaga komunitas Mentora. 🙏');
     }
 }
