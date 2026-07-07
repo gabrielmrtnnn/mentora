@@ -91,7 +91,7 @@
     <div id="profileWrapper" class="mt-auto relative">
 
         <div id="profileButton"
-             class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
+            class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
 
             <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
