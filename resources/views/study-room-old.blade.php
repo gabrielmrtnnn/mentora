@@ -46,66 +46,7 @@
         </div>
     @endif
 
-    <div class="mb-6">
-
-        <p class="text-sm font-semibold text-gray-700 mb-3">
-            🎯 Hari ini mau fokus apa?
-        </p>
-
-        <div id="studyCategoryCards"
-            class="grid grid-cols-3 gap-4">
-
-            <button type="button"
-                    class="study-card border rounded-2xl p-4 text-left transition hover:border-primary"
-                    data-category="TPS">
-
-                <div class="text-2xl">📘</div>
-
-                <h3 class="font-semibold mt-3">
-                    TPS
-                </h3>
-
-                <p class="text-sm text-gray-500">
-                    Tes Potensi Skolastik
-                </p>
-
-            </button>
-
-            <button type="button"
-                    class="study-card border rounded-2xl p-4 text-left transition hover:border-primary"
-                    data-category="Numerasi">
-
-                <div class="text-2xl">📊</div>
-
-                <h3 class="font-semibold mt-3">
-                    Numerasi
-                </h3>
-
-                <p class="text-sm text-gray-500">
-                    Matematika
-                </p>
-
-            </button>
-
-            <button type="button"
-                    class="study-card border rounded-2xl p-4 text-left transition hover:border-primary"
-                    data-category="Literasi">
-
-                <div class="text-2xl">📖</div>
-
-                <h3 class="font-semibold mt-3">
-                    Literasi
-                </h3>
-
-                <p class="text-sm text-gray-500">
-                    Bahasa Indonesia
-                </p>
-
-            </button>
-
-        </div>
-
-    </div>
+    
 
     <div id="sectionSolo" x-show="activeTab === 'solo'">
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -190,6 +131,70 @@
     </div>
 
     <div id="sectionGroup" x-show="activeTab === 'group'">
+        <div class="mb-8">
+
+            <p class="text-sm font-semibold text-gray-700 mb-3">
+                🎯 Hari ini mau fokus apa?
+            </p>
+
+            <div
+                id="studyCategoryCards"
+                class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <button
+                    type="button"
+                    class="study-card border rounded-2xl p-5 text-left transition hover:border-primary"
+                    data-category="TPS">
+
+                    <div class="text-2xl">📘</div>
+
+                    <h3 class="font-semibold mt-3">
+                        TPS
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        Tes Potensi Skolastik
+                    </p>
+
+                </button>
+
+                <button
+                    type="button"
+                    class="study-card border rounded-2xl p-5 text-left transition hover:border-primary"
+                    data-category="Numerasi">
+
+                    <div class="text-2xl">📊</div>
+
+                    <h3 class="font-semibold mt-3">
+                        Numerasi
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        Matematika
+                    </p>
+
+                </button>
+
+                <button
+                    type="button"
+                    class="study-card border rounded-2xl p-5 text-left transition hover:border-primary"
+                    data-category="Literasi">
+
+                    <div class="text-2xl">📖</div>
+
+                    <h3 class="font-semibold mt-3">
+                        Literasi
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        Bahasa Indonesia
+                    </p>
+
+                </button>
+
+            </div>
+
+        </div>
         <div class="mb-8 flex justify-between items-center">
             <div>
                 <h3 class="text-2xl font-bold text-gray-900">Daftar Group Study</h3>
