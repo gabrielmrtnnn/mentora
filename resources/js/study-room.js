@@ -234,11 +234,11 @@ function updateCardAppearance() {
 
     if (focusOverlay) {
         if (currentStep.type === 'study') {
-            focusOverlay.className = 'fixed inset-0 z-[60] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white flex';
+            focusOverlay.className = 'fixed inset-0 z-[9999] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white flex';
         } else if (currentStep.type === 'break') {
-            focusOverlay.className = 'fixed inset-0 z-[60] bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600 text-white flex';
+            focusOverlay.className = 'fixed inset-0 z-[9999] bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600 text-white flex';
         } else {
-            focusOverlay.className = 'fixed inset-0 z-[60] bg-gradient-to-br from-violet-700 via-purple-600 to-fuchsia-700 text-white flex';
+            focusOverlay.className = 'fixed inset-0 z-[9999] bg-gradient-to-br from-violet-700 via-purple-600 to-fuchsia-700 text-white flex';
         }
 
         if (!isFocusMode) {
@@ -370,6 +370,12 @@ function openModal(title, desc, nextLabel) {
             setTimeout(() => {
                 startTimer();
             }, 100);
+        };
+    }
+
+    if (modalSecondaryBtn) {
+        modalSecondaryBtn.onclick = () => {
+            closeModal();
         };
     }
 
