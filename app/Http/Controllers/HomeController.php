@@ -77,7 +77,7 @@ class HomeController extends Controller
         if (auth()->check()) {
             $streak = StudyStreakService::getCurrentStreak(auth()->id());
         } else {
-            $streak = 1;
+            $streak = 0;
         }
 
         return view('home', compact(

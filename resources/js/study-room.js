@@ -144,6 +144,36 @@ const cancelWarningBtn = document.getElementById('cancelWarningBtn');
 const CIRCLE_LENGTH = 427;
 let pendingAction = null;
 
+let selectedCategory = null;
+
+const studyCards = document.querySelectorAll(".study-card");
+
+studyCards.forEach(card => {
+
+    card.addEventListener("click", () => {
+
+        studyCards.forEach(c => {
+            c.classList.remove(
+                "border-primary",
+                "bg-primary/10",
+                "ring-2",
+                "ring-primary"
+            );
+        });
+
+        card.classList.add(
+            "border-primary",
+            "bg-primary/10",
+            "ring-2",
+            "ring-primary"
+        );
+
+        selectedCategory = card.dataset.category;
+
+    });
+
+});
+
 function formatTime(t) {
     const m = String(Math.floor(t / 60)).padStart(2, '0');
     const s = String(t % 60).padStart(2, '0');
@@ -398,7 +428,8 @@ async function saveSession(minutes) {
                 'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify({
-                duration: minutes
+                duration: minutes,
+                category: selectedCategory,
             }),
         });
 
@@ -563,6 +594,10 @@ if (focusOverlayPauseBtn) focusOverlayPauseBtn.addEventListener('click', pauseTi
 if (focusOverlayResetBtn) focusOverlayResetBtn.addEventListener('click', resetTimer);
 if (focusModeBtn) {
     focusModeBtn.addEventListener('click', () => {
+        if (!selectedCategory) {
+            alert("Pilih dulu target belajarmu.");
+            return;
+        }
         // Cek status timer saat ini
         const state = stateText ? stateText.textContent.trim() : 'Ready';
         

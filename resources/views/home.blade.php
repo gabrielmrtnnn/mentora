@@ -60,9 +60,10 @@
             </div>
 
             <!-- SEARCH -->
-            <div class="h-12 bg-white rounded-xl shadow-sm flex items-center px-4 text-gray-400">
-                Cari soal...
-            </div>
+            <a href={{ route('forum') }}#searchInput
+                class="w-full px-4 py-2 bg-white text-gray-400 cursor-text border border-gray-200 rounded-2xl shadow-sm">
+                Cari diskusi...
+            </a>
 
             <!-- QUESTION CARDS -->
             @foreach($questions as $thread)
@@ -73,22 +74,44 @@
                 <h2 class="font-semibold text-lg">
                     {{ $thread->title }}
                 </h2>
-                @guest
-                <div class="blur-sm pointer-events-none select-none">
-                @endguest
-
-                @if($thread->image_url)
-                    <img
-                        src="{{ $thread->image_url }}"
-                        alt="{{ $thread->title }}"
-                        class="mt-3 w-50 p-3 h-48 object-cover rounded-xl">
-                @endif  
-
-                <p class="mt-3 text-gray-600 line-clamp-2">
+                <p class="mb-3 text-gray-600 line-clamp-2">
 
                     {{ Str::limit(strip_tags($thread->body),150) }}
 
                 </p>
+                
+                @guest
+                <div class="blur-sm pointer-events-none select-none">
+                @endguest
+
+
+                @if($thread->images->isNotEmpty())
+                    @php
+                        $images = $thread->images;
+                    @endphp
+
+                    <div class="grid gap-2 mb-5 {{ $images->count() == 1 ? 'grid-cols-1' : 'grid-cols-2' }}">
+
+                        @foreach($images->take(2) as $index => $image)
+
+                            <div class="relative h-64 overflow-hidden rounded-2xl">
+
+                                <img src="{{ $image->url }}"
+                                    class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition"
+                                    @click="lightboxImage='{{ $image->url }}'">
+
+                                @if($images->count() > 2 && $index == 1)
+                                    <div class="absolute inset-0 bg-black/45 flex items-center justify-center text-white text-3xl font-bold">
+                                        +{{ $images->count() - 2 }}
+                                    </div>
+                                @endif
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+                @endif
 
                 <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
 
@@ -186,7 +209,7 @@
                 <div class="mb-3">
                     <div class="flex justify-between text-sm mb-1">
                         <span>TPS</span>
-                        <span>{{ $tps }} jam</span>
+                        <span>{{ round($tps, 2) }} jam</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"
@@ -198,7 +221,7 @@
                 <div class="mb-3">
                     <div class="flex justify-between text-sm mb-1">
                         <span>Numerasi</span>
-                        <span>{{ $numerasi }} jam</span>
+                        <span>{{ round($numerasi, 2) }} jam</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"
@@ -210,7 +233,7 @@
                 <div>
                     <div class="flex justify-between text-sm mb-1">
                         <span>Literasi</span>
-                        <span>{{ $literasi }} jam</span>
+                        <span>{{ round($literasi, 2) }} jam</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"

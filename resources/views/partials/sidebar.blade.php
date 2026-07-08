@@ -132,7 +132,7 @@
         </div>
 
         <div id="dropdownMenu"
-             class="hidden absolute bottom-16 left-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 space-y-1 z-50">
+             class="hidden absolute bottom-14 left-2 w-48 bg-white rounded-2xl border-2 border-gray-100 p-2 space-y-1 z-50">
 
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">

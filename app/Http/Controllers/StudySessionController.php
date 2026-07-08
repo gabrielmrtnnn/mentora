@@ -72,13 +72,14 @@ class StudySessionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'duration' => ['required', 'integer', 'min:1'],
+            'duration' => ['required','integer','min:1'],
+            'category' => ['required','in:TPS,Numerasi,Literasi'],
         ]);
 
         $session = StudySession::create([
             'user_id' => Auth::id(),
             'duration' => $validated['duration'],
-            'category' => 'focus', 
+            'category' => $validated['category'],
         ]);
 
         if ($validated['duration'] >= 10) {
