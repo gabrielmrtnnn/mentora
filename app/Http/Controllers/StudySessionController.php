@@ -28,7 +28,7 @@ class StudySessionController extends Controller
         // 2. Ambil Daftar Room Study asli dari Database
         $studyGroups = StudyGroup::with('creator')->latest()->get();
 
-        return view('study-room', compact('todayMinutes', 'todaySessions', 'studyGroups'));
+        return view('study-room.index', compact('todayMinutes', 'todaySessions', 'studyGroups'));
     }
 
     // Fungsi untuk membuat Room baru
