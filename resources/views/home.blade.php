@@ -65,62 +65,48 @@
             </div>
 
             <!-- QUESTION CARDS -->
-            <div class="bg-white p-3 rounded-2xl shadow-sm">
-                <p class="font-semibold mb-2">
-                    Soal TPS logika ini gimana cara ngerjainnya?
-                </p>
-                <p class="text-sm text-textgray">12 jawaban • 10 menit lalu</p>
+            @foreach($questions as $thread)
+
+            <a href="{{ route('forum.show', $thread) }}"
+            class="block bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition">
+
+                <h2 class="font-semibold text-lg">
+                    {{ $thread->title }}
+                </h2>
                 @guest
                 <div class="blur-sm pointer-events-none select-none">
                 @endguest
 
-                <!-- KONTEN JAWABAN -->
-                <div class="mt-3 text-gray-700">
-                    Ini adalah jawaban lengkap dari soal SNBT...
-                </div>
+                @if($thread->image_url)
+                    <img
+                        src="{{ $thread->image_url }}"
+                        alt="{{ $thread->title }}"
+                        class="mt-3 w-50 p-3 h-48 object-cover rounded-xl">
+                @endif  
 
-                @guest
-                </div>
-                @endguest
-            </div>
+                <p class="mt-3 text-gray-600 line-clamp-2">
 
-            <div class="bg-white p-3 rounded-2xl shadow-sm">
-                <p class="font-semibold mb-2">
-                    Cara cepat ngerjain numerasi perbandingan gimana ya?
+                    {{ Str::limit(strip_tags($thread->body),150) }}
+
                 </p>
-                <p class="text-sm text-textgray">8 jawaban • 1 jam lalu</p>
-                @guest
-                <div class="blur-sm pointer-events-none select-none">
-                @endguest
 
-                <!-- KONTEN JAWABAN -->
-                <div class="mt-3 text-gray-700">
-                    Ini adalah jawaban lengkap dari soal SNBT...
+                <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
+
+                    <span>{{ $thread->replies_count }} jawaban</span>
+
+                    <span>•</span>
+
+                    <span>{{ $thread->created_at->diffForHumans() }}</span>
+
                 </div>
 
                 @guest
                 </div>
                 @endguest
-            </div>
 
-            <div class="bg-white p-3 rounded-2xl shadow-sm">
-                <p class="font-semibold mb-2">
-                    Ada tips biar ga kehabisan waktu pas SNBT?
-                </p>
-                <p class="text-sm text-textgray">20 jawaban • 3 jam lalu</p>
-                @guest
-                <div class="blur-sm pointer-events-none select-none">
-                @endguest
+            </a>
 
-                <!-- KONTEN JAWABAN -->
-                <div class="mt-3 text-gray-700">
-                    Ini adalah jawaban lengkap dari soal SNBT...
-                </div>
-
-                @guest
-                </div>
-                @endguest
-            </div>
+            @endforeach
 
         </div>
 
@@ -235,7 +221,9 @@
 
             <div class="bg-primary text-white p-6 rounded-2xl text-center">
                 <p class="text-lg">🔥 Study Streak</p>
-                <p class="text-4xl font-bold">6 Hari</p>
+                <p class="text-4xl font-bold">
+                    {{ $streak }} Hari
+                </p>
             </div>
 
         </div>

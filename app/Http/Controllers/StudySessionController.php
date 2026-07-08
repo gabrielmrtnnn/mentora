@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudyGroup;
 use App\Models\StudySession;
+use App\Services\StudyStreakService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +80,10 @@ class StudySessionController extends Controller
             'duration' => $validated['duration'],
             'category' => 'focus', 
         ]);
+
+        if ($validated['duration'] >= 10) {
+            StudyStreakService::record(Auth::id());
+        }
 
         return response()->json([
             'message' => 'Session saved successfully',
