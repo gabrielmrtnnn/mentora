@@ -5,49 +5,49 @@ const MODES = {
         sequence: [{
                 type: 'study',
                 duration: 25 * 60,
-                label: 'Study 25 Menit',
+                label: 'Belajar 25 Menit',
                 saveMinutes: 25
             },
             {
                 type: 'break',
                 duration: 5 * 60,
-                label: 'Break 5 Menit',
+                label: 'Istirahat 5 Menit',
                 saveMinutes: 0
             },
             {
                 type: 'study',
                 duration: 25 * 60,
-                label: 'Study 25 Menit',
+                label: 'Belajar 25 Menit',
                 saveMinutes: 25
             },
             {
                 type: 'break',
                 duration: 5 * 60,
-                label: 'Break 5 Menit',
+                label: 'Istirahat 5 Menit',
                 saveMinutes: 0
             },
             {
                 type: 'study',
                 duration: 25 * 60,
-                label: 'Study 25 Menit',
+                label: 'Belajar 25 Menit',
                 saveMinutes: 25
             },
             {
                 type: 'break',
                 duration: 5 * 60,
-                label: 'Break 5 Menit',
+                label: 'Istirahat 5 Menit',
                 saveMinutes: 0
             },
             {
                 type: 'study',
                 duration: 25 * 60,
-                label: 'Study 25 Menit',
+                label: 'Belajar 25 Menit',
                 saveMinutes: 25
             },
             {
                 type: 'long_break',
                 duration: 30 * 60,
-                label: 'Long Break 30 Menit',
+                label: 'Istirahat Panjang 30 Menit',
                 saveMinutes: 0
             },
         ],
@@ -58,25 +58,25 @@ const MODES = {
         sequence: [{
                 type: 'study',
                 duration: 50 * 60,
-                label: 'Study 50 Menit',
+                label: 'Belajar 50 Menit',
                 saveMinutes: 50
             },
             {
                 type: 'break',
                 duration: 10 * 60,
-                label: 'Break 10 Menit',
+                label: 'Istirahat 10 Menit',
                 saveMinutes: 0
             },
             {
                 type: 'study',
                 duration: 50 * 60,
-                label: 'Study 50 Menit',
+                label: 'Belajar 50 Menit',
                 saveMinutes: 50
             },
             {
                 type: 'long_break',
                 duration: 30 * 60,
-                label: 'Long Break 30 Menit',
+                label: 'Istirahat Panjang 30 Menit',
                 saveMinutes: 0
             },
         ],
@@ -92,6 +92,69 @@ let timer = null;
 let isRunning = false;
 let isFocusMode = false;
 let expectedEndTime = 0;
+
+// --- PERSISTENSI STATE TIMER (biar gak reset ke awal pas refresh) ---
+const TIMER_STORAGE_KEY = 'mentora_solo_timer_state';
+
+function saveTimerState() {
+    try {
+        sessionStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify({
+            modeKey: currentMode.key,
+            stepIndex: currentStepIndex,
+            secondsLeft: secondsLeft,
+        }));
+    } catch (e) {
+        // sessionStorage bisa gagal (mode private/incognito dsb), abaikan saja
+    }
+}
+
+function clearTimerState() {
+    try {
+        sessionStorage.removeItem(TIMER_STORAGE_KEY);
+    } catch (e) {}
+}
+
+// Timer dianggap "sedang jalan" untuk keperluan warning navigasi kalau
+// dia lagi running ATAU lagi paused di tengah (bukan di posisi awal/reset).
+function hasActiveProgress() {
+    return isRunning || (secondsLeft > 0 && secondsLeft < currentStep.duration);
+}
+
+function restoreTimerState() {
+    let saved = null;
+    try {
+        saved = JSON.parse(sessionStorage.getItem(TIMER_STORAGE_KEY));
+    } catch (e) {
+        saved = null;
+    }
+
+    const mode = saved && MODES[saved.modeKey] ? MODES[saved.modeKey] : MODES.pomodoro25;
+    const stepIndex = saved && mode.sequence[saved.stepIndex] ? saved.stepIndex : 0;
+    const step = mode.sequence[stepIndex];
+
+    currentMode = mode;
+    currentStepIndex = stepIndex;
+    currentStep = step;
+    totalSeconds = step.duration;
+
+    const restoredSeconds = saved && typeof saved.secondsLeft === 'number'
+        ? Math.min(Math.max(saved.secondsLeft, 0), step.duration)
+        : step.duration;
+
+    secondsLeft = restoredSeconds;
+    isRunning = false;
+
+    updateModeButtons();
+
+    // Selalu tampil sebagai "Paused" di angka terakhir, bukan auto-lanjut jalan,
+    // karena tidak ada jam di server yang melacak waktu selagi tab reload.
+    if (saved && restoredSeconds < step.duration && restoredSeconds > 0) {
+        setStateText('Dijeda');
+        if (statusText) statusText.textContent = 'Timer dijeda. Tekan Mulai untuk lanjut.';
+    } else {
+        setStateText('Siap');
+    }
+}
 
 // Element Selectors
 const timerDisplay = document.getElementById('timerDisplay');
@@ -138,41 +201,99 @@ const todayMinutesEl = document.getElementById('todayMinutes');
 const todaySessionsEl = document.getElementById('todaySessions');
 
 const warningModal = document.getElementById('warningModal');
+const warningModalTitle = document.getElementById('warningModalTitle');
+const warningModalDescription = document.getElementById('warningModalDescription');
 const confirmWarningBtn = document.getElementById('confirmWarningBtn');
 const cancelWarningBtn = document.getElementById('cancelWarningBtn');
+
+const soloTabBtn = document.getElementById('soloTabBtn');
+const groupTabBtn = document.getElementById('groupTabBtn');
+const groupTimerDisplay = document.getElementById('groupTimerDisplay');
+const groupTimerCategoryLabel = document.getElementById('groupTimerCategoryLabel');
 
 const CIRCLE_LENGTH = 427;
 let pendingAction = null;
 
-let selectedCategory = null;
+// --- KATEGORI FOKUS (TPS / Numerasi / Literasi) ---
+let selectedCategory = 'TPS';       // dipakai solo mode
+let groupSelectedCategory = 'TPS';  // dipakai group mode
 
-const studyCards = document.querySelectorAll(".study-card");
+function initCategoryPicker(scope) {
+    const container = document.getElementById(scope + 'CategoryPicker');
+    if (!container) return;
 
-studyCards.forEach(card => {
+    const buttons = container.querySelectorAll('.category-btn');
 
-    card.addEventListener("click", () => {
-
-        studyCards.forEach(c => {
-            c.classList.remove(
-                "border-primary",
-                "bg-primary/10",
-                "ring-2",
-                "ring-primary"
-            );
+    function setActive(category) {
+        buttons.forEach((btn) => {
+            const isActive = btn.dataset.category === category;
+            btn.classList.toggle('border-blue-500', isActive);
+            btn.classList.toggle('bg-blue-50', isActive);
+            btn.classList.toggle('border-gray-100', !isActive);
+            btn.classList.toggle('bg-gray-50', !isActive);
         });
+    }
 
-        card.classList.add(
-            "border-primary",
-            "bg-primary/10",
-            "ring-2",
-            "ring-primary"
-        );
+    buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const category = btn.dataset.category;
 
-        selectedCategory = card.dataset.category;
+            if (scope === 'solo') {
+                selectedCategory = category;
+            } else if (scope === 'group') {
+                groupSelectedCategory = category;
+                if (groupTimerCategoryLabel) {
+                    groupTimerCategoryLabel.textContent = `Kategori: ${category}`;
+                }
+            }
 
+            setActive(category);
+        });
     });
 
-});
+    setActive(scope === 'solo' ? selectedCategory : groupSelectedCategory);
+}
+
+// --- STOPWATCH SESI GROUP ---
+let groupSeconds = 0;
+let groupTimerInterval = null;
+let groupTimerRunning = false;
+
+function formatStopwatch(total) {
+    const m = String(Math.floor(total / 60)).padStart(2, '0');
+    const s = String(total % 60).padStart(2, '0');
+    return `${m}:${s}`;
+}
+
+function startGroupTimer() {
+    if (groupTimerRunning) return;
+
+    groupTimerRunning = true;
+    groupTimerInterval = setInterval(() => {
+        groupSeconds += 1;
+        if (groupTimerDisplay) groupTimerDisplay.textContent = formatStopwatch(groupSeconds);
+    }, 1000);
+}
+
+function stopGroupTimer() {
+    groupTimerRunning = false;
+    if (groupTimerInterval) clearInterval(groupTimerInterval);
+    groupTimerInterval = null;
+}
+
+async function finalizeGroupSession(onDone) {
+    stopGroupTimer();
+
+    const minutes = Math.floor(groupSeconds / 60);
+    if (minutes >= 1) {
+        await saveSession(minutes, groupSelectedCategory);
+    }
+
+    groupSeconds = 0;
+    if (groupTimerDisplay) groupTimerDisplay.textContent = '00:00';
+
+    if (onDone) onDone();
+}
 
 function formatTime(t) {
     const m = String(Math.floor(t / 60)).padStart(2, '0');
@@ -181,9 +302,9 @@ function formatTime(t) {
 }
 
 function getTypeText(type) {
-    if (type === 'study') return 'Focus Session';
-    if (type === 'break') return 'Short Break';
-    return 'Long Break';
+    if (type === 'study') return 'Sesi Fokus';
+    if (type === 'break') return 'Istirahat Singkat';
+    return 'Istirahat Panjang';
 }
 
 function getNextStep() {
@@ -282,20 +403,20 @@ function updateDisplay() {
     const next = getNextStep();
     const progress = getStudyProgress();
     const timeText = formatTime(secondsLeft);
-    const statusTextContent = (statusText && statusText.textContent) ? statusText.textContent : 'Ready';
+    const statusTextContent = (statusText && statusText.textContent) ? statusText.textContent : 'Siap';
 
     if (timerDisplay) timerDisplay.textContent = timeText;
     if (sessionTitle) sessionTitle.textContent = currentStep.label;
     if (sessionTypeLabel) sessionTypeLabel.textContent = getTypeText(currentStep.type);
     if (activeModeText) activeModeText.textContent = currentMode.name;
     if (nextBreakText) nextBreakText.textContent = next.label;
-    if (stepCounter) stepCounter.textContent = `Session ${progress.current} / ${progress.total}`;
+    if (stepCounter) stepCounter.textContent = `Sesi ${progress.current} / ${progress.total}`;
 
     if (focusOverlayTimerDisplay) focusOverlayTimerDisplay.textContent = timeText;
     if (focusOverlayTitle) focusOverlayTitle.textContent = currentStep.label;
     if (focusOverlayType) focusOverlayType.textContent = getTypeText(currentStep.type);
     if (focusOverlayNextBreakText) focusOverlayNextBreakText.textContent = next.label;
-    if (focusOverlayStepCounter) focusOverlayStepCounter.textContent = `Session ${progress.current} / ${progress.total}`;
+    if (focusOverlayStepCounter) focusOverlayStepCounter.textContent = `Sesi ${progress.current} / ${progress.total}`;
 
     if (focusOverlayStatusText) {
         focusOverlayStatusText.textContent = statusTextContent;
@@ -330,9 +451,10 @@ function resetCurrentStep() {
     stopTimer();
     secondsLeft = currentStep.duration;
     totalSeconds = currentStep.duration;
-    setStateText('Ready');
+    setStateText('Siap');
     if (statusText) statusText.textContent = 'Timer di-reset.';
     updateDisplay();
+    saveTimerState();
 }
 
 function switchMode(modeKey) {
@@ -343,8 +465,9 @@ function switchMode(modeKey) {
         currentStep = currentMode.sequence[0];
         secondsLeft = currentStep.duration;
         totalSeconds = currentStep.duration;
-        setStateText('Ready');
+        setStateText('Siap');
         updateDisplay();
+        saveTimerState();
     };
 
     if (isRunning) {
@@ -365,9 +488,10 @@ function nextStep() {
     secondsLeft = currentStep.duration;
     totalSeconds = currentStep.duration;
 
-    setStateText('Ready');
+    setStateText('Siap');
     if (statusText) statusText.textContent = `${currentStep.label} siap dimulai.`;
     updateDisplay();
+    saveTimerState();
 }
 
 function playAlarm() {
@@ -391,7 +515,7 @@ function openModal(title, desc, nextLabel) {
     if (modalDescription) modalDescription.textContent = desc;
 
     if (modalPrimaryBtn) {
-        modalPrimaryBtn.textContent = `Mulai ${nextLabel}`;
+        modalPrimaryBtn.textContent = `${nextLabel}`;
         modalPrimaryBtn.onclick = () => {
             closeModal();
             nextStep(); // Pindah ke step berikutnya (break/study)
@@ -419,8 +543,10 @@ function closeModal() {
     modal.classList.remove('flex');
 }
 
-async function saveSession(minutes) {
+async function saveSession(minutes, category) {
     if (!minutes || minutes <= 0) return true;
+
+    const categoryToSend = category || selectedCategory;
 
     try {
         const metaTag = document.querySelector('meta[name="csrf-token"]');
@@ -435,7 +561,7 @@ async function saveSession(minutes) {
             },
             body: JSON.stringify({
                 duration: minutes,
-                category: selectedCategory,
+                category: categoryToSend,
             }),
         });
 
@@ -464,7 +590,7 @@ async function handleSessionComplete() {
     const next = getNextStep();
 
     if (currentStep.type === 'study') {
-        setStateText('Completed');
+        setStateText('Selesai');
         if (statusText) statusText.textContent = 'Sesi fokus selesai.';
 
         openModal(
@@ -479,23 +605,23 @@ async function handleSessionComplete() {
     }
 
     if (currentStep.type === 'break') {
-        setStateText('Break Complete');
-        if (statusText) statusText.textContent = 'Break selesai.';
+        setStateText('Istirahat Selesai');
+        if (statusText) statusText.textContent = 'Istirahat selesai.';
 
         openModal(
-            'Break selesai',
-            `Saatnya balik fokus. Step berikutnya: ${next.label}.`,
+            'Istirahat selesai',
+            `Saatnya balik fokus. Langkah berikutnya: ${next.label}.`,
             next.label
         );
         updateDisplay();
         return;
     }
 
-    setStateText('Cycle Complete');
-    if (statusText) statusText.textContent = 'Long break selesai.';
+    setStateText('Siklus Selesai');
+    if (statusText) statusText.textContent = 'Istirahat panjang selesai.';
     openModal(
-        'Cycle selesai 🔥',
-        `Long break selesai. Sequence akan kembali ke awal: ${next.label}.`,
+        'Siklus selesai 🔥',
+        `Istirahat panjang selesai. Urutan akan kembali ke awal: ${next.label}.`,
         next.label
     );
     updateDisplay();
@@ -505,7 +631,7 @@ function startTimer() {
     if (isRunning) return;
 
     isRunning = true;
-    setStateText('Running');
+    setStateText('Berjalan');
     if (statusText) statusText.textContent = `${currentStep.label} sedang berjalan...`;
 
     expectedEndTime = Date.now() + (secondsLeft * 1000);
@@ -523,6 +649,7 @@ function startTimer() {
         }
 
         updateDisplay();
+        saveTimerState();
     }, 1000);
 }
 
@@ -532,9 +659,10 @@ function pauseTimer() {
     secondsLeft = Math.max(0, Math.round((expectedEndTime - Date.now()) / 1000));
     stopTimer();
 
-    setStateText('Paused');
-    if (statusText) statusText.textContent = 'Timer dijeda. Tekan Start untuk lanjut.';
+    setStateText('Dijeda');
+    if (statusText) statusText.textContent = 'Timer dijeda. Tekan Mulai untuk lanjut.';
     updateDisplay();
+    saveTimerState();
 }
 
 function resetTimer() {
@@ -568,10 +696,10 @@ window.handleAreaClick = function (event) {
     }
 
     // 2. Cek status timer saat ini
-    const state = stateText ? stateText.textContent.trim() : 'Ready';
+    const state = stateText ? stateText.textContent.trim() : 'Siap';
 
     // 3. Masuk Focus Mode hanya jika Running atau Paused
-    if (state === 'Running' || state === 'Paused') {
+    if (state === 'Berjalan' || state === 'Dijeda') {
         enterFocusMode();
     } else {
         // Efek visual kalau belum Start
@@ -600,15 +728,11 @@ if (focusOverlayPauseBtn) focusOverlayPauseBtn.addEventListener('click', pauseTi
 if (focusOverlayResetBtn) focusOverlayResetBtn.addEventListener('click', resetTimer);
 if (focusModeBtn) {
     focusModeBtn.addEventListener('click', () => {
-        if (!selectedCategory) {
-            alert("Pilih dulu target belajarmu.");
-            return;
-        }
         // Cek status timer saat ini
-        const state = stateText ? stateText.textContent.trim() : 'Ready';
+        const state = stateText ? stateText.textContent.trim() : 'Siap';
         
         // Hanya izinkan masuk Focus Mode jika timer sedang jalan atau pause
-        if (state === 'Running' || state === 'Paused') {
+        if (state === 'Berjalan' || state === 'Dijeda') {
             enterFocusMode();
         } else {
             // Efek visual getar pada card utama kalau belum Start
@@ -640,20 +764,38 @@ document.addEventListener('keydown', (event) => {
 // INITIALIZATION WRAPPER
 // ONLY RUN IF WE ARE ON THE STUDY ROOM PAGE
 if (timerDisplay) {
-    switchMode('pomodoro25');
+    restoreTimerState();
     updateDisplay();
+    initCategoryPicker('solo');
+    initCategoryPicker('group');
+
+    // Kalau halaman di-load langsung ke tab Group (misal lewat session active_tab),
+    // stopwatch group langsung jalan juga.
+    const studyRoomContainerEl = document.getElementById('studyRoomContainer');
+    if (studyRoomContainerEl && studyRoomContainerEl.dataset.initialTab === 'group') {
+        startGroupTimer();
+    }
 }
 
-// Listener untuk mencegah user pindah halaman saat timer aktif
+// Listener untuk mencegah user pindah halaman saat timer solo ATAU sesi group aktif
 window.addEventListener('beforeunload', (event) => {
-    if (isRunning) {
+    if (hasActiveProgress() || groupTimerRunning) {
         event.preventDefault();
         event.returnValue = ''; 
     }
 });
 
-function showWarning(onConfirm) {
+function showWarning(onConfirm, title, description) {
     pendingAction = onConfirm;
+
+    if (warningModalTitle) {
+        warningModalTitle.textContent = title || 'Sesi Belajar Masih Berjalan';
+    }
+    if (warningModalDescription) {
+        warningModalDescription.textContent = description ||
+            'Kalau kamu pindah halaman sekarang, timer akan berhenti dan progres sesi ini bisa hilang. Yakin mau lanjut?';
+    }
+
     if (warningModal) {
         warningModal.classList.remove('hidden');
         warningModal.classList.add('flex');
@@ -677,22 +819,71 @@ if (confirmWarningBtn) {
     };
 }
 
+// --- TAB GROUP: auto-start stopwatch pas masuk, konfirmasi pas mau keluar ---
+if (groupTabBtn) {
+    groupTabBtn.addEventListener('click', () => {
+        startGroupTimer();
+    });
+}
+
+if (soloTabBtn) {
+    // Pakai capture phase supaya listener ini jalan LEBIH DULU dari @click Alpine
+    // di tombol yang sama, jadi bisa dicegat sebelum tab-nya kepindah.
+    soloTabBtn.addEventListener('click', (event) => {
+        if (!groupTimerRunning) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        showWarning(
+            () => {
+                finalizeGroupSession(() => {
+                    const container = document.getElementById('studyRoomContainer');
+                    if (window.Alpine && container) {
+                        window.Alpine.$data(container).activeTab = 'solo';
+                    }
+                });
+            },
+            'Akhiri Sesi Kelompok?',
+            `Sesi belajar kamu (kategori ${groupSelectedCategory}) akan disimpan dulu sebelum pindah ke Mode Solo. Lanjut?`
+        );
+    }, true);
+}
+
 // Pantau semua link di halaman Mentora
 document.addEventListener('click', (event) => {
     const link = event.target.closest('a');
-    
-    // Jika yang diklik adalah link dan bukan link Jitsi/External
-    if (link && link.href && !link.target && isRunning) {
-        const targetUrl = link.href;
-        
-        // Jika link mengarah ke halaman lain (bukan anchor #)
-        if (!targetUrl.includes('#') && targetUrl !== window.location.href) {
-            event.preventDefault(); // Stop pindah halaman dulu
-            
-            showWarning(() => {
-                // Jika user klik 'Iya, reset aja' di modal
-                window.location.href = targetUrl;
-            });
-        }
+
+    if (!link || !link.href || link.target) return;
+
+    const targetUrl = link.href;
+    const isRealNav = !targetUrl.includes('#') && targetUrl !== window.location.href;
+
+    if (!isRealNav) return;
+
+    // Kalau lagi di sesi group (stopwatch jalan) terus mau pindah HALAMAN LAIN
+    // (bukan cuma ganti tab), simpan dulu sesi groupnya sebelum pindah.
+    if (groupTimerRunning) {
+        event.preventDefault();
+
+        showWarning(
+            () => {
+                finalizeGroupSession(() => {
+                    window.location.href = targetUrl;
+                });
+            },
+            'Akhiri Sesi Kelompok?',
+            `Sesi belajar kamu (kategori ${groupSelectedCategory}) akan disimpan dulu sebelum pindah halaman. Lanjut?`
+        );
+        return;
+    }
+
+    // Kalau timer solo lagi jalan/paused, pakai warning versi biasa
+    if (hasActiveProgress()) {
+        event.preventDefault();
+
+        showWarning(() => {
+            window.location.href = targetUrl;
+        });
     }
 });

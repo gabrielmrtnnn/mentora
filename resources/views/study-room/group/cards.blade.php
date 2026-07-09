@@ -79,7 +79,7 @@
                     target="_blank"
                     class="block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]">
 
-                    Join Group
+                    Gabung Grup
 
                 </a>
 

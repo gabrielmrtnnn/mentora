@@ -13,23 +13,23 @@
 
     <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
         <p class="text-sm text-gray-500">
-            Step Berikutnya
+            Langkah Berikutnya
         </p>
 
         <p id="nextBreakText"
             class="mt-2 text-lg font-bold text-gray-900">
-            Break 5 Menit
+            Istirahat 5 Menit
         </p>
     </div>
 
     <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
         <p class="text-sm text-gray-500">
-            State
+            Status
         </p>
 
         <p id="stateText"
             class="mt-2 text-lg font-bold text-gray-900">
-            Ready
+            Siap
         </p>
     </div>
 

@@ -3,7 +3,7 @@
     <div class="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6">
 
         <p class="text-sm text-gray-500 font-medium">
-            Today Minutes
+            Menit Hari Ini
         </p>
 
         <h3 class="mt-3 text-4xl font-extrabold text-gray-900">
@@ -21,7 +21,7 @@
     <div class="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6">
 
         <p class="text-sm text-gray-500 font-medium">
-            Sessions Today
+            Sesi Hari Ini
         </p>
 
         <h3 class="mt-3 text-4xl font-extrabold text-gray-900">
