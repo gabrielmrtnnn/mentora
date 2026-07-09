@@ -27,7 +27,7 @@
                 <div>
 
                     <label class="block text-sm font-bold text-gray-700 mb-1">
-                        Nama Room
+                        Nama Ruangan
                     </label>
 
                     <input

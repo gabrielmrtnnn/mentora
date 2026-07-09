@@ -43,12 +43,12 @@
 
             <img src="{{ asset('icons/study-room.svg') }}"
                  class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('study-room*') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
-                 alt="Study Room">
+                 alt="Ruang Belajar">
 
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Study Room
+                Ruang Belajar
             </span>
         </a>
 

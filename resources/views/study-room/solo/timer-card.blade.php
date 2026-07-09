@@ -44,23 +44,23 @@
         <div>
             <p id="sessionTypeLabel"
                 class="text-blue-100 text-sm font-semibold uppercase tracking-wide">
-                Focus Session
+                Sesi Fokus
             </p>
 
             <h2 id="sessionTitle"
                 class="mt-2 text-xl sm:text-2xl md:text-3xl font-extrabold">
-                Study 25 Menit
+                Belajar 25 Menit
             </h2>
         </div>
 
         <div class="sm:text-right">
             <p class="text-blue-100 text-xs font-medium uppercase tracking-widest">
-                Progress
+                Progres
             </p>
 
             <p id="stepCounter"
                 class="text-xl sm:text-2xl font-extrabold">
-                Session 1 / 4
+                Sesi 1 / 4
             </p>
         </div>
 
@@ -103,7 +103,7 @@
 
                 <p id="statusText"
                     class="mt-4 text-sm text-blue-100">
-                    Pilih mode lalu tekan Start.
+                    Pilih mode lalu tekan Mulai.
                 </p>
 
             </div>
@@ -116,17 +116,17 @@
 
         <button id="startBtn"
             class="px-6 py-3 rounded-2xl bg-yellow-300 text-gray-900 font-extrabold hover:bg-yellow-200 transition shadow-sm active:scale-[0.98]">
-            Start
+            Mulai
         </button>
 
         <button id="pauseBtn"
             class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-            Pause
+            Jeda
         </button>
 
         <button id="resetBtn"
             class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-            Reset
+            Ulang
         </button>
 
     </div>

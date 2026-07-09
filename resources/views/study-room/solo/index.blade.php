@@ -5,6 +5,8 @@
         {{-- Left Content --}}
         <div class="xl:col-span-2 space-y-6">
 
+            @include('study-room.components.category-picker', ['scope' => 'solo'])
+
             @include('study-room.solo.mode-selector')
 
             @include('study-room.solo.timer-card')
