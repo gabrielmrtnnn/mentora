@@ -80,6 +80,7 @@ class AdminController extends Controller
             'success_message',
             'Pengajuan tutor berhasil ditolak.'
         );
+    }
     /**
      * Daftar report diskusi (thread) & balasan (reply) yang masuk dari user.
      * Dikelompokkan per konten yang dilaporkan, biar kalau satu thread

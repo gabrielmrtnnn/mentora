@@ -57,4 +57,22 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateSkills(Request $request)
+    {
+        $tutor = auth()->user()->tutor;
+
+        if (!$tutor) {
+            abort(403);
+        }
+
+        $tutor->update([
+            'tps' => $request->boolean('tps'),
+            'literasi' => $request->boolean('literasi'),
+            'numerasi' => $request->boolean('numerasi'),
+        ]);
+
+        return back()->with('status', 'skills-updated');
+    }
 }
+
