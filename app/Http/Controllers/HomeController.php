@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ForumThread;
+use App\Services\StudyStreakService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,12 +72,22 @@ class HomeController extends Controller
 
         $max = max($tps, $numerasi, $literasi, 1); // biar ga bagi 0
 
+        $questions = ForumThread::with(['user'])->withCount('replies')->latest()->take(5)->get();
+
+        if (auth()->check()) {
+            $streak = StudyStreakService::getCurrentStreak(auth()->id());
+        } else {
+            $streak = 0;
+        }
+
         return view('home', compact(
             'tps',
             'numerasi',
             'literasi',
             'max',
-            'weekly'
+            'weekly',
+            'questions',
+            'streak'
         ));
     }
 }

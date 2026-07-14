@@ -21,9 +21,21 @@
 
             @include('partials.sidebar')
 
+            <div id="sidebarBackdrop"
+                class="hidden fixed inset-0 bg-black/40 z-[65] lg:hidden"></div>
+
+            <button id="sidebarOpenBtn"
+                type="button"
+                aria-label="Buka menu"
+                class="lg:hidden fixed top-4 left-4 z-[75] p-2.5 bg-white rounded-xl shadow-md text-gray-600 hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                </svg>
+            </button>
+
             <div id="mainContent"
-                class="flex-1 flex flex-col h-full ml-20 transition-all duration-300">
-                <main class="flex-1 flex flex-col min-h-0 p-6 md:p-10">
+                class="flex-1 flex flex-col h-full ml-0 lg:ml-20 transition-all duration-300">
+                <main class="flex-1 flex flex-col min-h-0 px-6 md:px-10 pb-6 md:pb-10 pt-20 lg:pt-10">
                     @yield('content')
                 </main>
             </div>
@@ -31,6 +43,10 @@
         </div>
 
 
+        <div id="focusOverlayRoot"></div>
+        @if(request()->routeIs('study-room*'))
+            @include('study-room.solo.focus-overlay')
+        @endif
 
         <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +54,9 @@
             const sidebar = document.getElementById('sidebar');
             const main = document.getElementById('mainContent');
             const banner = document.getElementById('topBanner');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const openBtn = document.getElementById('sidebarOpenBtn');
+            const closeBtn = document.getElementById('sidebarCloseBtn');
 
             const texts = document.querySelectorAll('.sidebar-text');
             const profileTexts = document.querySelectorAll('.profile-text');
@@ -62,12 +81,12 @@
                 sidebar.classList.remove('w-20');
                 sidebar.classList.add('w-64');
 
-                main.classList.remove('ml-20');
-                main.classList.add('ml-64');
+                main.classList.remove('lg:ml-20');
+                main.classList.add('lg:ml-64');
 
                 if(banner){
-                    banner.classList.remove('ml-20');
-                    banner.classList.add('ml-64');
+                    banner.classList.remove('lg:ml-20');
+                    banner.classList.add('lg:ml-64');
                 }
 
                 texts.forEach(el => {
@@ -85,12 +104,12 @@
                 sidebar.classList.remove('w-64');
                 sidebar.classList.add('w-20');
 
-                main.classList.remove('ml-64');
-                main.classList.add('ml-20');
+                main.classList.remove('lg:ml-64');
+                main.classList.add('lg:ml-20');
 
                 if(banner){
-                    banner.classList.remove('ml-64');
-                    banner.classList.add('ml-20');
+                    banner.classList.remove('lg:ml-64');
+                    banner.classList.add('lg:ml-20');
                 }
 
                 texts.forEach(el => {
@@ -106,6 +125,37 @@
             sidebar.addEventListener('mouseenter', expandSidebar);
 
             sidebar.addEventListener('mouseleave', collapseSidebar);
+
+            // --- MOBILE DRAWER ---
+            function openMobileSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                expandSidebar();
+
+                if (backdrop) {
+                    backdrop.classList.remove('hidden');
+                }
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeMobileSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                collapseSidebar();
+
+                if (backdrop) {
+                    backdrop.classList.add('hidden');
+                }
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            if (openBtn) openBtn.addEventListener('click', openMobileSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+            if (backdrop) backdrop.addEventListener('click', closeMobileSidebar);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeMobileSidebar();
+            });
 
         });
         </script>

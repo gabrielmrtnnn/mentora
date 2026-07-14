@@ -2,7 +2,9 @@
 
 @section('content')
 
-<div class="max-w-3xl mx-auto w-full pb-16">
+<div class="max-w-3xl mx-auto w-full pb-16"
+     x-data="{ lightboxImage: null, reportOpen: false, reportType: null, reportId: null }"
+     @keydown.escape.window="lightboxImage = null; reportOpen = false">
 
     <!-- BACK -->
     <div class="mb-6">
@@ -18,6 +20,12 @@
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
             {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl font-medium">
+            {{ session('error') }}
         </div>
     @endif
 
@@ -53,9 +61,39 @@
 
             </div>
 
-            <span class="px-3 py-1 {{ $thread->category_color }} text-xs font-semibold rounded-full shrink-0">
-                {{ $thread->category_label }}
-            </span>
+            <div class="flex items-center gap-2 shrink-0">
+
+                <span class="px-3 py-1 {{ $thread->category_color }} text-xs font-semibold rounded-full">
+                    {{ $thread->category_label }}
+                </span>
+
+                @if(Auth::id() === $thread->user_id || Auth::user()->isAdmin())
+                    <form method="POST" action="{{ route('forum.thread.destroy', $thread->id) }}"
+                          onsubmit="return confirm('Yakin mau hapus diskusi ini? Semua balasan di dalamnya juga akan ikut terhapus.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" title="Hapus diskusi"
+                            class="p-2 rounded-full text-red-500 hover:bg-red-50 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 6h18" />
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                <path d="M10 11v6" />
+                                <path d="M14 11v6" />
+                            </svg>
+                        </button>
+                    </form>
+                @endif
+
+                @if(Auth::id() !== $thread->user_id)
+                    <button type="button" title="Laporkan diskusi"
+                        @click="reportOpen = true; reportType = 'thread'; reportId = {{ $thread->id }}"
+                        class="p-2 rounded-full text-gray-400 hover:bg-amber-50 hover:text-amber-500 transition">
+                        🚩
+                    </button>
+                @endif
+
+            </div>
 
         </div>
 
@@ -67,8 +105,14 @@
             {{ $thread->body }}
         </p>
 
-        @if($thread->image_url)
-            <img src="{{ $thread->image_url }}" alt="" class="rounded-2xl w-full max-h-[480px] object-cover mb-5">
+        @if($thread->images->isNotEmpty())
+            <div class="grid gap-2 mb-5 {{ $thread->images->count() === 1 ? 'grid-cols-1' : 'grid-cols-2' }}">
+                @foreach($thread->images as $image)
+                    <img src="{{ $image->url }}" alt=""
+                        class="rounded-2xl w-full max-h-[420px] object-cover cursor-zoom-in hover:opacity-90 transition"
+                        @click="lightboxImage = '{{ $image->url }}'">
+                @endforeach
+            </div>
         @endif
 
         <!-- LIKE THREAD -->
@@ -104,13 +148,43 @@
                     </div>
 
                     <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <p class="text-sm font-semibold text-gray-800">
-                                {{ $reply->user->name }}
-                            </p>
-                            <p class="text-xs text-gray-400">
-                                • {{ $reply->created_at->diffForHumans() }}
-                            </p>
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <div class="flex items-center gap-2">
+                                <p class="text-sm font-semibold text-gray-800">
+                                    {{ $reply->user->name }}
+                                </p>
+                                <p class="text-xs text-gray-400">
+                                    • {{ $reply->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+
+                            <div class="flex items-center gap-1 shrink-0">
+                                @if(Auth::id() === $reply->user_id || Auth::user()->isAdmin())
+                                    <form method="POST" action="{{ route('forum.reply.destroy', $reply->id) }}"
+                                          onsubmit="return confirm('Yakin mau hapus balasan ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" title="Hapus balasan"
+                                            class="p-1.5 rounded-full text-red-500 hover:bg-red-50 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M3 6h18" />
+                                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                                <path d="M10 11v6" />
+                                                <path d="M14 11v6" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if(Auth::id() !== $reply->user_id)
+                                    <button type="button" title="Laporkan balasan"
+                                        @click="reportOpen = true; reportType = 'reply'; reportId = {{ $reply->id }}"
+                                        class="p-1.5 rounded-full text-gray-400 hover:bg-amber-50 hover:text-amber-500 transition text-sm">
+                                        🚩
+                                    </button>
+                                @endif
+                            </div>
                         </div>
                         <p class="text-sm text-gray-700 leading-relaxed mb-3">
                             {{ $reply->body }}
@@ -166,6 +240,67 @@
             </div>
         </form>
 
+    </div>
+
+    <!-- REPORT MODAL -->
+    <div x-show="reportOpen"
+         class="fixed inset-0 bg-black/60 flex items-center justify-center z-[90] px-4 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-cloak>
+        <div @click.away="reportOpen = false" class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6">
+
+            <h3 class="text-lg font-bold text-gray-900 mb-1">Laporkan Konten</h3>
+            <p class="text-sm text-gray-500 mb-4">
+                Laporan kamu akan ditinjau oleh admin Mentora.
+            </p>
+
+            <form method="POST" action="{{ route('forum.report') }}">
+                @csrf
+                <input type="hidden" name="type" :value="reportType">
+                <input type="hidden" name="id" :value="reportId">
+
+                <label class="block text-sm font-bold text-gray-700 mb-1">Alasan</label>
+                <select name="reason" required
+                    class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 px-4 mb-4">
+                    @foreach(\App\Models\ForumReport::REASONS as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
+                </select>
+
+                <label class="block text-sm font-bold text-gray-700 mb-1">Penjelasan (opsional)</label>
+                <textarea name="description" rows="3" placeholder="Jelaskan lebih lanjut kalau perlu..."
+                    class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 px-4 mb-5"></textarea>
+
+                <div class="flex gap-3">
+                    <button type="button" @click="reportOpen = false"
+                        class="flex-1 py-2.5 font-bold text-gray-500 hover:bg-gray-50 rounded-xl transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:opacity-90 transition">
+                        Kirim Laporan
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div x-show="lightboxImage"
+         @click="lightboxImage = null"
+         class="fixed inset-0 bg-black/80 flex items-center justify-center z-[80] px-4 cursor-zoom-out"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-cloak>
+        <button @click="lightboxImage = null"
+            class="absolute top-6 right-6 text-white text-3xl font-bold leading-none hover:opacity-70 transition">
+            &times;
+        </button>
+        <img :src="lightboxImage" alt="" @click.stop class="max-w-full max-h-[90vh] rounded-2xl object-contain">
     </div>
 
 </div>

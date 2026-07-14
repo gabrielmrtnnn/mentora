@@ -46,7 +46,7 @@
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Dashboard
+                Beranda
             </span>
         </a>
 
@@ -57,12 +57,12 @@
 
             <img src="{{ asset('icons/study-room.svg') }}"
                  class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('study-room*') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
-                 alt="Study Room">
+                 alt="Ruang Belajar">
 
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Study Room
+                Ruang Belajar
             </span>
         </a>
 
@@ -153,6 +153,25 @@
                 Forum
             </span>
         </a>
+
+        @auth
+        @if(auth()->user()->isAdmin())
+            <!-- ADMIN: REPORT FORUM -->
+            <a href="{{ route('admin.reports') }}"
+               class="group flex items-center px-3.5 py-3 rounded-xl transition
+               {{ request()->routeIs('admin.reports') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
+
+                <span class="w-5 h-5 shrink-0 flex items-center justify-center">🚩</span>
+
+                <span class="sidebar-text ml-3
+                    max-w-0 opacity-0 overflow-hidden
+                    whitespace-nowrap transition-all duration-300">
+                    Report Forum
+                </span>
+            </a>
+        @endif
+        @endauth
+
     </nav>
 
     <!-- USER PROFILE -->
@@ -160,7 +179,7 @@
     <div id="profileWrapper" class="mt-auto relative">
 
         <div id="profileButton"
-            class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
+            class="flex items-center p-2 transition cursor-pointer">
 
             <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -183,18 +202,18 @@
         </div>
 
         <div id="dropdownMenu"
-             class="hidden absolute bottom-16 left-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 space-y-1 z-50">
+             class="hidden absolute bottom-14 left-2 w-48 bg-white rounded-2xl border-2 border-gray-100 p-2 space-y-1 z-50">
 
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                Profile
+                Profil
             </a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
                         class="w-full flex items-center gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition">
-                     Logout
+                    Keluar
                 </button>
             </form>
 
@@ -217,7 +236,7 @@
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300
                         font-semibold text-sm">
-                Login / Register
+                Masuk / Daftar
             </span>
         </a>
     </div>

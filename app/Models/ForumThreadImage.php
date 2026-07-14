@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Likeable;
-use App\Models\Concerns\Reportable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
-class ForumReply extends Model
+class ForumThreadImage extends Model
 {
-    use Likeable, Reportable;
-
     protected $fillable = [
         'forum_thread_id',
-        'user_id',
-        'body',
+        'path',
     ];
 
     public function thread()
@@ -21,8 +17,8 @@ class ForumReply extends Model
         return $this->belongsTo(ForumThread::class, 'forum_thread_id');
     }
 
-    public function user()
+    public function getUrlAttribute(): string
     {
-        return $this->belongsTo(User::class);
+        return Storage::disk('public')->url($this->path);
     }
 }
