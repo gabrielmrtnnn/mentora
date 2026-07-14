@@ -109,9 +109,9 @@
                 <div class="flex items-center gap-3">
 
                     <form action="{{ route('admin.reports.dismiss', $first->id) }}" method="POST"
-                          onsubmit="return confirm('Abaikan laporan ini? Konten TIDAK akan dihapus.');">
+                          class="js-confirm-dismiss">
                         @csrf
-                        <button class="inline-flex items-center gap-2 bg-gray-100 text-gray-600 px-5 py-2 rounded-xl font-semibold hover:bg-gray-200 transition">
+                        <button type="submit" class="inline-flex items-center gap-2 bg-gray-100 text-gray-600 px-5 py-2 rounded-xl font-semibold hover:bg-gray-200 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6L9 17l-5-5" />
                             </svg>
@@ -120,10 +120,10 @@
                     </form>
 
                     <form action="{{ route('admin.reports.destroy', $first->id) }}" method="POST"
-                          onsubmit="return confirm('Hapus konten ini? Aksi ini tidak bisa dibatalkan.');">
+                          class="js-confirm-delete">
                         @csrf
                         @method('DELETE')
-                        <button class="inline-flex items-center gap-2 bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition">
+                        <button type="submit" class="inline-flex items-center gap-2 bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 6h18" />
                                 <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
@@ -160,3 +160,47 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    function confirmSubmit(selector, options) {
+        document.querySelectorAll(selector).forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                Swal.fire({
+                    ...options,
+                    showCancelButton: true,
+                    reverseButtons: true,
+                    confirmButtonText: options.confirmButtonText,
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    }
+
+    confirmSubmit('.js-confirm-delete', {
+        icon: 'warning',
+        title: 'Hapus konten ini?',
+        text: 'Aksi ini tidak bisa dibatalkan.',
+        confirmButtonText: 'Ya, hapus',
+        confirmButtonColor: '#ef4444',
+    });
+
+    confirmSubmit('.js-confirm-dismiss', {
+        icon: 'question',
+        title: 'Abaikan laporan ini?',
+        text: 'Konten TIDAK akan dihapus.',
+        confirmButtonText: 'Ya, abaikan',
+        confirmButtonColor: '#3b82f6',
+    });
+
+});
+</script>
+@endpush
