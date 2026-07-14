@@ -66,14 +66,13 @@
              </div>
 
                 <div class="flex gap-3">
-
-                    <button class="bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition">
+                    <a href="{{ route('booking.create',$tutor) }}" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90">
                         Booking Session
-                    </button>
+                    </a>
 
-                    <button class="border border-primary text-primary px-6 py-3 rounded-xl font-semibold hover:bg-primary hover:text-white transition">
+                    <a href="{{ route('chat.start',$tutor->id) }}" class="border border-primary text-primary px-6 py-3 rounded-xl">
                         Chat Tutor
-                    </button>
+                    </a>
 
                 </div>
 

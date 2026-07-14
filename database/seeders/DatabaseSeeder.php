@@ -23,7 +23,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
          $this->call([
-            TutorSeeder::class,
+            UserSeeder::class,
+            ForumSeeder::class,
+            StudySessionSeeder::class,
+            StudyStreakSeeder::class,
+            TutorSeeder::class
         ]);
     }
 }

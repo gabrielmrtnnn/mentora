@@ -1,3 +1,17 @@
+<style>
+    /* Memaksa submenu tertutup rapat (tinggi 0 dan margin 0) 
+      saat sidebar berada dalam mode default/tertutup (class w-20).
+      Aturan ini akan menimpa (override) state dari JavaScript.
+    */
+    aside.w-20 #tutorSubMenu {
+        max-height: 0px !important;
+        margin-top: 0px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        overflow: hidden !important;
+    }
+</style>
+
 <aside id="sidebar"
     class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg
            flex flex-col p-4 z-[70]
@@ -32,7 +46,7 @@
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Dashboard
+                Beranda
             </span>
         </a>
 
@@ -43,31 +57,87 @@
 
             <img src="{{ asset('icons/study-room.svg') }}"
                  class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('study-room*') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
-                 alt="Study Room">
+                 alt="Ruang Belajar">
 
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Study Room
+                Ruang Belajar
             </span>
         </a>
 
         <!-- TUTOR -->
-        <a href="{{ route('tutor') }}"
-           class="group flex items-center px-3.5 py-3 rounded-xl transition-all
-           {{ request()->routeIs('tutor*') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
+        <div class="flex flex-col">
+            <button id="tutorMenuToggle"
+               class="group w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all
+               {{ request()->routeIs('tutor*', 'booking.index', 'booking.create') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50' }}">
 
-            <img src="{{ asset('icons/tutor.svg') }}"
-                 class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('tutor*') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
-                 alt="Tutor">
+                <div class="flex items-center">
+                    <img src="{{ asset('icons/tutor.svg') }}"
+                         class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('tutor*', 'booking.index', 'booking.create') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
+                         alt="Tutor">
 
-            <span class="sidebar-text ml-3
-                max-w-0 opacity-0 overflow-hidden
-                whitespace-nowrap transition-all duration-300">
-                Tutor
-            </span>
-        </a>
+                    <span class="sidebar-text ml-3
+                        max-w-0 opacity-0 overflow-hidden
+                        whitespace-nowrap transition-all duration-300">
+                        Tutor
+                    </span>
+                </div>
 
+                <svg id="tutorArrow" class="sidebar-text max-w-0 opacity-0 overflow-hidden w-4 h-4 transition-transform duration-300 {{ request()->routeIs('tutor*', 'booking.index', 'booking.create') ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+
+            <div id="tutorSubMenu"
+                 class="overflow-hidden transition-all duration-300 flex-col gap-1
+                 {{ request()->routeIs('tutor*', 'booking.index') ? 'flex max-h-40 mt-1' : 'flex max-h-0 mt-0' }}">
+
+                <a href="{{ route('tutor') }}"
+                   class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                   {{ request()->routeIs('tutor') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                    
+                    <div class="w-5 h-5 shrink-0"></div>
+
+                    <span class="sidebar-text ml-3 text-sm
+                        max-w-0 opacity-0 overflow-hidden
+                        whitespace-nowrap transition-all duration-300">
+                        Cari Tutor
+                    </span>
+                </a>
+
+                <a href="{{ route('booking.index') }}"
+                   class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                   {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                    
+                    <div class="w-5 h-5 shrink-0"></div>
+
+                    <span class="sidebar-text ml-3 text-sm
+                        max-w-0 opacity-0 overflow-hidden
+                        whitespace-nowrap transition-all duration-300">
+                        Booking Saya
+                    </span>
+                </a>
+
+                @auth
+                    @if(auth()->user()->role=='tutor')
+                    <a href="{{ route('tutor.dashboard') }}"
+                       class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                       {{ request()->routeIs('tutor.dashboard*') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                        
+                        <div class="w-5 h-5 shrink-0"></div>
+
+                        <span class="sidebar-text ml-3 text-sm
+                            max-w-0 opacity-0 overflow-hidden
+                            whitespace-nowrap transition-all duration-300">
+                            Dashboard Tutor
+                        </span>
+                    </a>
+                    @endif
+                @endauth
+            </div>
+        </div>
+    
         <!-- FORUM -->
         <a href="{{ route('forum') }}"
            class="group flex items-center px-3.5 py-3 rounded-xl transition-all
@@ -109,7 +179,7 @@
     <div id="profileWrapper" class="mt-auto relative">
 
         <div id="profileButton"
-            class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
+            class="flex items-center p-2 transition cursor-pointer">
 
             <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -132,18 +202,18 @@
         </div>
 
         <div id="dropdownMenu"
-             class="hidden absolute bottom-16 left-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 space-y-1 z-50">
+             class="hidden absolute bottom-14 left-2 w-48 bg-white rounded-2xl border-2 border-gray-100 p-2 space-y-1 z-50">
 
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                Profile
+                Profil
             </a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
                         class="w-full flex items-center gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition">
-                     Logout
+                    Keluar
                 </button>
             </form>
 
@@ -166,10 +236,35 @@
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300
                         font-semibold text-sm">
-                Login / Register
+                Masuk / Daftar
             </span>
         </a>
     </div>
     @endguest
 
 </aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('tutorMenuToggle');
+        const subMenu = document.getElementById('tutorSubMenu');
+        const arrow = document.getElementById('tutorArrow');
+
+        if(toggleBtn) {
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                
+                if(subMenu.classList.contains('max-h-0')) {
+                    // Cukup atur tinggi (height) saja, tidak perlu sentuh opacity
+                    subMenu.classList.remove('max-h-0', 'mt-0');
+                    subMenu.classList.add('max-h-40', 'mt-1');
+                    if(arrow) arrow.classList.add('rotate-180');
+                } else {
+                    subMenu.classList.add('max-h-0', 'mt-0');
+                    subMenu.classList.remove('max-h-40', 'mt-1');
+                    if(arrow) arrow.classList.remove('rotate-180');
+                }
+            });
+        }
+    });
+</script>

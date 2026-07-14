@@ -56,6 +56,8 @@ if (!window.countdownRunning) {
         }
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    if (daysEl && hoursEl && minutesEl && secondsEl) {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
 }

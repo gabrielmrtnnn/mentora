@@ -9,6 +9,11 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\TutorDashboardController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -26,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/skills', [ProfileController::class, 'updateSkills'])->name('profile.update-skills');
     
     // Study Room Routes
     Route::get('/study-room', [StudySessionController::class, 'index'])->name('study-room');
@@ -42,6 +48,7 @@ Route::middleware('auth')->group(function () {
     // Apply (harus login)
     Route::get('/tutor/apply', [TutorController::class, 'applyPage'])->name('tutor.apply.page');
     Route::post('/tutor/apply', [TutorController::class, 'apply'])->name('tutor.apply');
+    Route::get('/tutor/dashboard', [TutorDashboardController::class,'index'])->name('tutor.dashboard');
 
     // Admin lihat semua aplikasi
     Route::get('/admin/tutor-applications', [AdminController::class, 'applications'])
@@ -51,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])
         ->name('admin.approve');
 
+    Route::post('/admin/reject/{id}', [TutorController::class, 'reject'])
+    ->name('admin.reject');
     // Admin lihat report diskusi & balasan forum
     Route::get('/admin/reports', [AdminController::class, 'reports'])
         ->name('admin.reports');
@@ -75,6 +84,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/forum/like', [ForumController::class, 'toggleLike'])->name('forum.like');
     Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
     Route::post('/forum/{id}/reply', [ForumController::class, 'storeReply'])->name('forum.reply');
+
+    // Chat
+    Route::get('/chat', [ChatController::class,'index'])->name('chat.index');
+    Route::get('/chat/start/{tutor}', [ChatController::class,'start'])->name('chat.start');
+    Route::get('/chat/{conversation}', [ChatController::class,'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class,'send'])->name('chat.send');
+    Route::get('/chat/{conversation}/messages', [ChatController::class,'messages'])->name('chat.messages');
+
+    // Booking Session
+    Route::get('/booking', [BookingController::class,'index'])->name('booking.index');
+    Route::get('/booking/create/{tutor}', [BookingController::class,'create'])->name('booking.create');
+    Route::post('/booking/store/{tutor}', [BookingController::class,'store'])->name('booking.store');
+    Route::patch('/booking/{booking}/approve', [BookingController::class,'approve'])->name('booking.approve');
+    Route::patch('/booking/{booking}/reject', [BookingController::class,'reject'])->name('booking.reject');
+
+    Route::get('/meeting/{booking}', [MeetingController::class,'index'])->name('meeting');
+
+    Route::post('/review/', [ReviewController::class,'store'])->name('review.store');
     Route::delete('/forum/thread/{id}', [ForumController::class, 'destroyThread'])->name('forum.thread.destroy');
     Route::delete('/forum/reply/{id}', [ForumController::class, 'destroyReply'])->name('forum.reply.destroy');
     Route::post('/forum/report', [ForumController::class, 'storeReport'])->name('forum.report');

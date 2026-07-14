@@ -88,7 +88,7 @@
             <p class="text-sm text-gray-500 mb-3">Sudah punya akun?</p>
             <a href="{{ route('login') }}"
                class="block w-full text-center border border-primary text-primary py-2.5 rounded-lg font-bold hover:bg-primary hover:text-white transition active:scale-[0.98]">
-                Login di sini
+                Masuk di sini
             </a>
         </div>
 

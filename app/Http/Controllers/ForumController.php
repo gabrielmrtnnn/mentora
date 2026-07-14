@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ForumReply;
 use App\Models\ForumReport;
 use App\Models\ForumThread;
+use App\Services\StudyStreakService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,7 @@ class ForumController extends Controller
                 ]);
             }
         }
+        StudyStreakService::record(auth()->id());
 
         return redirect()->route('forum')->with('success', 'Diskusi kamu berhasil diposting!');
     }
@@ -75,6 +77,8 @@ class ForumController extends Controller
             'user_id' => Auth::id(),
             'body' => $validated['body'],
         ]);
+
+        StudyStreakService::record(auth()->id());
 
         return redirect()->route('forum.show', $thread->id)->with('success', 'Balasan kamu berhasil dikirim!');
     }

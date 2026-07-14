@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StudyGroup;
 use App\Models\StudySession;
+use App\Services\StudyStreakService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class StudySessionController extends Controller
         // 2. Ambil Daftar Room Study asli dari Database
         $studyGroups = StudyGroup::with('creator')->latest()->get();
 
-        return view('study-room', compact('todayMinutes', 'todaySessions', 'studyGroups'));
+        return view('study-room.index', compact('todayMinutes', 'todaySessions', 'studyGroups'));
     }
 
     // Fungsi untuk membuat Room baru
@@ -71,14 +72,19 @@ class StudySessionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'duration' => ['required', 'integer', 'min:1'],
+            'duration' => ['required','integer','min:1'],
+            'category' => ['required','in:TPS,Numerasi,Literasi'],
         ]);
 
         $session = StudySession::create([
             'user_id' => Auth::id(),
             'duration' => $validated['duration'],
-            'category' => 'focus', 
+            'category' => $validated['category'],
         ]);
+
+        if ($validated['duration'] >= 10) {
+            StudyStreakService::record(Auth::id());
+        }
 
         return response()->json([
             'message' => 'Session saved successfully',
