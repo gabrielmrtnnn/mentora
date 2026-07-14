@@ -68,6 +68,18 @@ class AdminController extends Controller
         return back();
     }
 
+    public function reject($id)
+    {
+        DB::table('tutor_applications')
+            ->where('id', $id)
+            ->update([
+                'status' => 'rejected'
+            ]);
+
+        return back()->with(
+            'success_message',
+            'Pengajuan tutor berhasil ditolak.'
+        );
     /**
      * Daftar report diskusi (thread) & balasan (reply) yang masuk dari user.
      * Dikelompokkan per konten yang dilaporkan, biar kalau satu thread

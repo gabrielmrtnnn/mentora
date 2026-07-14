@@ -4,20 +4,28 @@
 
 <div class="max-w-6xl">
 
-<!-- HEADER -->
-<div class="mb-8">
-    <p class="text-sm font-semibold text-blue-600 mb-2">
-        Mentora • Tutor Program
-    </p>
+    <!-- BACK -->
+    <div class="mb-2">
+        <a href="{{ route('tutor') }}"
+           class="text-primary text-sm font-medium hover:underline">
+            ← Kembali ke daftar tutor
+        </a>
+    </div>
 
-    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
-        Jadi Tutor
-    </h1>
+    <!-- HEADER -->
+    <div class="mb-8">
+        <p class="text-sm font-semibold text-blue-600 mb-2">
+            Mentora • Tutor Program
+        </p>
 
-    <p class="text-gray-500 mt-2">
-        Bagikan pengalaman dan bantu siswa lain mencapai target SNBT mereka.
-    </p>
-</div>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
+            Jadi Tutor
+        </h1>
+
+        <p class="text-gray-500 mt-2">
+            Bagikan pengalaman dan bantu siswa lain mencapai target SNBT mereka.
+        </p>
+    </div>
 
 @auth
 
@@ -118,6 +126,16 @@
             </button>
 
         </div>
+
+        @if ($errors->any())
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl mt-2 mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>• {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
     </form>
 

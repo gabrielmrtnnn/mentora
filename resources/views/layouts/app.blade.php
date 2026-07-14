@@ -42,6 +42,7 @@
 
         </div>
 
+
         <div id="focusOverlayRoot"></div>
         @if(request()->routeIs('study-room*'))
             @include('study-room.solo.focus-overlay')
@@ -159,6 +160,18 @@
         });
         </script>
 
-        @stack('scripts')
+        @auth
+            @if (!request()->routeIs('chat.*'))
+                <div class="fixed bottom-6 right-6 z-50">
+                    <a href="{{ route('chat.index') }}"
+                    class="w-16 h-16 rounded-full bg-primary text-white shadow-xl
+                            hover:scale-110 transition flex items-center justify-center">
+                        <img src="{{ asset('icons/chat.svg') }}"
+                            class="w-8 h-8"
+                            alt="Chat">
+                    </a>
+                </div>
+            @endif
+        @endauth
     </body>
 </html>

@@ -4,6 +4,14 @@
 
 <div class="max-w-6xl ml-2">
 <!-- HEADER -->
+    <!-- BACK -->
+    <div class="mb-2">
+        <a href="{{ route('tutor') }}"
+           class="text-primary text-sm font-medium hover:underline">
+            ← Kembali ke daftar tutor
+        </a>
+    </div>
+
     <div class="mb-8">
         <p class="text-sm font-semibold text-blue-600 mb-2">
             Mentora • Admin Panel
@@ -105,6 +113,16 @@
                         class="text-primary font-semibold hover:underline">
                         📄 Lihat Hasil UTBK
                     </a>
+
+                    <form action="{{ route('admin.reject', $app->id) }}" method="POST">
+                        @csrf
+
+                        <button
+                            onclick="return confirm('Yakin ingin menolak pengajuan ini?')"
+                            class="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 transition">
+                            Reject
+                        </button>
+                    </form>
 
                     <form action="{{ route('admin.approve', $app->id) }}" method="POST">
                         @csrf
