@@ -32,7 +32,7 @@
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Dashboard
+                Beranda
             </span>
         </a>
 
@@ -109,7 +109,7 @@
     <div id="profileWrapper" class="mt-auto relative">
 
         <div id="profileButton"
-            class="flex items-center bg-gray-50 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer border border-gray-100/80">
+            class="flex items-center p-2 transition cursor-pointer">
 
             <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -136,14 +136,14 @@
 
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                Profile
+                Profil
             </a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
                         class="w-full flex items-center gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition">
-                     Logout
+                    Keluar
                 </button>
             </form>
 
@@ -166,7 +166,7 @@
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300
                         font-semibold text-sm">
-                Login / Register
+                Masuk / Daftar
             </span>
         </a>
     </div>

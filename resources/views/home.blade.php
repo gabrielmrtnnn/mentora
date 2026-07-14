@@ -243,7 +243,7 @@
             </div>
 
             <div class="bg-primary text-white p-6 rounded-2xl text-center">
-                <p class="text-lg">🔥 Study Streak</p>
+                <p class="text-lg">🔥 Streak Belajar</p>
                 <p class="text-4xl font-bold">
                     {{ $streak }} Hari
                 </p>

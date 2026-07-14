@@ -13,7 +13,7 @@
     <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
 
         <h1 class="text-2xl font-bold mb-2 text-center text-gray-900">
-            Login Mentora 🚀
+            Masuk Mentora 🚀
         </h1>
         <p class="text-sm text-gray-500 text-center mb-6">
             Masuk untuk lanjut belajar SNBT
@@ -53,7 +53,7 @@
             <div class="flex items-center justify-between text-sm">
                 <label class="flex items-center gap-2 cursor-pointer text-gray-600">
                     <input type="checkbox" name="remember" class="rounded border-gray-300 text-primary focus:ring-primary">
-                    Remember me
+                    Ingat saya
                 </label>
 
                 <a href="{{ route('password.request') }}" class="text-primary font-semibold hover:underline">
@@ -63,7 +63,7 @@
 
             <button type="submit"
                 class="w-full bg-primary text-white py-2.5 rounded-lg font-bold hover:opacity-90 transition shadow-md shadow-primary/20 active:scale-[0.98]">
-                Login
+                Masuk
             </button>
         </form>
 
