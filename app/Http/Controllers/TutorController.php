@@ -27,13 +27,19 @@ class TutorController extends Controller
 
     public function apply(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'utbk_file' => 'required|file|mimes:pdf,jpg,png|max:2048',
-            'reason' => 'required'
+            'reason' => 'required',
+        ], [
+            'utbk_file.required' => 'File UTBK wajib diunggah.',
+            'utbk_file.file' => 'File yang diunggah tidak valid.',
+            'utbk_file.mimes' => 'File harus berupa PDF, JPG, JPEG, atau PNG.',
+            'utbk_file.max' => 'Ukuran file maksimal 2 MB.',
+            'reason.required' => 'Alasan menjadi tutor wajib diisi.'
         ]);
-        
-        if (DB::table('tutor_applications')->where('user_id', Auth::id())->exists()) {
-            return back()->with('error', 'Kamu sudah pernah apply!');
+
+        if(!$request->has('tps') && !$request->has('literasi') && !$request->has('numerasi')) {
+            return back()->with('error', 'Pilih minimal satu bidang yang ingin diajarkan!');
         }
 
         // upload file
@@ -41,16 +47,16 @@ class TutorController extends Controller
 
         DB::table('tutor_applications')->insert([
             'user_id' => Auth::id(),
-            'reason' => $request->reason,
+            'reason' => $validated['reason'],
             'utbk_file' => $path,
-            'tps' => $request->has('tps'),
-            'literasi' => $request->has('literasi'),
-            'numerasi' => $request->has('numerasi'),
+            'tps' => $request->has('tps') ? 1 : 0,
+            'literasi' => $request->has('literasi') ? 1 : 0,
+            'numerasi' => $request->has('numerasi') ? 1 : 0,
             'status' => 'pending',
             'created_at' => now(),
         ]);
 
-        return redirect()->route('tutor')->with('success', 'Apply berhasil, tunggu approval!');
+        return redirect()->route('tutor')->with('success_message', 'Apply berhasil, tunggu approval!');
     }
 
     public function show($id)

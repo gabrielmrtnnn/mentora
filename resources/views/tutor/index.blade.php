@@ -14,7 +14,7 @@
     @endauth
 
     <!-- HERO -->
-    <div class="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-8">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
 
         <div>
             <p class="text-sm font-semibold text-blue-600 mb-2">
@@ -30,38 +30,109 @@
             </p>
         </div>
 
-        @auth
-            @if(auth()->user()->role === 'user')
-                <a href="{{ route('tutor.apply.page') }}"
-                    class="bg-primary text-white font-semibold px-5 py-3 rounded-xl hover:opacity-90 transition">
-                    Apply as Tutor
+        {{-- Action Button --}}
+        <div class="flex justify-end">
+
+            @auth
+
+                @if(auth()->user()->role === 'user')
+
+                    <a href="{{ route('tutor.apply.page') }}"
+                    class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
+                        Apply as Tutor
+                    </a>
+
+                @elseif(auth()->user()->role === 'tutor')
+
+                    <div
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-green-50 text-green-700 font-semibold border border-green-200">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Kamu sudah menjadi Tutor
+                    </div>
+
+                @elseif(auth()->user()->role === 'admin')
+
+                    <a href="{{ route('admin.tutor') }}"
+                    class="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:bg-red-600 transition">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 17v-2a4 4 0 014-4h6"/>
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 7h6v6"/>
+                        </svg>
+                        Tutor Applications
+                    </a>
+                @endif
+            @else
+                <a href="{{ route('login') }}"
+                class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg transition">
+                    Login
                 </a>
-
-            @elseif(auth()->user()->role === 'tutor')
-
-                <span class="bg-green-100 text-green-700 px-5 py-3 rounded-xl font-semibold">
-                    🎓 Kamu sudah tutor
-                </span>
-
-            @elseif(auth()->user()->role === 'admin')
-
-                <a href="{{ route('admin.tutor') }}"
-                    class="bg-red-500 text-white font-semibold px-5 py-3 rounded-xl hover:bg-red-600 transition">
-                    Tutor Applications
-                </a>
-
-            @endif
-        @else
-
-            <a href="{{ route('login') }}"
-                class="bg-primary text-white font-semibold px-5 py-3 rounded-xl">
-                Login
-            </a>
-
-        @endauth
-
+            @endauth
+        </div>
     </div>
 
+    @if (session('success_message'))
+        <div
+            class="flex items-center p-4 mb-4 text-sm text-green-700 bg-green-100 border-l-4 border-green-500 rounded-xl"
+            role="alert">
+
+            <svg
+                class="w-5 h-5 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+
+            <div class="ml-3 font-medium">
+                {{ session('success_message') }}
+            </div>
+
+            <button
+                type="button"
+                onclick="this.parentElement.remove()"
+                class="ml-auto text-green-700 hover:text-green-900">
+
+                <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
+                </svg>
+
+            </button>
+
+        </div>
+    @endif
+            
     
     <!-- SEARCH -->
     <div class="mb-5">
@@ -164,23 +235,22 @@
 
                 <!-- BIO -->
                 <p class="text-xs text-gray-400 mb-4 line-clamp-3">
+                    @if ($tutor->bio)
                     {{ $tutor->bio }}
+                    @else
+                    No Bio Yet
+                    @endif
                 </p>
 
                 <!-- BUTTONS -->
                 <div class="flex gap-2">
 
-                    <a
-                        href="{{ route('tutor.show', $tutor->id) }}"
-                        class="w-full block text-center border border-primary text-primary font-semibold py-2 rounded-xl hover:bg-primary hover:text-white transition"
-                    >
-                    Lihat Profil
+                    <a href="{{ route('tutor.show', $tutor->id) }}"
+                        class="w-full block text-center border border-primary text-primary font-semibold py-2 rounded-xl hover:bg-blue-50 transition">
+                        Lihat Profil
                     </a>
 
-                    <a
-                        href="{{ route('tutor.show', $tutor->id) }}"
-                        class="w-full block text-center bg-primary text-white font-semibold py-2 rounded-xl hover:opacity-90 transition"
-                    >
+                    <a href="{{ route('booking.create', $tutor->id) }}" class="w-full block text-center bg-primary text-white font-semibold py-2 rounded-xl hover:opacity-90 transition">
                         Book Sekarang
                     </a>
 
@@ -191,13 +261,7 @@
         @empty
 
             <div class="col-span-3">
-
                 <div class="bg-white rounded-2xl shadow p-10 text-center">
-
-                    <div class="text-5xl mb-4">
-                        👨‍🏫
-                    </div>
-
                     <h3 class="font-bold text-xl mb-2">
                         Belum Ada Tutor
                     </h3>
@@ -205,15 +269,10 @@
                     <p class="text-gray-500">
                         Tutor yang telah disetujui akan muncul di sini.
                     </p>
-
                 </div>
-
             </div>
-
         @endforelse
-
     </div>
-
 </div>
 
 @endsection

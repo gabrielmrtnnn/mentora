@@ -9,6 +9,11 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\TutorDashboardController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -42,6 +47,7 @@ Route::middleware('auth')->group(function () {
     // Apply (harus login)
     Route::get('/tutor/apply', [TutorController::class, 'applyPage'])->name('tutor.apply.page');
     Route::post('/tutor/apply', [TutorController::class, 'apply'])->name('tutor.apply');
+    Route::get('/tutor/dashboard', [TutorDashboardController::class,'index'])->name('tutor.dashboard');
 
     // Admin lihat semua aplikasi
     Route::get('/admin/tutor-applications', [AdminController::class, 'applications'])
@@ -50,6 +56,9 @@ Route::middleware('auth')->group(function () {
     // Approve tutor
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])
         ->name('admin.approve');
+
+    Route::post('/admin/reject/{id}', [TutorController::class, 'reject'])
+    ->name('admin.reject');
 
     Route::get('/tutor/{id}', [TutorController::class, 'show'])
         ->name('tutor.show');
@@ -63,6 +72,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/forum/like', [ForumController::class, 'toggleLike'])->name('forum.like');
     Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
     Route::post('/forum/{id}/reply', [ForumController::class, 'storeReply'])->name('forum.reply');
+
+    // Chat
+    Route::get('/chat', [ChatController::class,'index'])->name('chat.index');
+    Route::get('/chat/start/{tutor}', [ChatController::class,'start'])->name('chat.start');
+    Route::get('/chat/{conversation}', [ChatController::class,'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class,'send'])->name('chat.send');
+    Route::get('/chat/{conversation}/messages', [ChatController::class,'messages'])->name('chat.messages');
+
+    // Booking Session
+    Route::get('/booking', [BookingController::class,'index'])->name('booking.index');
+    Route::get('/booking/create/{tutor}', [BookingController::class,'create'])->name('booking.create');
+    Route::post('/booking/store/{tutor}', [BookingController::class,'store'])->name('booking.store');
+    Route::patch('/booking/{booking}/approve', [BookingController::class,'approve'])->name('booking.approve');
+    Route::patch('/booking/{booking}/reject', [BookingController::class,'reject'])->name('booking.reject');
+
+    Route::get('/meeting/{booking}', [MeetingController::class,'index'])->name('meeting');
+
+    Route::post('/review/', [ReviewController::class,'store'])->name('review.store');
 });
 
 require __DIR__.'/auth.php';
