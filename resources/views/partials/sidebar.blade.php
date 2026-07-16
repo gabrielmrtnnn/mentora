@@ -106,19 +106,21 @@
                                 Cari Tutor
                             </span>
                         </a>
-        
-                        <a href="{{ route('booking.index') }}"
-                        class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
-                        {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
-                            
-                            <div class="w-5 h-5 shrink-0"></div>
-        
-                            <span class="sidebar-text ml-3 text-sm
-                                max-w-0 opacity-0 overflow-hidden
-                                whitespace-nowrap transition-all duration-300">
-                                Booking Saya
-                            </span>
-                        </a>
+                        
+                        @if (auth()->user()->role != 'admin')
+                            <a href="{{ route('booking.index') }}"
+                            class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                            {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                                
+                                <div class="w-5 h-5 shrink-0"></div>
+            
+                                <span class="sidebar-text ml-3 text-sm
+                                    max-w-0 opacity-0 overflow-hidden
+                                    whitespace-nowrap transition-all duration-300">
+                                    Booking Saya
+                                </span>
+                            </a>
+                        @endif
                     @endif
 
                 @auth
@@ -133,6 +135,21 @@
                             max-w-0 opacity-0 overflow-hidden
                             whitespace-nowrap transition-all duration-300">
                             Dashboard Tutor
+                        </span>
+                    </a>
+                    @endif
+
+                    @if (auth()->user()->role=='admin')
+                        <a href="{{ route('admin.tutor') }}"
+                       class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                       {{ request()->routeIs('admin.tutor-applications') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                        
+                        <div class="w-5 h-5 shrink-0"></div>
+
+                        <span class="sidebar-text ml-3 text-sm
+                            max-w-0 opacity-0 overflow-hidden
+                            whitespace-nowrap transition-all duration-300">
+                            Tutor Applications
                         </span>
                     </a>
                     @endif
