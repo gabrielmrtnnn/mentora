@@ -9,7 +9,7 @@
 
             <button id="modeDeep50"
                 class="mode-btn px-4 sm:px-5 py-3 rounded-2xl text-sm font-bold transition-all duration-200 border border-transparent">
-                Deep 50/10
+                Intensif 50/10
             </button>
         </div>
 
