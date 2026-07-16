@@ -9,13 +9,13 @@
 
         <div>
             <p class="text-blue-100 text-xs font-semibold uppercase tracking-wide">
-                Sesi Kelompok Berjalan
+                {{ __('Sesi Kelompok Berjalan') }}
             </p>
             <p id="groupTimerDisplay" class="text-4xl font-extrabold mt-1">
                 00:00
             </p>
             <p id="groupTimerCategoryLabel" class="text-sm text-blue-100 mt-1">
-                Kategori: TPS
+                {{ __('Kategori') }}: TPS
             </p>
         </div>
 
@@ -27,11 +27,11 @@
 
         <div>
             <h3 class="text-2xl font-bold text-gray-900">
-                Daftar Kelompok Belajar
+                {{ __('Daftar Kelompok Belajar') }}
             </h3>
 
             <p class="text-gray-500 text-sm">
-                Pilih ruangan belajar bareng mentee lain.
+                {{ __('Pilih ruangan belajar bareng mentee lain.') }}
             </p>
         </div>
 
@@ -39,7 +39,7 @@
             @click="openCreateModal = true"
             class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-200 active:scale-95 transition">
 
-            + Buat Ruangan Baru
+            + {{ __('Buat Ruangan Baru') }}
 
         </button>
 

@@ -38,6 +38,6 @@ class ForumReport extends Model
 
     public function getReasonLabelAttribute(): string
     {
-        return self::REASONS[$this->reason] ?? ucfirst($this->reason);
+        return __(self::REASONS[$this->reason] ?? ucfirst($this->reason));
     }
 }

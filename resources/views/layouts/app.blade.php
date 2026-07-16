@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="{{ app()->getLocale() }}" class="h-full">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="app-locale" content="{{ app()->getLocale() }}">
         <title>Mentora</title>
+
+        <script>
+            // Dipakai widget JS (mis. timer study room) buat nerjemahin teks yang
+            // di-generate/di-update lewat JS, bukan cuma render Blade pertama kali.
+            // Sumbernya sama persis dengan lang/en.json biar gak dobel maintain.
+            window.__LOCALE__ = @json(app()->getLocale());
+            window.__I18N__ = @json(app()->getLocale() === 'en' ? json_decode(file_get_contents(lang_path('en.json')), true) : []);
+            window.trans = function (text) {
+                return (window.__I18N__ && window.__I18N__[text]) || text;
+            };
+        </script>
 
         <script src="https://meet.jit.si/external_api.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -27,7 +39,7 @@
 
             <button id="sidebarOpenBtn"
                 type="button"
-                aria-label="Buka menu"
+                aria-label="{{ __('Buka menu') }}"
                 class="lg:hidden fixed top-4 left-4 z-[75] p-2.5 bg-white rounded-xl shadow-md text-gray-600 hover:bg-gray-50 transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
@@ -174,5 +186,7 @@
                 </div>
             @endif
         @endauth
+
+        @stack('scripts')
     </body>
 </html>

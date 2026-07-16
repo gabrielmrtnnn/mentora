@@ -7,7 +7,7 @@
     <div class="mb-8">
         <a href="{{ route('booking.index') }}"
            class="text-primary font-semibold hover:underline">
-            ← Kembali ke My Booking
+            ← {{ __('Kembali ke My Booking') }}
         </a>
     </div>
 
@@ -25,7 +25,7 @@
                 </h2>
 
                 <p class="text-center text-gray-500">
-                    Tutor Mentora
+                    {{ __('Tutor Mentora') }}
                 </p>
 
                 <div class="mt-6 flex justify-center">
@@ -65,13 +65,13 @@
         <div class="lg:col-span-2">
             <div class="bg-white rounded-3xl shadow border p-8">
                 <h1 class="text-3xl font-bold mb-8">
-                    Booking Detail
+                    {{ __('Booking Detail') }}
                 </h1>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-gray-50 rounded-2xl p-5">
                         <p class="text-gray-500 text-sm">
-                            Tanggal
+                            {{ __('Tanggal') }}
                         </p>
                         <h2 class="font-bold text-lg mt-2">
                             {{ \Carbon\Carbon::parse($booking->session_date)->format('d F Y') }}
@@ -80,7 +80,7 @@
 
                     <div class="bg-gray-50 rounded-2xl p-5">
                         <p class="text-gray-500 text-sm">
-                            Jam
+                            {{ __('Jam') }}
                         </p>
 
                         <h2 class="font-bold text-lg mt-2">
@@ -90,17 +90,17 @@
 
                     <div class="bg-gray-50 rounded-2xl p-5">
                         <p class="text-gray-500 text-sm">
-                            Durasi
+                            {{ __('Durasi') }}
                         </p>
 
                         <h2 class="font-bold text-lg mt-2">
-                            {{ $booking->duration }} menit
+                            {{ $booking->duration }} {{ __('menit') }}
                         </h2>
                     </div>
 
                     <div class="bg-gray-50 rounded-2xl p-5">
                         <p class="text-gray-500 text-sm">
-                            Status
+                            {{ __('Status') }}
                         </p>
 
                         <h2 class="font-bold text-lg mt-2 capitalize">
@@ -111,18 +111,18 @@
 
                 <div class="mt-8">
                     <h2 class="font-bold text-lg mb-3">
-                        Catatan
+                        {{ __('Catatan') }}
                     </h2>
 
                     <div class="bg-gray-50 rounded-2xl p-5">
-                        {{ $booking->note ?: 'Tidak ada catatan.' }}
+                        {{ $booking->note ?: __('Tidak ada catatan.') }}
                     </div>
                 </div>
 
                 <div class="mt-10 flex gap-4">
                     <a href="{{ route('chat.start',$booking->tutor->user->id) }}"
                         class="px-6 py-3 rounded-xl border border-primary text-primary font-semibold">
-                        Chat Tutor
+                        {{ __('Chat Tutor') }}
                     </a>
 
                     @if($booking->status=='confirmed')

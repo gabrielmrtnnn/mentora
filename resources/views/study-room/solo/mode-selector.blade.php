@@ -15,7 +15,7 @@
 
         <button id="focusModeBtn"
             class="w-full sm:w-auto px-4 py-3 rounded-2xl bg-gray-100 text-gray-700 text-sm font-bold hover:bg-gray-200 transition-all duration-200">
-            Mode Fokus
+            {{ __('Mode Fokus') }}
         </button>
 
     </div>

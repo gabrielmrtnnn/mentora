@@ -6,7 +6,6 @@ use App\Models\ForumReply;
 use App\Models\ForumReport;
 use App\Models\ForumThread;
 use App\Services\StudyStreakService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -15,8 +14,6 @@ class ForumController extends Controller
 {
     public function index()
     {
-        Carbon::setLocale('id');
-
         $threads = ForumThread::with(['user', 'images'])
             ->withCount(['replies', 'likes'])
             ->latest()
@@ -51,13 +48,11 @@ class ForumController extends Controller
         }
         StudyStreakService::record(auth()->id());
 
-        return redirect()->route('forum')->with('success', 'Diskusi kamu berhasil diposting!');
+        return redirect()->route('forum')->with('success', __('Diskusi kamu berhasil diposting!'));
     }
 
     public function show($id)
     {
-        Carbon::setLocale('id');
-
         $thread = ForumThread::with(['user', 'likes', 'images', 'replies.user', 'replies.likes'])
             ->findOrFail($id);
 
@@ -80,7 +75,7 @@ class ForumController extends Controller
 
         StudyStreakService::record(auth()->id());
 
-        return redirect()->route('forum.show', $thread->id)->with('success', 'Balasan kamu berhasil dikirim!');
+        return redirect()->route('forum.show', $thread->id)->with('success', __('Balasan kamu berhasil dikirim!'));
     }
 
     /**
@@ -131,7 +126,7 @@ class ForumController extends Controller
 
         $thread->delete();
 
-        return redirect()->route('forum')->with('success', 'Diskusi berhasil dihapus.');
+        return redirect()->route('forum')->with('success', __('Diskusi berhasil dihapus.'));
     }
 
     /**
@@ -151,7 +146,7 @@ class ForumController extends Controller
 
         $reply->delete();
 
-        return redirect()->route('forum.show', $threadId)->with('success', 'Balasan berhasil dihapus.');
+        return redirect()->route('forum.show', $threadId)->with('success', __('Balasan berhasil dihapus.'));
     }
 
     /**
@@ -174,7 +169,7 @@ class ForumController extends Controller
         abort_if($model->user_id === Auth::id(), 422, 'Kamu tidak bisa melaporkan konten milikmu sendiri.');
 
         if ($model->isReportedBy(Auth::id())) {
-            return back()->with('error', 'Kamu sudah pernah melaporkan konten ini sebelumnya.');
+            return back()->with('error', __('Kamu sudah pernah melaporkan konten ini sebelumnya.'));
         }
 
         $model->reports()->create([
@@ -183,6 +178,6 @@ class ForumController extends Controller
             'description' => $validated['description'] ?? null,
         ]);
 
-        return back()->with('success', 'Laporan kamu sudah dikirim, terima kasih sudah bantu jaga komunitas Mentora. 🙏');
+        return back()->with('success', __('Laporan kamu sudah dikirim, terima kasih sudah bantu jaga komunitas Mentora. 🙏'));
     }
 }

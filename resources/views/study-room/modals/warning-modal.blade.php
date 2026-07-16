@@ -11,11 +11,11 @@
         </div>
 
         <h3 id="warningModalTitle" class="text-xl font-bold text-gray-900 mb-2">
-            Sesi Belajar Masih Berjalan
+            {{ __('Sesi Belajar Masih Berjalan') }}
         </h3>
 
         <p id="warningModalDescription" class="text-sm text-gray-500 mb-8">
-            Kalau kamu pindah halaman sekarang, timer akan berhenti dan progres sesi ini bisa hilang. Yakin mau lanjut?
+            {{ __('Kalau kamu pindah halaman sekarang, timer akan berhenti dan progres sesi ini bisa hilang. Yakin mau lanjut?') }}
         </p>
 
         <div class="flex gap-3">
@@ -23,13 +23,13 @@
             <button id="cancelWarningBtn"
                 type="button"
                 class="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-50 rounded-2xl transition">
-                Tetap di Sini
+                {{ __('Tetap di Sini') }}
             </button>
 
             <button id="confirmWarningBtn"
                 type="button"
                 class="flex-1 py-3 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 shadow-lg shadow-red-200 transition">
-                Pindah Halaman
+                {{ __('Pindah Halaman') }}
             </button>
 
         </div>

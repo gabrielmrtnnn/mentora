@@ -66,7 +66,7 @@ class StudySessionController extends Controller
             ]);
         }
 
-        return back()->with('error', 'Kamu tidak punya akses menghapus room ini.');
+        return back()->with('error', __('Kamu tidak punya akses menghapus room ini.'));
     }
 
     public function store(Request $request)

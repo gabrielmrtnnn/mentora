@@ -46,7 +46,7 @@
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Beranda
+                {{ __('Beranda') }}
             </span>
         </a>
 
@@ -57,12 +57,12 @@
 
             <img src="{{ asset('icons/study-room.svg') }}"
                  class="w-5 h-5 shrink-0 object-contain transition-all {{ request()->routeIs('study-room*') ? '' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100' }}"
-                 alt="Ruang Belajar">
+                 alt="{{ __('Ruang Belajar') }}">
 
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Ruang Belajar
+                {{ __('Ruang Belajar') }}
             </span>
         </a>
 
@@ -102,7 +102,7 @@
                     <span class="sidebar-text ml-3 text-sm
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300">
-                        Cari Tutor
+                        {{ __('Cari Tutor') }}
                     </span>
                 </a>
 
@@ -115,7 +115,7 @@
                     <span class="sidebar-text ml-3 text-sm
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300">
-                        Booking Saya
+                        {{ __('Booking Saya') }}
                     </span>
                 </a>
 
@@ -130,7 +130,7 @@
                         <span class="sidebar-text ml-3 text-sm
                             max-w-0 opacity-0 overflow-hidden
                             whitespace-nowrap transition-all duration-300">
-                            Dashboard Tutor
+                            {{ __('Dashboard Tutor') }}
                         </span>
                     </a>
                     @endif
@@ -166,13 +166,33 @@
                 <span class="sidebar-text ml-3
                     max-w-0 opacity-0 overflow-hidden
                     whitespace-nowrap transition-all duration-300">
-                    Report Forum
+                    {{ __('Report Forum') }}
                 </span>
             </a>
         @endif
         @endauth
 
     </nav>
+
+    <!-- LANGUAGE SWITCH -->
+    <div class="flex items-center px-3.5 py-3 rounded-xl text-gray-500 mt-2">
+        <span class="w-5 h-5 shrink-0 flex items-center justify-center text-base">🌐</span>
+
+        <div class="sidebar-text ml-3
+            max-w-0 opacity-0 overflow-hidden
+            whitespace-nowrap transition-all duration-300
+            flex items-center gap-1.5 text-sm font-semibold">
+            <a href="{{ route('language.switch', 'id') }}"
+               class="{{ app()->getLocale() === 'id' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                ID
+            </a>
+            <span class="text-gray-300">|</span>
+            <a href="{{ route('language.switch', 'en') }}"
+               class="{{ app()->getLocale() === 'en' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                EN
+            </a>
+        </div>
+    </div>
 
     <!-- USER PROFILE -->
     @auth
@@ -206,14 +226,14 @@
 
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                Profil
+                {{ __('Profil') }}
             </a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
                         class="w-full flex items-center gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition">
-                    Keluar
+                    {{ __('Keluar') }}
                 </button>
             </form>
 
@@ -236,7 +256,7 @@
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300
                         font-semibold text-sm">
-                Masuk / Daftar
+                {{ __('Masuk / Daftar') }}
             </span>
         </a>
     </div>

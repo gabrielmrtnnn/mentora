@@ -48,7 +48,7 @@ class ForumThread extends Model
 
     public function getCategoryLabelAttribute(): string
     {
-        return self::CATEGORIES[$this->category]['label'] ?? ucwords($this->category);
+        return __(self::CATEGORIES[$this->category]['label'] ?? ucwords($this->category));
     }
 
     public function getCategoryColorAttribute(): string

@@ -2,7 +2,7 @@
 
     <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
         <p class="text-sm text-gray-500">
-            Mode Aktif
+            {{ __('Mode Aktif') }}
         </p>
 
         <p id="activeModeText"
@@ -13,23 +13,23 @@
 
     <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
         <p class="text-sm text-gray-500">
-            Langkah Berikutnya
+            {{ __('Langkah Berikutnya') }}
         </p>
 
         <p id="nextBreakText"
             class="mt-2 text-lg font-bold text-gray-900">
-            Istirahat 5 Menit
+            {{ __('Istirahat 5 Menit') }}
         </p>
     </div>
 
     <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
         <p class="text-sm text-gray-500">
-            Status
+            {{ __('Status') }}
         </p>
 
         <p id="stateText"
             class="mt-2 text-lg font-bold text-gray-900">
-            Siap
+            {{ __('Siap') }}
         </p>
     </div>
 

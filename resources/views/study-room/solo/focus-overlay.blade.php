@@ -9,23 +9,23 @@
             <div>
                 <p id="focusOverlayType"
                     class="text-blue-100 text-sm font-semibold uppercase tracking-wide">
-                    Sesi Fokus
+                    {{ __('Sesi Fokus') }}
                 </p>
 
                 <h2 id="focusOverlayTitle"
                     class="mt-2 text-2xl md:text-3xl font-extrabold">
-                    Belajar 25 Menit
+                    {{ __('Belajar 25 Menit') }}
                 </h2>
 
                 <p id="focusOverlayStepCounter"
                     class="mt-1 text-blue-200 text-sm font-medium">
-                    Sesi 1 / 4
+                    {{ __('Sesi') }} 1 / 4
                 </p>
             </div>
 
             <button id="exitFocusModeBtn"
                 class="self-start sm:self-auto px-4 py-3 rounded-2xl bg-white/15 text-white text-sm font-bold hover:bg-white/20 transition">
-                Keluar Mode Fokus
+                {{ __('Keluar Mode Fokus') }}
             </button>
 
         </div>
@@ -67,7 +67,7 @@
 
                     <p id="focusOverlayStatusText"
                         class="mt-4 text-sm md:text-base text-blue-100">
-                        Siap
+                        {{ __('Siap') }}
                     </p>
 
                 </div>
@@ -78,25 +78,25 @@
 
                 <button id="focusOverlayStartBtn"
                     class="px-6 py-3 rounded-2xl bg-yellow-300 text-gray-900 font-extrabold hover:bg-yellow-200 transition active:scale-[0.98]">
-                    Mulai
+                    {{ __('Mulai') }}
                 </button>
 
                 <button id="focusOverlayPauseBtn"
                     class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-                    Jeda
+                    {{ __('Jeda') }}
                 </button>
 
                 <button id="focusOverlayResetBtn"
                     class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-                    Ulang
+                    {{ __('Ulang') }}
                 </button>
 
             </div>
 
             <p class="mt-8 text-blue-200/60 text-xs uppercase tracking-widest font-bold">
-                Selanjutnya:
+                {{ __('Selanjutnya:') }}
                 <span id="focusOverlayNextBreakText" class="text-white">
-                    Istirahat 5 Menit
+                    {{ __('Istirahat 5 Menit') }}
                 </span>
             </p>
 

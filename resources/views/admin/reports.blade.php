@@ -15,7 +15,7 @@
         </h1>
 
         <p class="text-gray-500 mt-2">
-            Diskusi dan balasan yang dilaporkan oleh pengguna.
+            {{ __('Diskusi dan balasan yang dilaporkan oleh pengguna.') }}
         </p>
     </div>
 
@@ -48,10 +48,10 @@
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <span class="px-2 py-0.5 {{ $isThread ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600' }} text-xs font-semibold rounded-full">
-                                {{ $isThread ? 'Diskusi' : 'Balasan' }}
+                                {{ $isThread ? __('Diskusi') : __('Balasan') }}
                             </span>
                             <span class="text-xs text-gray-400">
-                                oleh {{ $content->user->name }} • {{ $content->created_at->diffForHumans() }}
+                                {{ __('oleh') }} {{ $content->user->name }} • {{ $content->created_at->diffForHumans() }}
                             </span>
                         </div>
 
@@ -69,7 +69,7 @@
                 </div>
 
                 <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium shrink-0">
-                    {{ $group->count() }} laporan
+                    {{ trans_choice(':count laporan|:count laporan', $group->count(), ['count' => $group->count()]) }}
                 </span>
 
             </div>
@@ -97,12 +97,12 @@
                 @if($isThread)
                     <a href="{{ route('forum.show', $content->id) }}" target="_blank"
                         class="text-primary font-semibold hover:underline text-sm">
-                        🔗 Lihat Diskusi
+                        🔗 {{ __('Lihat Diskusi') }}
                     </a>
                 @else
                     <a href="{{ route('forum.show', $content->forum_thread_id) }}" target="_blank"
                         class="text-primary font-semibold hover:underline text-sm">
-                        🔗 Lihat di Thread
+                        🔗 {{ __('Lihat di Thread') }}
                     </a>
                 @endif
 
@@ -115,7 +115,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6L9 17l-5-5" />
                             </svg>
-                            Abaikan
+                            {{ __('Abaikan') }}
                         </button>
                     </form>
 
@@ -131,7 +131,7 @@
                                 <path d="M10 11v6" />
                                 <path d="M14 11v6" />
                             </svg>
-                            Hapus Konten
+                            {{ __('Hapus Konten') }}
                         </button>
                     </form>
 
@@ -147,11 +147,11 @@
             <div class="text-5xl mb-3">✅</div>
 
             <h3 class="font-bold text-lg mb-2">
-                Tidak Ada Report
+                {{ __('Tidak Ada Report') }}
             </h3>
 
             <p class="text-gray-500">
-                Belum ada diskusi atau balasan yang dilaporkan.
+                {{ __('Belum ada diskusi atau balasan yang dilaporkan.') }}
             </p>
         </div>
 
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showCancelButton: true,
                     reverseButtons: true,
                     confirmButtonText: options.confirmButtonText,
-                    cancelButtonText: 'Batal',
+                    cancelButtonText: trans('Batal'),
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
@@ -187,17 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmSubmit('.js-confirm-delete', {
         icon: 'warning',
-        title: 'Hapus konten ini?',
-        text: 'Aksi ini tidak bisa dibatalkan.',
-        confirmButtonText: 'Ya, hapus',
+        title: trans('Hapus konten ini?'),
+        text: trans('Aksi ini tidak bisa dibatalkan.'),
+        confirmButtonText: trans('Ya, hapus'),
         confirmButtonColor: '#ef4444',
     });
 
     confirmSubmit('.js-confirm-dismiss', {
         icon: 'question',
-        title: 'Abaikan laporan ini?',
-        text: 'Konten TIDAK akan dihapus.',
-        confirmButtonText: 'Ya, abaikan',
+        title: trans('Abaikan laporan ini?'),
+        text: trans('Konten TIDAK akan dihapus.'),
+        confirmButtonText: trans('Ya, abaikan'),
         confirmButtonColor: '#3b82f6',
     });
 

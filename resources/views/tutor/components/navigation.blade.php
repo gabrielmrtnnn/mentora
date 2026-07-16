@@ -12,7 +12,7 @@
             </h1>
 
             <p class="text-gray-500 mt-2">
-                Belajar bersama tutor terbaik Mentora.
+                {{ __('Belajar bersama tutor terbaik Mentora.') }}
             </p>
         </div>
 

@@ -50,7 +50,7 @@ class GoogleAuthController extends Controller
 
             dd($e->getMessage());
 
-            return redirect('/login')->with('error', 'Gagal login dengan Google.');
+            return redirect('/login')->with('error', __('Gagal login dengan Google.'));
         }
     }
 }

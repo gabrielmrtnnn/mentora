@@ -9,7 +9,7 @@
     <div class="mb-2">
         <a href="{{ route('tutor') }}"
            class="text-primary text-sm font-medium hover:underline">
-            ← Kembali ke daftar tutor
+            ← {{ __('Kembali ke daftar tutor') }}
         </a>
     </div>
 
@@ -29,7 +29,7 @@
                         {{ $tutor->user->name }}
                     </h2>
                     <p class="text-gray-500 font-medium">
-                        Tutor Mentora
+                        {{ __('Tutor Mentora') }}
                     </p>
                 </div>
 
@@ -72,7 +72,7 @@
                     Booking Session
                 </h1>
                 <p class="text-gray-500 mt-3 mb-10 text-lg">
-                    Pilih jadwal belajar yang sesuai bersama tutor pilihanmu.
+                    {{ __('Pilih jadwal belajar yang sesuai bersama tutor pilihanmu.') }}
                 </p>
 
                 <form action="{{ route('booking.store', $tutor) }}" method="POST" class="space-y-6">
@@ -80,7 +80,7 @@
 
                     <div class="group">
                         <label class="block font-bold text-gray-700 mb-3 group-focus-within:text-primary transition-colors">
-                            Tanggal Belajar
+                            {{ __('Tanggal Belajar') }}
                         </label>
                         <input type="date"
                             name="session_date"
@@ -95,7 +95,7 @@
 
                     <div class="group">
                         <label class="block font-bold text-gray-700 mb-3 group-focus-within:text-primary transition-colors">
-                            Jam Mulai
+                            {{ __('Jam Mulai') }}
                         </label>
                         <input type="time"
                             name="session_time"
@@ -109,7 +109,7 @@
 
                     <div>
                         <label class="block font-semibold mb-4">
-                            Durasi Sesi
+                            {{ __('Durasi Sesi') }}
                         </label>
 
                         <div class="grid grid-cols-3 gap-4">
@@ -134,7 +134,7 @@
                                             peer-checked:shadow-lg
                                             peer-checked:shadow-primary/20">
 
-                                        {{ $duration }} Menit
+                                        {{ $duration }} {{ __('Menit') }}
 
                                     </div>
 
@@ -148,18 +148,18 @@
 
                     <div class="group">
                         <label class="block font-bold text-gray-700 mb-3 group-focus-within:text-primary transition-colors">
-                            Catatan Khusus <span class="text-gray-400 font-normal ml-1">(Opsional)</span>
+                            {{ __('Catatan Khusus') }} <span class="text-gray-400 font-normal ml-1">({{ __('Opsional') }})</span>
                         </label>
                         <textarea rows="3"
                             name="note"
-                            placeholder="Contoh: Saya ingin fokus belajar TPS Penalaran Umum hari ini."
+                            placeholder="{{ __('Contoh: Saya ingin fokus belajar TPS Penalaran Umum hari ini.') }}"
                             class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 resize-y focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-200 outline-none">{{ old('note') }}</textarea>
                     </div>
 
                     <div class="pt-4">
                         <button type="submit"
                             class="w-full bg-primary text-white py-4 rounded-2xl text-lg font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:bg-opacity-90 active:scale-[0.98] transition-all duration-200 outline-none focus:ring-4 focus:ring-primary/30">
-                            Konfirmasi Booking
+                            {{ __('Konfirmasi Booking') }}
                         </button>
                     </div>
 
