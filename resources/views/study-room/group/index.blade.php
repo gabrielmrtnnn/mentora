@@ -45,6 +45,8 @@
 
     </div>
 
+    @include('study-room.group.call-banner')
+
     @include('study-room.group.cards')
 
     @include('study-room.group.create-modal')

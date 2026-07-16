@@ -29,7 +29,7 @@
             <button id="confirmWarningBtn"
                 type="button"
                 class="flex-1 py-3 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 shadow-lg shadow-red-200 transition">
-                {{ __('Pindah Halaman') }}
+                {{ __('Akhiri Sesi') }}
             </button>
 
         </div>
