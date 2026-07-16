@@ -22,7 +22,7 @@ class ReviewController extends Controller
 
         $existingReview = Review::where('booking_session_id', $booking->id)->first();
         if ($existingReview) {
-            return back()->with('error', 'Kamu sudah memberikan review untuk sesi ini.');
+            return back()->with('error', __('Kamu sudah memberikan review untuk sesi ini.'));
         }
 
         $review = Review::create([
@@ -41,6 +41,6 @@ class ReviewController extends Controller
         
         $tutor->save();
 
-        return back()->with('success', 'Review berhasil dikirim!');
+        return back()->with('success', __('Review berhasil dikirim!'));
     }
 }

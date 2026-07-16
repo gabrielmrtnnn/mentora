@@ -18,13 +18,13 @@ use Carbon\Carbon;
                     My Booking
                 </h1>
                 <p class="text-gray-500 mt-2">
-                    Semua sesi belajar yang pernah kamu booking.
+                    {{ __('Semua sesi belajar yang pernah kamu booking.') }}
                 </p>
             </div>
 
             <a href="{{ route('tutor') }}"
                class="bg-primary text-white px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition shadow-sm hover:shadow-md">
-                + Booking Baru
+                + {{ __('Booking Baru') }}
             </a>
         </div>
     </div>
@@ -52,9 +52,10 @@ use Carbon\Carbon;
                                         <h2 class="text-2xl font-bold text-gray-900">
                                             {{ $booking->tutor->user->name }}
                                         </h2>
-                                        <p class="text-gray-500 mt-1">Tutor Mentora</p>
+                                        <p class="text-gray-500 mt-1">{{ __('Tutor Mentora') }}</p>
                                     </div>
 
+                                    {{-- STATUS & RATE BUTTON WRAPPER --}}
                                     <div class="flex flex-col items-end gap-3">
                                         @if($booking->status == 'pending')
                                             <span class="px-5 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
@@ -69,6 +70,7 @@ use Carbon\Carbon;
                                                 Completed
                                             </span>
                                             
+                                            {{-- RATE TUTOR BUTTON --}}
                                             @if(!$booking->review)
                                                 <button type="button" 
                                                         onclick="openReviewModal('{{ $booking->id }}', '{{ $booking->tutor->user->name }}')"
@@ -89,20 +91,20 @@ use Carbon\Carbon;
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                                     <div class="bg-gray-50 rounded-2xl p-5">
-                                        <p class="text-gray-500 text-sm">Tanggal</p>
+                                        <p class="text-gray-500 text-sm">{{ __('Tanggal') }}</p>
                                         <p class="font-bold text-lg mt-1">
                                             {{ \Carbon\Carbon::parse($booking->session_date)->format('d M Y') }}
                                         </p>
                                     </div>
 
                                     <div class="bg-gray-50 rounded-2xl p-5">
-                                        <p class="text-gray-500 text-sm">Jam</p>
+                                        <p class="text-gray-500 text-sm">{{ __('Jam') }}</p>
                                         <p class="font-bold text-lg mt-1">{{ $booking->session_time }}</p>
                                     </div>
 
                                     <div class="bg-gray-50 rounded-2xl p-5">
-                                        <p class="text-gray-500 text-sm">Durasi</p>
-                                        <p class="font-bold text-lg mt-1">{{ $booking->duration }} menit</p>
+                                        <p class="text-gray-500 text-sm">{{ __('Durasi') }}</p>
+                                        <p class="font-bold text-lg mt-1">{{ $booking->duration }} {{ __('menit') }}</p>
                                     </div>
                                 </div>
 
@@ -112,7 +114,7 @@ use Carbon\Carbon;
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                             </svg>
-                                            Catatan
+                                            {{ __('Catatan') }}
                                         </p>
                                         <p class="text-gray-700 break-words whitespace-pre-wrap leading-relaxed">{{ $booking->note }}</p>
                                     </div>
@@ -125,7 +127,7 @@ use Carbon\Carbon;
                         <div class="absolute right-0 top-0 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
                         
                         <div class="relative z-10">
-                            <p class="text-white/70 text-sm font-medium">Dibuat</p>
+                            <p class="text-white/70 text-sm font-medium">{{ __('Dibuat') }}</p>
                             <p class="text-white font-bold mt-1 text-lg">{{ $booking->created_at->diffForHumans() }}</p>
                         </div>
 
@@ -168,13 +170,13 @@ use Carbon\Carbon;
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                         </svg>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Belum ada booking</h2>
-                    <p class="text-gray-500 mt-3 text-lg">Cari tutor favoritmu dan mulai sesi belajar pertama.</p>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ __('Belum ada booking') }}</h2>
+                    <p class="text-gray-500 mt-3 text-lg">{{ __('Cari tutor favoritmu dan mulai sesi belajar pertama.') }}</p>
                     <a href="{{ route('tutor') }}" class="inline-flex items-center gap-2 mt-8 bg-primary text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600 hover:shadow-lg transition">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                        Cari Tutor
+                        {{ __('Cari Tutor') }}
                     </a>
                 </div>
             </div>
@@ -262,11 +264,11 @@ use Carbon\Carbon;
                         </div>
                         
                         <p class="text-gray-500 text-sm mb-6">
-                            Bagaimana pengalaman belajarmu dengan <span id="modalTutorName" class="font-bold text-gray-800">Tutor</span>?
+                            {{ __('Bagaimana pengalaman belajarmu dengan') }} <span id="modalTutorName" class="font-bold text-gray-800">Tutor</span>?
                         </p>
 
                         <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Penilaian</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('Penilaian') }}</label>
                             <div class="star-rating text-4xl cursor-pointer">
                                 <input type="radio" id="star5" name="rating" value="5" class="hidden" required />
                                 <label for="star5" class="text-gray-300 transition hover:scale-110">★</label>
@@ -286,21 +288,21 @@ use Carbon\Carbon;
                         </div>
 
                         <div>
-                            <label for="comment" class="block text-sm font-bold text-gray-700 mb-2">Ulasan (Opsional)</label>
+                            <label for="comment" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Ulasan (Opsional)') }}</label>
                             <textarea id="comment" name="comment" rows="4" 
                                       class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm p-4 border bg-gray-50 focus:bg-white transition" 
-                                      placeholder="Ceritakan pengalamanmu belajar di sesi ini..."></textarea>
+                                      placeholder="{{ __('Ceritakan pengalamanmu belajar di sesi ini...') }}"></textarea>
                         </div>
                     </div>
                     
                     <div class="bg-gray-50/50 border-t border-gray-100 px-8 py-5 flex justify-end gap-3 rounded-b-3xl">
                         <button type="button" onclick="closeReviewModal()" 
                                 class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 font-bold transition">
-                            Batal
+                            {{ __('Batal') }}
                         </button>
                         <button type="submit" 
                                 class="px-5 py-2.5 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold transition shadow-sm hover:shadow-md">
-                            Kirim Review
+                            {{ __('Kirim Review') }}
                         </button>
                     </div>
                 </form>

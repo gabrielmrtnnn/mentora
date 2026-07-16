@@ -114,7 +114,7 @@ class AdminController extends Controller
             $content->delete();
         }
 
-        return back()->with('success', 'Konten yang dilaporkan berhasil dihapus.');
+        return back()->with('success', __('Konten yang dilaporkan berhasil dihapus.'));
     }
 
     /**
@@ -135,6 +135,6 @@ class AdminController extends Controller
             $report->delete();
         }
 
-        return back()->with('success', 'Report berhasil diabaikan.');
+        return back()->with('success', __('Report berhasil diabaikan.'));
     }
 }

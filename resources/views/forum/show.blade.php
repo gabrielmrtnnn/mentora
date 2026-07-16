@@ -10,7 +10,7 @@
     <div class="mb-6">
         <a href="{{ route('forum') }}"
            class="text-primary font-medium hover:underline">
-            ← Kembali ke Forum
+            {{ __('← Kembali ke Forum') }}
         </a>
     </div>
 
@@ -69,10 +69,10 @@
 
                 @if(Auth::id() === $thread->user_id || Auth::user()->isAdmin())
                     <form method="POST" action="{{ route('forum.thread.destroy', $thread->id) }}"
-                          onsubmit="return confirm('Yakin mau hapus diskusi ini? Semua balasan di dalamnya juga akan ikut terhapus.');">
+                          onsubmit="return confirm('{{ __('Yakin mau hapus diskusi ini? Semua balasan di dalamnya juga akan ikut terhapus.') }}');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" title="Hapus diskusi"
+                        <button type="submit" title="{{ __('Hapus diskusi') }}"
                             class="p-2 rounded-full text-red-500 hover:bg-red-50 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 6h18" />
@@ -86,7 +86,7 @@
                 @endif
 
                 @if(Auth::id() !== $thread->user_id)
-                    <button type="button" title="Laporkan diskusi"
+                    <button type="button" title="{{ __('Laporkan diskusi') }}"
                         @click="reportOpen = true; reportType = 'thread'; reportId = {{ $thread->id }}"
                         class="p-2 rounded-full text-gray-400 hover:bg-amber-50 hover:text-amber-500 transition">
                         🚩
@@ -124,7 +124,7 @@
                 data-id="{{ $thread->id }}">
                 <span class="like-icon">{{ $thread->isLikedBy(auth()->id()) ? '❤️' : '🤍' }}</span>
                 <span class="like-count">{{ $thread->likes_count }}</span>
-                <span>Suka</span>
+                <span>{{ __('Suka') }}</span>
             </button>
         </div>
 
@@ -134,7 +134,7 @@
     <div class="mt-8">
 
         <h2 class="text-xl font-bold text-gray-900 mb-4">
-            {{ $thread->replies->count() }} Balasan
+            {{ $thread->replies->count() }} {{ __('Balasan') }}
         </h2>
 
         <div class="flex flex-col gap-3">
@@ -161,10 +161,10 @@
                             <div class="flex items-center gap-1 shrink-0">
                                 @if(Auth::id() === $reply->user_id || Auth::user()->isAdmin())
                                     <form method="POST" action="{{ route('forum.reply.destroy', $reply->id) }}"
-                                          onsubmit="return confirm('Yakin mau hapus balasan ini?');">
+                                          onsubmit="return confirm('{{ __('Yakin mau hapus balasan ini?') }}');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" title="Hapus balasan"
+                                        <button type="submit" title="{{ __('Hapus balasan') }}"
                                             class="p-1.5 rounded-full text-red-500 hover:bg-red-50 transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M3 6h18" />
@@ -178,7 +178,7 @@
                                 @endif
 
                                 @if(Auth::id() !== $reply->user_id)
-                                    <button type="button" title="Laporkan balasan"
+                                    <button type="button" title="{{ __('Laporkan balasan') }}"
                                         @click="reportOpen = true; reportType = 'reply'; reportId = {{ $reply->id }}"
                                         class="p-1.5 rounded-full text-gray-400 hover:bg-amber-50 hover:text-amber-500 transition text-sm">
                                         🚩
@@ -198,7 +198,7 @@
                             data-id="{{ $reply->id }}">
                             <span class="like-icon">{{ $reply->isLikedBy(auth()->id()) ? '❤️' : '🤍' }}</span>
                             <span class="like-count">{{ $reply->likes_count }}</span>
-                            <span>Suka</span>
+                            <span>{{ __('Suka') }}</span>
                         </button>
                     </div>
 
@@ -207,7 +207,7 @@
             @empty
 
                 <div class="bg-gray-50 rounded-2xl p-6 text-center text-gray-500">
-                    Belum ada balasan. Jadi yang pertama jawab! 🙌
+                    {{ __('Belum ada balasan. Jadi yang pertama jawab! 🙌') }}
                 </div>
 
             @endforelse
@@ -220,7 +220,7 @@
     <div class="mt-6 bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
 
         <h3 class="font-bold text-gray-900 mb-3">
-            Tulis Balasan
+            {{ __('Tulis Balasan') }}
         </h3>
 
         <form method="POST" action="{{ route('forum.reply', $thread->id) }}">
@@ -228,14 +228,14 @@
             <textarea
                 name="body"
                 rows="3"
-                placeholder="Tulis balasan kamu di sini..."
+                placeholder="{{ __('Tulis balasan kamu di sini...') }}"
                 required
                 class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-3 px-4">{{ old('body') }}</textarea>
 
             <div class="mt-4 flex justify-end">
                 <button type="submit"
                     class="bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition">
-                    Kirim Balasan
+                    {{ __('Kirim Balasan') }}
                 </button>
             </div>
         </form>
@@ -251,9 +251,9 @@
          x-cloak>
         <div @click.away="reportOpen = false" class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6">
 
-            <h3 class="text-lg font-bold text-gray-900 mb-1">Laporkan Konten</h3>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">{{ __('Laporkan Konten') }}</h3>
             <p class="text-sm text-gray-500 mb-4">
-                Laporan kamu akan ditinjau oleh admin Mentora.
+                {{ __('Laporan kamu akan ditinjau oleh admin Mentora.') }}
             </p>
 
             <form method="POST" action="{{ route('forum.report') }}">
@@ -261,26 +261,26 @@
                 <input type="hidden" name="type" :value="reportType">
                 <input type="hidden" name="id" :value="reportId">
 
-                <label class="block text-sm font-bold text-gray-700 mb-1">Alasan</label>
+                <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Alasan') }}</label>
                 <select name="reason" required
                     class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 px-4 mb-4">
                     @foreach(\App\Models\ForumReport::REASONS as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
+                        <option value="{{ $value }}">{{ __($label) }}</option>
                     @endforeach
                 </select>
 
-                <label class="block text-sm font-bold text-gray-700 mb-1">Penjelasan (opsional)</label>
-                <textarea name="description" rows="3" placeholder="Jelaskan lebih lanjut kalau perlu..."
+                <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Penjelasan (opsional)') }}</label>
+                <textarea name="description" rows="3" placeholder="{{ __('Jelaskan lebih lanjut kalau perlu...') }}"
                     class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 px-4 mb-5"></textarea>
 
                 <div class="flex gap-3">
                     <button type="button" @click="reportOpen = false"
                         class="flex-1 py-2.5 font-bold text-gray-500 hover:bg-gray-50 rounded-xl transition">
-                        Batal
+                        {{ __('Batal') }}
                     </button>
                     <button type="submit"
                         class="flex-1 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:opacity-90 transition">
-                        Kirim Laporan
+                        {{ __('Kirim Laporan') }}
                     </button>
                 </div>
             </form>
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
             } catch (err) {
-                alert('Gagal memproses like, coba lagi ya.');
+                alert('{{ __('Gagal memproses like, coba lagi ya.') }}');
             } finally {
                 btn.disabled = false;
             }

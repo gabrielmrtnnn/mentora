@@ -31,7 +31,7 @@
 
                         <button
                             type="submit"
-                            onclick="return confirm('Yakin ingin menghapus room ini?')"
+                            onclick="return confirm('{{ __('Yakin ingin menghapus room ini?') }}')"
                             class="p-2.5 bg-white/10 text-white/80 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200 border border-white/10 backdrop-blur-sm">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@
 
                 <p class="text-sm text-blue-50/80 mb-8 line-clamp-2 leading-relaxed">
 
-                    Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.
+                    {{ __('Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.') }}
 
                 </p>
 
@@ -80,7 +80,7 @@
                     data-slug="{{ $group->slug }}"
                     data-name="{{ $group->name }}">
 
-                    Gabung Grup
+                    {{ __('Gabung Grup') }}
 
                 </button>
 

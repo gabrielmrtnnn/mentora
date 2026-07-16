@@ -1,29 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - Mentora</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
 
-    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm border border-gray-100 my-10">
+    <div class="w-full max-w-md my-10">
+        <div class="flex justify-end mb-3">
+            <div class="flex items-center gap-1.5 text-sm font-semibold">
+                <a href="{{ route('language.switch', 'id') }}"
+                   class="{{ app()->getLocale() === 'id' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                    ID
+                </a>
+                <span class="text-gray-300">|</span>
+                <a href="{{ route('language.switch', 'en') }}"
+                   class="{{ app()->getLocale() === 'en' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                    EN
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
 
         <h1 class="text-2xl font-bold mb-2 text-center text-gray-900">
-            Daftar Mentora 🚀
+            {{ __('Daftar Mentora') }} 🚀
         </h1>
         <p class="text-sm text-gray-500 text-center mb-6">
-            Buat akun untuk mulai belajar SNBT
+            {{ __('Buat akun untuk mulai belajar SNBT') }}
         </p>
 
         <form method="POST" action="{{ route('register') }}" class="space-y-4">
             @csrf
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">{{ __('Nama Lengkap') }}</label>
                 <input type="text" name="name"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     value="{{ old('name') }}" required autofocus>
@@ -34,7 +50,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">{{ __('Email') }}</label>
                 <input type="email" name="email"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     value="{{ old('email') }}" required>
@@ -45,7 +61,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">{{ __('Password') }}</label>
                 <input type="password" name="password"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     required>
@@ -56,7 +72,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Konfirmasi Password</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">{{ __('Konfirmasi Password') }}</label>
                 <input type="password" name="password_confirmation"
                     class="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     required>
@@ -64,7 +80,7 @@
 
             <button type="submit"
                 class="w-full bg-primary text-white py-2.5 rounded-lg font-bold hover:opacity-90 transition shadow-md shadow-primary/20 active:scale-[0.98]">
-                Daftar Sekarang
+                {{ __('Daftar Sekarang') }}
             </button>
         </form>
 
@@ -74,24 +90,25 @@
                     <div class="w-full border-t border-gray-200"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white text-gray-400">atau daftar cepat dengan</span>
+                    <span class="px-2 bg-white text-gray-400">{{ __('atau daftar cepat dengan') }}</span>
                 </div>
             </div>
         </div>
 
         <a href="{{ route('google.login') }}" class="mb-4 w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-50 transition shadow-sm active:scale-[0.98]">
             <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5">
-            Google Account
+            {{ __('Google Account') }}
         </a>
 
         <div class="text-center mt-6">
-            <p class="text-sm text-gray-500 mb-3">Sudah punya akun?</p>
+            <p class="text-sm text-gray-500 mb-3">{{ __('Sudah punya akun?') }}</p>
             <a href="{{ route('login') }}"
                class="block w-full text-center border border-primary text-primary py-2.5 rounded-lg font-bold hover:bg-primary hover:text-white transition active:scale-[0.98]">
-                Masuk di sini
+                {{ __('Masuk di sini') }}
             </a>
         </div>
 
+        </div>
     </div>
 
 </body>

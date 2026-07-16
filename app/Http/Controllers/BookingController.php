@@ -65,7 +65,7 @@ class BookingController extends Controller
             'meeting_room' => 'mentora-' . $booking->id . '-' . Str::random(8)
         ]);
 
-        return back()->with('success', 'Booking berhasil di-approve.');
+        return back()->with('success', __('Booking berhasil di-approve.'));
     }
 
     public function reject(BookingSession $booking)
@@ -74,6 +74,6 @@ class BookingController extends Controller
             'status'=>'rejected'
         ]);
 
-        return back()->with('success', 'Booking berhasil di-reject.');
+        return back()->with('success', __('Booking berhasil di-reject.'));
     }
 }

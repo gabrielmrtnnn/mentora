@@ -16,6 +16,21 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+
+            <div class="w-full sm:max-w-md flex justify-end px-6 sm:px-0">
+                <div class="flex items-center gap-1.5 text-sm font-semibold">
+                    <a href="{{ route('language.switch', 'id') }}"
+                       class="{{ app()->getLocale() === 'id' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                        ID
+                    </a>
+                    <span class="text-gray-300">|</span>
+                    <a href="{{ route('language.switch', 'en') }}"
+                       class="{{ app()->getLocale() === 'en' ? 'text-primary' : 'text-gray-400 hover:text-gray-600' }}">
+                        EN
+                    </a>
+                </div>
+            </div>
+
             <div>
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />

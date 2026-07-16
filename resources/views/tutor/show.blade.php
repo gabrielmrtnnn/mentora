@@ -8,7 +8,7 @@
     <div class="mb-6">
         <a href="{{ route('tutor') }}"
            class="text-primary font-medium hover:underline">
-            ← Kembali ke daftar tutor
+            {{ __('← Kembali ke daftar tutor') }}
         </a>
     </div>
 
@@ -117,7 +117,7 @@
             <div class="mt-8">
 
                 <h2 class="text-xl font-bold mb-3">
-                    Tentang Tutor
+                    {{ __('Tentang Tutor') }}
                 </h2>
 
                 <div class="bg-gray-50 rounded-2xl p-5 text-gray-700 leading-relaxed">
