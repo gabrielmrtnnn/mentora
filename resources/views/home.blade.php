@@ -41,9 +41,17 @@
 
         </div>
 
-        <button class="bg-yellow-400 text-black text-sm font-semibold px-4 py-2 rounded-lg">
-            Mulai belajar
-        </button>
+        @guest
+            <a href="{{ route('auth.redirect') }}" class="bg-yellow-400 text-black text-sm font-semibold px-4 py-2 rounded-lg">
+                Mulai belajar
+            </a>
+        @endguest
+
+        @auth
+            <a href="{{ route('study-room') }}" class="bg-yellow-400 text-black text-sm font-semibold px-4 py-2 rounded-lg">
+                Mulai belajar
+            </a>
+        @endauth
     </div>
 </section>
 
