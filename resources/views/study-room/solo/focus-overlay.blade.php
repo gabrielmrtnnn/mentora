@@ -77,7 +77,7 @@
             <div class="mt-10 flex flex-wrap justify-center gap-3">
 
                 <button id="focusOverlayStartBtn"
-                    class="px-6 py-3 rounded-2xl bg-yellow-300 text-gray-900 font-extrabold hover:bg-yellow-200 transition active:scale-[0.98]">
+                    class="px-6 py-3 rounded-2xl bg-accent text-gray-900 font-extrabold hover:bg-accent-hover transition active:scale-[0.98]">
                     Mulai
                 </button>
 
