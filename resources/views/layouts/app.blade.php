@@ -177,13 +177,56 @@
             @if (!request()->routeIs('chat.*'))
                 <div class="fixed bottom-6 right-6 z-50">
                     <a href="{{ route('chat.index') }}"
-                    class="w-16 h-16 rounded-full bg-primary text-white shadow-xl
-                            hover:scale-110 transition flex items-center justify-center">
+                       class="relative w-16 h-16 rounded-full bg-primary text-white shadow-xl
+                              hover:scale-110 transition flex items-center justify-center">
                         <img src="{{ asset('icons/chat.svg') }}"
-                            class="w-8 h-8"
-                            alt="Chat">
+                             class="w-8 h-8"
+                             alt="Chat">
+                             
+                        <div id="globalUnreadBadge" 
+                             class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[11px] font-bold min-w-[24px] h-6 px-1 flex items-center justify-center rounded-full border-2 border-white shadow-sm">
+                            0
+                        </div>
                     </a>
                 </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const globalBadge = document.getElementById('globalUnreadBadge');
+                    if (!globalBadge) return;
+
+                    async function checkGlobalUnread() {
+                        try {
+                            const response = await fetch("{{ route('chat.sidebar') }}", {
+                                headers: { "Accept": "application/json" }
+                            });
+
+                            if (!response.ok) return;
+
+                            const data = await response.json();
+                            
+                            // Menjumlahkan semua atribut 'unread' dari JSON response
+                            const totalUnread = data.reduce((sum, chat) => sum + chat.unread, 0);
+
+                            if (totalUnread > 0) {
+                                // Tampilkan badge (maksimal tampil '99+')
+                                globalBadge.innerText = totalUnread > 99 ? '99+' : totalUnread;
+                                globalBadge.classList.remove('hidden');
+                            } else {
+                                // Sembunyikan badge jika 0
+                                globalBadge.classList.add('hidden');
+                            }
+                        } catch (error) {
+                            console.error("Gagal mengambil data unread global:", error);
+                        }
+                    }
+
+                    // Jalankan pertama kali saat halaman dimuat
+                    checkGlobalUnread();
+                    
+                    // Polling setiap 3 detik
+                    setInterval(checkGlobalUnread, 3000); 
+                });
+            </script>
             @endif
         @endauth
 

@@ -16,23 +16,43 @@ class ChatController extends Controller
         return Tutor::where('user_id', auth()->id())->value('id');
     }
 
-    public function index()
+    private function getConversationQuery()
     {
-        $query = Conversation::with(['student','tutor']);
+        $query = Conversation::with([
+            'student',
+            'tutor',
+            'messages' => function ($q) {
+                $q->latest();
+            }
+        ])->withCount([
+            'messages as unread_count' => function ($q) {
+                $q->whereNull('read_at')
+                ->where('sender_id', '!=', auth()->id());
+            }
+        ]);
 
-        if(auth()->user()->role == 'tutor'){
+        if (auth()->user()->role == 'tutor') {
 
             $query->where('tutor_id', $this->getTutorId());
 
-        }else{
+        } else {
 
             $query->where('student_id', auth()->id());
 
         }
 
-        $conversations = $query->orderByDesc('updated_at')->get();
+        return $query;
+    }
 
-        return view('chat.index', compact('conversations'));
+   public function index()
+    {
+        $conversations = $this->getConversationQuery()
+            ->orderByDesc('updated_at')
+            ->get();
+
+        $totalUnread = $conversations->sum('unread_count');
+
+        return view('chat.index', compact('conversations', 'totalUnread'));
     }
 
     public function start($tutorId)
@@ -54,30 +74,20 @@ class ChatController extends Controller
             'tutor'
         ]);
 
-        $query = Conversation::with([
-            'student',
-            'tutor',
-            'messages' => function($q){
-                $q->latest();
-            }
-        ]);
+        $conversations = $this->getConversationQuery()
+            ->orderByDesc('updated_at')
+            ->get();
+
+        $totalUnread = $conversations->sum('unread_count');
+        $query = Conversation::query();
 
         if(auth()->user()->role == 'tutor'){
-
             $query->where('tutor_id', $this->getTutorId());
-
         }else{
-
             $query->where('student_id', auth()->id());
-
         }
-
         $conversations = $query->orderByDesc('updated_at')->get();
-
-        return view('chat.show', compact(
-            'conversation',
-            'conversations'
-        ));
+        return view('chat.show', compact('conversation', 'conversations', 'totalUnread'));
     }
 
     public function send(Request $request, Conversation $conversation)
@@ -99,13 +109,66 @@ class ChatController extends Controller
 
     public function messages(Request $request, Conversation $conversation)
     {
+        Message::where('conversation_id', $conversation->id)
+            ->whereNull('read_at')
+            ->where('sender_id', '!=', auth()->id())
+            ->update([
+                'read_at' => now()
+            ]);
+
         $lastId = $request->last_id ?? 0;
 
-        return response()->json(
-            $conversation->messages()
-                ->where('id', '>', $lastId)
-                ->orderBy('id')
-                ->get()
-        );
+        $newMessages = $conversation->messages()
+            ->where('id', '>', $lastId)
+            ->orderBy('id')
+            ->get();
+
+        $conversations = $this->getConversationQuery()
+            ->orderByDesc('updated_at')
+            ->get();
+
+        $sidebarData = $conversations->map(function ($chat) {
+            $partner = auth()->id() == $chat->student_id
+                ? $chat->tutor->user
+                : $chat->student;
+
+            return [
+                'id' => $chat->id,
+                'partner' => $partner->name,
+                'initial' => strtoupper(substr($partner->name, 0, 1)),
+                'last_message' => optional($chat->messages->first())->message ?? 'Belum ada pesan',
+                'unread' => $chat->unread_count,
+            ];
+        });
+
+        return response()->json([
+            'messages' => $newMessages,
+            'sidebar' => $sidebarData
+        ]);
+    }
+
+    public function sidebar()
+    {
+        $conversations = $this->getConversationQuery()
+            ->orderByDesc('updated_at')
+            ->get();
+
+        $result = $conversations->map(function ($chat) {
+
+            $partner = auth()->id() == $chat->student_id
+                ? $chat->tutor->user
+                : $chat->student;
+
+            return [
+                'id' => $chat->id,
+                'partner' => $partner->name,
+                'initial' => strtoupper(substr($partner->name, 0, 1)),
+                'last_message' => optional($chat->messages->first())->message
+                    ?? 'Belum ada pesan',
+                'unread' => $chat->unread_count,
+            ];
+        });
+
+        return response()->json($result);
     }
 }

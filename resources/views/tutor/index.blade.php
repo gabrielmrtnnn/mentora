@@ -35,7 +35,7 @@
 
             @auth
 
-                @if(auth()->user()->role === 'user')
+                @if(auth()->user()->role === 'student')
 
                     <a href="{{ route('tutor.apply.page') }}"
                     class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
@@ -58,28 +58,6 @@
                         </svg>
                         {{ __('Kamu sudah menjadi Tutor') }}
                     </div>
-
-                @elseif(auth()->user()->role === 'admin')
-
-                    <a href="{{ route('admin.tutor') }}"
-                    class="inline-flex items-center gap-2 bg-red-500 text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:bg-red-600 transition">
-
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 17v-2a4 4 0 014-4h6"/>
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 7h6v6"/>
-                        </svg>
-                        Tutor Applications
-                    </a>
                 @endif
             @else
                 <a href="{{ route('login') }}"
