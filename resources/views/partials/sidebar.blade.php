@@ -93,31 +93,33 @@
                  class="overflow-hidden transition-all duration-300 flex-col gap-1
                  {{ request()->routeIs('tutor*', 'booking.index') ? 'flex max-h-40 mt-1' : 'flex max-h-0 mt-0' }}">
 
-                <a href="{{ route('tutor') }}"
-                   class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
-                   {{ request()->routeIs('tutor') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
-                    
-                    <div class="w-5 h-5 shrink-0"></div>
-
-                    <span class="sidebar-text ml-3 text-sm
-                        max-w-0 opacity-0 overflow-hidden
-                        whitespace-nowrap transition-all duration-300">
-                        Cari Tutor
-                    </span>
-                </a>
-
-                <a href="{{ route('booking.index') }}"
-                   class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
-                   {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
-                    
-                    <div class="w-5 h-5 shrink-0"></div>
-
-                    <span class="sidebar-text ml-3 text-sm
-                        max-w-0 opacity-0 overflow-hidden
-                        whitespace-nowrap transition-all duration-300">
-                        Booking Saya
-                    </span>
-                </a>
+                    @if (!auth()->check() || auth()->user()->role != 'tutor')
+                        <a href="{{ route('tutor') }}"
+                        class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                        {{ request()->routeIs('tutor') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                            
+                            <div class="w-5 h-5 shrink-0"></div>
+        
+                            <span class="sidebar-text ml-3 text-sm
+                                max-w-0 opacity-0 overflow-hidden
+                                whitespace-nowrap transition-all duration-300">
+                                Cari Tutor
+                            </span>
+                        </a>
+        
+                        <a href="{{ route('booking.index') }}"
+                        class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
+                        {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
+                            
+                            <div class="w-5 h-5 shrink-0"></div>
+        
+                            <span class="sidebar-text ml-3 text-sm
+                                max-w-0 opacity-0 overflow-hidden
+                                whitespace-nowrap transition-all duration-300">
+                                Booking Saya
+                            </span>
+                        </a>
+                    @endif
 
                 @auth
                     @if(auth()->user()->role=='tutor')
