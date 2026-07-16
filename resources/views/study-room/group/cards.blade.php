@@ -74,14 +74,15 @@
 
             <div class="relative z-10 mt-auto">
 
-                <a
-                    href="https://meet.jit.si/{{ $group->slug }}#config.prejoinPageEnabled=false"
-                    target="_blank"
-                    class="block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]">
+                <button
+                    type="button"
+                    class="join-jitsi-btn block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]"
+                    data-slug="{{ $group->slug }}"
+                    data-name="{{ $group->name }}">
 
                     Gabung Grup
 
-                </a>
+                </button>
 
             </div>
 

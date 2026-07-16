@@ -292,7 +292,86 @@ async function finalizeGroupSession(onDone) {
     groupSeconds = 0;
     if (groupTimerDisplay) groupTimerDisplay.textContent = '00:00';
 
+    if (groupCallPollInterval) {
+        clearInterval(groupCallPollInterval);
+        groupCallPollInterval = null;
+    }
+    groupCallWindow = null;
+    awaitingGroupCallFocusLoss = false;
+    setGroupCallBanner(false);
+
     if (onDone) onDone();
+}
+
+// --- JOIN VIA TAB BARU: meet.jit.si membatasi sesi jadi trial 5 menit kalau
+// di-embed lewat iframe (JitsiMeetExternalAPI) tanpa akun JaaS berbayar.
+// Makanya call tetap dibuka di tab baru; kita deteksi "pindah ke Jitsi" lewat
+// window blur (tab ini kehilangan fokus tepat setelah tab baru dibuka), dan
+// deteksi "selesai" lewat window.closed saat tab Jitsi-nya ditutup. ---
+let groupCallWindow = null;
+let groupCallPollInterval = null;
+let awaitingGroupCallFocusLoss = false;
+const groupCallBanner = document.getElementById('groupCallBanner');
+const groupCallEndBtn = document.getElementById('groupCallEndBtn');
+
+function setGroupCallBanner(show) {
+    if (!groupCallBanner) return;
+    groupCallBanner.classList.toggle('hidden', !show);
+}
+
+function openGroupCall(slug, name) {
+    const url = `https://meet.jit.si/${encodeURIComponent(slug)}#config.prejoinPageEnabled=false`;
+    groupCallWindow = window.open(url, '_blank');
+
+    if (!groupCallWindow) {
+        alert('Popup diblokir browser. Izinkan popup untuk meet.jit.si, lalu klik Gabung Grup lagi.');
+        return;
+    }
+
+    awaitingGroupCallFocusLoss = true;
+    setGroupCallBanner(true);
+
+    if (groupCallPollInterval) clearInterval(groupCallPollInterval);
+    groupCallPollInterval = setInterval(() => {
+        if (groupCallWindow && groupCallWindow.closed) {
+            clearInterval(groupCallPollInterval);
+            groupCallPollInterval = null;
+            if (groupTimerRunning) {
+                finalizeGroupSession();
+            } else {
+                setGroupCallBanner(false);
+            }
+        }
+    }, 1000);
+}
+
+window.addEventListener('blur', () => {
+    if (awaitingGroupCallFocusLoss) {
+        awaitingGroupCallFocusLoss = false;
+        startGroupTimer();
+    }
+});
+
+document.querySelectorAll('.join-jitsi-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        openGroupCall(btn.dataset.slug, btn.dataset.name);
+    });
+});
+
+// Tombol darurat kalau deteksi otomatis gagal (misal browser blokir window.closed)
+if (groupCallEndBtn) {
+    groupCallEndBtn.addEventListener('click', () => {
+        showWarning(
+            () => {
+                if (groupCallWindow && !groupCallWindow.closed) {
+                    groupCallWindow.close();
+                }
+                finalizeGroupSession();
+            },
+            'Akhiri Sesi Kelompok?',
+            `Sesi belajar kamu (kategori ${groupSelectedCategory}) akan disimpan sebelum diakhiri. Lanjut?`
+        );
+    });
 }
 
 function formatTime(t) {
@@ -768,13 +847,6 @@ if (timerDisplay) {
     updateDisplay();
     initCategoryPicker('solo');
     initCategoryPicker('group');
-
-    // Kalau halaman di-load langsung ke tab Group (misal lewat session active_tab),
-    // stopwatch group langsung jalan juga.
-    const studyRoomContainerEl = document.getElementById('studyRoomContainer');
-    if (studyRoomContainerEl && studyRoomContainerEl.dataset.initialTab === 'group') {
-        startGroupTimer();
-    }
 }
 
 // Listener untuk mencegah user pindah halaman saat timer solo ATAU sesi group aktif
@@ -819,12 +891,8 @@ if (confirmWarningBtn) {
     };
 }
 
-// --- TAB GROUP: auto-start stopwatch pas masuk, konfirmasi pas mau keluar ---
-if (groupTabBtn) {
-    groupTabBtn.addEventListener('click', () => {
-        startGroupTimer();
-    });
-}
+// --- TAB GROUP: stopwatch TIDAK auto-start lagi di sini.
+// Timer baru mulai pas event 'videoConferenceJoined' dari Jitsi (lihat initGroupJitsi).
 
 if (soloTabBtn) {
     // Pakai capture phase supaya listener ini jalan LEBIH DULU dari @click Alpine
