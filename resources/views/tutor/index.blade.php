@@ -35,7 +35,7 @@
 
             @auth
 
-                @if(auth()->user()->role === 'user')
+                @if(auth()->user()->role === 'student')
 
                     <a href="{{ route('tutor.apply.page') }}"
                     class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
