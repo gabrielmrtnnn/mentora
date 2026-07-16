@@ -174,5 +174,7 @@
                 </div>
             @endif
         @endauth
+
+        @stack('scripts')
     </body>
 </html>
