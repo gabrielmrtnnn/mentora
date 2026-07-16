@@ -30,6 +30,7 @@
 
 <div id="studyRoomContainer"
     class="w-full pb-8"
+    data-user-name="{{ auth()->user()->name }}"
     x-data="{
         openCreateModal:false,
         activeTab:'{{ session('active_tab') ?? 'solo' }}'
