@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('conversation_id')->constrained();
             $table->foreignId('sender_id')->constrained('users');
+            $table->timestamp('read_at')->nullable();
             $table->text('message');
             $table->timestamps();
         });

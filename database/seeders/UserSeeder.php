@@ -18,13 +18,6 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Tutor Mentora',
-            'email' => 'tutor@mentora.com',
-            'password' => Hash::make('password'),
-            'role' => 'tutor',
-        ]);
-
-        User::create([
             'name' => 'Student Mentora',
             'email' => 'student@mentora.com',
             'password' => Hash::make('password'),

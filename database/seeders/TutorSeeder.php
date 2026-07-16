@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Tutor;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class TutorSeeder extends Seeder
 {
@@ -58,6 +59,23 @@ class TutorSeeder extends Seeder
             'numerasi' => false,
             'rating' => 4.9,
             'total_reviews' => 150
+        ]);
+
+        $tutorMentora = User::create([
+            'name' => 'Tutor Mentora',
+            'email' => 'tutor@mentora.com',
+            'password' => Hash::make('password'),
+            'role' => 'tutor',
+        ]);
+
+        Tutor::create([
+            'user_id' => $tutorMentora->id,
+            'bio' => 'Tutor profesional di bidang TPS, Literasi, dan Numerasi.',
+            'tps' => true,
+            'literasi' => true,
+            'numerasi' => true,
+            'rating' => 4.9,
+            'total_reviews' => 200
         ]);
     }
 }

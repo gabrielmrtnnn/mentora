@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/sidebar', [ChatController::class, 'sidebar'])->name('chat.sidebar');
     Route::get('/chat/start/{tutor}', [ChatController::class, 'start'])->name('chat.start');
     Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{conversation}', [ChatController::class, 'send'])->name('chat.send');
@@ -69,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/study-room/join/{slug}', [StudySessionController::class, 'joinGroup'])->name('study-room.join');
 });
 
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:student'])->group(function () {
     // Booking
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
     Route::get('/booking/create/{tutor}', [BookingController::class, 'create'])->name('booking.create');
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Tutor Applications
     Route::get('/admin/tutor-applications', [AdminController::class, 'applications'])->name('admin.tutor');
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
-    Route::post('/admin/reject/{id}', [TutorController::class, 'reject'])->name('admin.reject'); // <-- Cek apakah ini harusnya AdminController
+    Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
     
     // Reports Management
     Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');

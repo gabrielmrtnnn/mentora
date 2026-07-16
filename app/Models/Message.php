@@ -10,7 +10,12 @@ class Message extends Model
     protected $fillable = [
         'conversation_id',
         'sender_id',
-        'message'
+        'message',
+        'read_at'
+    ];
+    
+    protected $casts = [
+        'read_at' => 'datetime',
     ];
     
     public function conversation()
@@ -21,5 +26,20 @@ class Message extends Model
     public function sender()
     {
         return $this->belongsTo(User::class,'sender_id');
+    }
+
+    public function isRead()
+    {
+        return $this->read_at !== null;
+    }
+
+    public function scopeUnread($query)
+    {
+        return $query->whereNull('read_at');
+    }
+
+    public function scopeRead($query)
+    {
+        return $query->whereNotNull('read_at');
     }
 }
