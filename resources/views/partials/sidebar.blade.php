@@ -107,7 +107,7 @@
                             </span>
                         </a>
                         
-                        @if (auth()->user()->role != 'admin')
+                        @if (!auth()->check() || auth()->user()->role != 'admin')
                             <a href="{{ route('booking.index') }}"
                             class="group flex items-center px-3.5 py-2.5 rounded-xl transition-all
                             {{ request()->routeIs('booking.index') ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700' }}">
