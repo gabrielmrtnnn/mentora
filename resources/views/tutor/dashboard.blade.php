@@ -218,6 +218,9 @@
                             @case('completed')
                                 <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold border border-blue-100">Completed</span>
                             @break
+                            @case('rejected')
+                                <span class="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-semibold border border-red-100">Rejected</span>
+                            @break
                             @default
                                 <span class="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-semibold border border-red-100">Cancelled</span>
                         @endswitch
@@ -250,7 +253,7 @@
                 </div>
             </div>
 
-            @forelse($recentBookings as $booking)
+            @forelse($upcomingSessions as $booking)
                 <div class="flex justify-between items-center py-4 border-b border-gray-100 last:border-0">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-lg">

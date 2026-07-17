@@ -18,6 +18,25 @@ class TutorDashboardController extends Controller
         $upcoming = BookingSession::where('tutor_id', $tutor->id)
             ->whereDate('session_date', '>=', today())
             ->count();
+        
+        $today = now()->toDateString();
+        $currentTime = now()->toTimeString();
+
+        $upcomingSessions = BookingSession::with('student')
+        ->where('tutor_id', $tutor->id)
+        ->where('status', 'approved')
+        ->where(function ($query) use ($today, $currentTime) {
+            // Tanggal di masa depan ATAU (tanggal hari ini tapi jam belum lewat)
+            $query->where('session_date', '>', $today)
+                ->orWhere(function ($q) use ($today, $currentTime) {
+                    $q->where('session_date', '=', $today)
+                        ->where('session_time', '>=', $currentTime);
+                });
+        })
+        ->orderBy('session_date', 'asc')
+        ->orderBy('session_time', 'asc')
+        ->take(4) // Batasi jumlah yang tampil
+        ->get();
 
         $completed = BookingSession::where('tutor_id', $tutor->id)
             ->where('status', 'completed')
@@ -45,6 +64,7 @@ class TutorDashboardController extends Controller
             'tutor',
             'totalStudents',
             'upcoming',
+            'upcomingSessions',
             'completed',
             'todaySessions',
             'recentBookings',
