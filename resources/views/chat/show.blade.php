@@ -6,18 +6,18 @@
     <div class="w-96 border-r flex flex-col flex-shrink-0">
         <div class="p-6 border-b">
             <h1 class="text-2xl font-bold">Messages</h1>
-            <p class="text-gray-500 text-sm mt-1">Chat dengan tutor Mentora</p>
+            <p class="text-gray-500 text-sm mt-1">{{ __('Chat dengan tutor Mentora') }}</p>
         </div>
 
         <div class="p-4 border-b">
-            <input type="text" placeholder="Cari percakapan..." class="w-full border rounded-xl px-4 py-2 focus:ring-primary focus:border-primary">
+            <input type="text" placeholder="{{ __('Cari percakapan...') }}" class="w-full border rounded-xl px-4 py-2 focus:ring-primary focus:border-primary">
         </div>
 
         <div id="conversationList" class="flex-1 overflow-y-auto">
             @forelse($conversations as $chat)
                 @php
                     $partnerList = auth()->id() == $chat->student_id ? $chat->tutor->user : $chat->student;
-                    $lastMessageList = $chat->messages->sortByDesc('created_at')->first()?->message ?? 'Belum ada pesan';
+                    $lastMessageList = $chat->messages->sortByDesc('created_at')->first()?->message ?? __('Belum ada pesan');
                     $unread = $chat->unread_count;
                     $isActive = $chat->id == $conversation->id;
                 @endphp
@@ -59,7 +59,7 @@
                 </a>
             @empty
                 <div id="emptyState" class="h-full flex items-center justify-center text-gray-400">
-                    Belum ada percakapan
+                    {{ __('Belum ada percakapan') }}
                 </div>
             @endforelse
         </div>
@@ -76,7 +76,7 @@
             </div>
             <div>
                 <h2 class="font-bold text-lg">{{ $partner->name }}</h2>
-                <p class="text-green-500 text-sm">● Online</p>
+                <p class="text-green-500 text-sm">● {{ __('Online') }}</p>
             </div>
         </div>
 
@@ -91,14 +91,17 @@
                     </div>
                 </div>
             @empty
+                <div class="h-full flex items-center justify-center text-gray-400">
+                    {{ __('Belum ada pesan') }}
+                </div>
             @endforelse
         </div>
 
         <form id="chatForm" action="{{ route('chat.send', $conversation) }}" method="POST" class="border-t p-4 flex gap-3">
             @csrf
-            <input id="messageInput" type="text" name="message" placeholder="Ketik pesan..." autocomplete="off" required class="flex-1 border rounded-xl px-4 py-3 focus:ring-primary focus:border-primary">
+            <input id="messageInput" type="text" name="message" placeholder="{{ __('Ketik pesan...') }}" autocomplete="off" required class="flex-1 border rounded-xl px-4 py-3 focus:ring-primary focus:border-primary">
             <button type="submit" class="bg-primary text-white px-6 rounded-xl hover:opacity-90 transition">
-                Kirim
+                {{ __('Kirim') }}
             </button>
         </form>
     </div>

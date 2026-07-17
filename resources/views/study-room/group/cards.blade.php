@@ -31,7 +31,7 @@
 
                         <button
                             type="submit"
-                            onclick="return confirm('Yakin ingin menghapus room ini?')"
+                            onclick="return confirm('{{ __('Yakin ingin menghapus room ini?') }}')"
                             class="p-2.5 bg-white/10 text-white/80 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200 border border-white/10 backdrop-blur-sm">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@
 
                 <p class="text-sm text-blue-50/80 mb-8 line-clamp-2 leading-relaxed">
 
-                    Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.
+                    {{ __('Gabung untuk sesi belajar fokus bareng melalui video call Jitsi.') }}
 
                 </p>
 
@@ -74,14 +74,15 @@
 
             <div class="relative z-10 mt-auto">
 
-                <a
-                    href="https://meet.jit.si/{{ $group->slug }}#config.prejoinPageEnabled=false"
-                    target="_blank"
-                    class="block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]">
+                <button
+                    type="button"
+                    class="join-jitsi-btn block w-full py-3.5 rounded-2xl bg-white text-blue-600 text-center font-extrabold hover:bg-yellow-300 hover:text-gray-900 transition-all shadow-md active:scale-[0.98]"
+                    data-slug="{{ $group->slug }}"
+                    data-name="{{ $group->name }}">
 
-                    Gabung Grup
+                    {{ __('Gabung Grup') }}
 
-                </a>
+                </button>
 
             </div>
 

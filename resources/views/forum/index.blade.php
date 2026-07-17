@@ -22,18 +22,18 @@
             </p>
 
             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
-                Forum Diskusi
+                {{ __('Forum Diskusi') }}
             </h1>
 
             <p class="text-gray-500 mt-2">
-                Ruang buat nanya, sharing, atau sekadar curhat bareng sesama pengguna Mentora.
+                {{ __('Ruang buat nanya, sharing, atau sekadar curhat bareng sesama pengguna Mentora.') }}
             </p>
         </div>
 
         <button
             @click="openCreateModal = true"
             class="bg-primary text-white font-semibold px-5 py-3 rounded-xl hover:opacity-90 transition shrink-0">
-            + Buat Diskusi
+            {{ __('+ Buat Diskusi') }}
         </button>
 
     </div>
@@ -43,7 +43,7 @@
         <input
             type="text"
             id="searchInput"
-            placeholder="Cari diskusi..."
+            placeholder="{{ __('Cari diskusi...') }}"
             class="w-full px-4 py-2 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary">
     </div>
 
@@ -52,38 +52,38 @@
 
         <button class="filter-btn px-4 py-2 bg-primary text-white font-semibold rounded-full"
             data-filter="all">
-            Semua
+            {{ __('Semua') }}
         </button>
 
         <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 font-semibold rounded-full"
             data-filter="diskusi umum">
-            Diskusi Umum
+            {{ __('Diskusi Umum') }}
         </button>
 
         <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 font-semibold rounded-full"
             data-filter="tanya jawab">
-            Tanya Jawab
+            {{ __('Tanya Jawab') }}
         </button>
 
         <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 font-semibold rounded-full"
             data-filter="pengumuman">
-            Pengumuman
+            {{ __('Pengumuman') }}
         </button>
 
     </div>
 
     <!-- SORT -->
     <div class="flex flex-wrap items-center gap-3 mb-8">
-        <span class="text-sm font-semibold text-gray-500">Urutkan:</span>
+        <span class="text-sm font-semibold text-gray-500">{{ __('Urutkan:') }}</span>
 
         <button class="sort-btn px-4 py-1.5 bg-primary text-white text-sm font-semibold rounded-full"
             data-sort="terbaru">
-            Terbaru
+            {{ __('Terbaru') }}
         </button>
 
         <button class="sort-btn px-4 py-1.5 bg-gray-200 text-gray-700 text-sm font-semibold rounded-full"
             data-sort="terpopuler">
-            Terpopuler
+            {{ __('Terpopuler') }}
         </button>
     </div>
 
@@ -154,8 +154,8 @@
 
                 <!-- FOOTER -->
                 <div class="mt-4 pt-3 border-t border-gray-100 flex items-center gap-4 text-sm text-gray-400 font-medium">
-                    <span>💬 {{ $thread->replies_count }} balasan</span>
-                    <span>❤️ {{ $thread->likes_count }} suka</span>
+                    <span>💬 {{ $thread->replies_count }} {{ __('balasan') }}</span>
+                    <span>❤️ {{ $thread->likes_count }} {{ __('suka') }}</span>
                 </div>
 
             </a>
@@ -169,11 +169,11 @@
                 </div>
 
                 <h3 class="font-bold text-xl mb-2">
-                    Belum Ada Diskusi
+                    {{ __('Belum Ada Diskusi') }}
                 </h3>
 
                 <p class="text-gray-500">
-                    Jadi yang pertama mulai diskusi di forum ini.
+                    {{ __('Jadi yang pertama mulai diskusi di forum ini.') }}
                 </p>
 
             </div>
@@ -183,8 +183,8 @@
         <!-- NO SEARCH/FILTER RESULT -->
         <div id="noResult" class="hidden bg-white rounded-2xl shadow p-10 text-center">
             <div class="text-5xl mb-4">🔍</div>
-            <h3 class="font-bold text-xl mb-2">Ga Ketemu, Nih</h3>
-            <p class="text-gray-500">Coba kata kunci atau kategori lain.</p>
+            <h3 class="font-bold text-xl mb-2">{{ __('Ga Ketemu, Nih') }}</h3>
+            <p class="text-gray-500">{{ __('Coba kata kunci atau kategori lain.') }}</p>
         </div>
 
     </div>
@@ -199,8 +199,8 @@
         <div @click.away="openCreateModal = false" class="bg-white w-full max-w-lg rounded-[32px] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
 
             <div class="p-8 pb-0 shrink-0">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Buat Diskusi Baru</h3>
-                <p class="text-sm text-gray-500 mb-2">Diskusi kamu akan langsung muncul di forum.</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ __('Buat Diskusi Baru') }}</h3>
+                <p class="text-sm text-gray-500 mb-2">{{ __('Diskusi kamu akan langsung muncul di forum.') }}</p>
 
                 @if($errors->any())
                     <div class="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl">
@@ -219,29 +219,29 @@
                 <div class="overflow-y-auto px-8 flex-1 min-h-0">
                     <div class="space-y-4 py-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Judul</label>
-                            <input type="text" name="title" value="{{ old('title') }}" placeholder="Tulis judul diskusi kamu..." required
+                            <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Judul') }}</label>
+                            <input type="text" name="title" value="{{ old('title') }}" placeholder="{{ __('Tulis judul diskusi kamu...') }}" required
                                 class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-3 px-4">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Kategori</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Kategori') }}</label>
                             <select name="category" required
                                 class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-3 px-4">
-                                <option value="diskusi umum" @selected(old('category') === 'diskusi umum')>Diskusi Umum</option>
-                                <option value="tanya jawab" @selected(old('category') === 'tanya jawab')>Tanya Jawab</option>
+                                <option value="diskusi umum" @selected(old('category') === 'diskusi umum')>{{ __('Diskusi Umum') }}</option>
+                                <option value="tanya jawab" @selected(old('category') === 'tanya jawab')>{{ __('Tanya Jawab') }}</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Isi</label>
-                            <textarea name="body" rows="4" placeholder="Ceritain lebih detail di sini..." required
+                            <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Isi') }}</label>
+                            <textarea name="body" rows="4" placeholder="{{ __('Ceritain lebih detail di sini...') }}" required
                                 class="w-full border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 py-3 px-4">{{ old('body') }}</textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Foto (opsional, bisa lebih dari satu)</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Foto (opsional, bisa lebih dari satu)') }}</label>
                             <input type="file" name="images[]" multiple accept="image/png, image/jpeg, image/webp"
                                 @change="imagePreviews = Array.from($event.target.files).map(f => URL.createObjectURL(f))"
                                 class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 file:text-primary file:font-semibold hover:file:bg-blue-100">
-                            <p class="text-xs text-gray-400 mt-1">JPG, PNG, atau WEBP, maks 2MB per foto.</p>
+                            <p class="text-xs text-gray-400 mt-1">{{ __('JPG, PNG, atau WEBP, maks 2MB per foto.') }}</p>
                             <div class="mt-3 grid grid-cols-3 gap-2" x-show="imagePreviews.length > 0">
                                 <template x-for="(src, i) in imagePreviews" :key="i">
                                     <img :src="src" alt="Preview" class="rounded-xl h-24 w-full object-cover">
@@ -253,10 +253,10 @@
 
                 <div class="p-8 pt-4 border-t border-gray-100 flex gap-3 shrink-0">
                     <button type="button" @click="openCreateModal = false" class="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-50 rounded-2xl transition">
-                        Batal
+                        {{ __('Batal') }}
                     </button>
                     <button type="submit" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition">
-                        Posting
+                        {{ __('Posting') }}
                     </button>
                 </div>
             </form>

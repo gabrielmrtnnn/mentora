@@ -44,23 +44,23 @@
         <div>
             <p id="sessionTypeLabel"
                 class="text-blue-100 text-sm font-semibold uppercase tracking-wide">
-                Sesi Fokus
+                {{ __('Sesi Fokus') }}
             </p>
 
             <h2 id="sessionTitle"
                 class="mt-2 text-xl sm:text-2xl md:text-3xl font-extrabold">
-                Belajar 25 Menit
+                {{ __('Belajar 25 Menit') }}
             </h2>
         </div>
 
         <div class="sm:text-right">
             <p class="text-blue-100 text-xs font-medium uppercase tracking-widest">
-                Progres
+                {{ __('Progres') }}
             </p>
 
             <p id="stepCounter"
                 class="text-xl sm:text-2xl font-extrabold">
-                Sesi 1 / 4
+                {{ __('Sesi') }} 1 / 4
             </p>
         </div>
 
@@ -103,7 +103,7 @@
 
                 <p id="statusText"
                     class="mt-4 text-sm text-blue-100">
-                    Pilih mode lalu tekan Mulai.
+                    {{ __('Pilih mode lalu tekan Mulai.') }}
                 </p>
 
             </div>
@@ -116,17 +116,17 @@
 
         <button id="startBtn"
             class="px-6 py-3 rounded-2xl bg-accent text-gray-900 font-extrabold hover:bg-accent-hover transition shadow-sm active:scale-[0.98]">
-            Mulai
+            {{ __('Mulai') }}
         </button>
 
         <button id="pauseBtn"
             class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-            Jeda
+            {{ __('Jeda') }}
         </button>
 
         <button id="resetBtn"
             class="px-6 py-3 rounded-2xl bg-white/15 text-white font-semibold hover:bg-white/20 transition active:scale-[0.98]">
-            Ulang
+            {{ __('Ulang') }}
         </button>
 
     </div>

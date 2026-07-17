@@ -13,7 +13,7 @@
                 🎯 SNBT 2026
             </p>
             <p class="text-sm md:text-base opacity-80">
-                dimulai dalam
+                {{ __('dimulai dalam') }}
             </p>
         </div>
 
@@ -21,35 +21,35 @@
 
             <div class="bg-white text-primary px-3 py-2 rounded-lg w-16">
                 <p id="days" class="text-xl font-bold">00</p>
-                <span class="text-xs text-gray-500">Hari</span>
+                <span class="text-xs text-gray-500">{{ __('Hari') }}</span>
             </div>
 
             <div class="bg-white text-primary px-3 py-2 rounded-lg w-16">
                 <p id="hours" class="text-xl font-bold">00</p>
-                <span class="text-xs text-gray-500">Jam</span>
+                <span class="text-xs text-gray-500">{{ __('Jam') }}</span>
             </div>
 
             <div class="bg-white text-primary px-3 py-2 rounded-lg w-16">
                 <p id="minutes" class="text-xl font-bold">00</p>
-                <span class="text-xs text-gray-500">Menit</span>
+                <span class="text-xs text-gray-500">{{ __('Menit') }}</span>
             </div>
 
             <div class="bg-white text-primary px-3 py-2 rounded-lg w-16">
                 <p id="seconds" class="text-xl font-bold transition-all duration-200"></p>
-                <span class="text-xs text-gray-500">Detik</span>
+                <span class="text-xs text-gray-500">{{ __('Detik') }}</span>
             </div>
 
         </div>
 
         @guest
             <a href="{{ route('auth.redirect') }}" class="bg-accent text-black hover:bg-accent-hover text-sm font-semibold px-4 py-2 rounded-lg">
-                Mulai belajar
+                {{ __('Mulai belajar') }}
             </a>
         @endguest
 
         @auth
             <a href="{{ route('study-room') }}" class="bg-accent text-black hover:bg-accent-hover text-sm font-semibold px-4 py-2 rounded-lg">
-                Mulai belajar
+                {{ __('Mulai belajar') }}
             </a>
         @endauth
     </div>
@@ -63,14 +63,14 @@
         <div class="flex-1 overflow-y-auto no-scrollbar pr-2 flex flex-col gap-4 min-h-0 mt-6">
 
             <div>
-                <h1 class="text-4xl font-bold mb-2">Forum Belajar SNBT</h1>
-                <p class="text-textgray">Lihat pertanyaan siswa lain 👀</p>
+                <h1 class="text-4xl font-bold mb-2">{{ __('Forum Belajar SNBT') }}</h1>
+                <p class="text-textgray">{{ __('Lihat pertanyaan siswa lain 👀') }}</p>
             </div>
 
             <!-- SEARCH -->
             <a href={{ route('forum') }}#searchInput
                 class="w-full px-4 py-2 bg-white text-gray-400 cursor-text border border-gray-200 rounded-2xl shadow-sm">
-                Cari diskusi...
+                {{ __('Cari diskusi...') }}
             </a>
 
             <!-- QUESTION CARDS -->
@@ -123,7 +123,7 @@
 
                 <div class="flex items-center gap-2 mt-2 text-sm text-gray-500">
 
-                    <span>{{ $thread->replies_count }} jawaban</span>
+                    <span>{{ $thread->replies_count }} {{ __('jawaban') }}</span>
 
                     <span>•</span>
 
@@ -146,7 +146,7 @@
         <div class="w-64 flex flex-col gap-6 sticky top-[80px] h-fit self-start">
 
             <div class="bg-white p-3 rounded-2xl shadow-sm">
-                <p class="font-semibold mb-3">Waktu Belajar Mingguan</p>
+                <p class="font-semibold mb-3">{{ __('Waktu Belajar Mingguan') }}</p>
 
                 <div class="flex items-end justify-between gap-2 h-24 w-full">
                     @php
@@ -171,15 +171,9 @@
                             <!-- LABEL -->
                             <span class="text-[10px] mt-2 text-gray-400">
                                 @php
-                                    $hariMap = [
-                                        'Mon' => 'Sen',
-                                        'Tue' => 'Sel',
-                                        'Wed' => 'Rab',
-                                        'Thu' => 'Kam',
-                                        'Fri' => 'Jum',
-                                        'Sat' => 'Sab',
-                                        'Sun' => 'Min',
-                                    ];
+                                    $hariMap = app()->getLocale() === 'en'
+                                        ? ['Mon' => 'Mon', 'Tue' => 'Tue', 'Wed' => 'Wed', 'Thu' => 'Thu', 'Fri' => 'Fri', 'Sat' => 'Sat', 'Sun' => 'Sun']
+                                        : ['Mon' => 'Sen', 'Tue' => 'Sel', 'Wed' => 'Rab', 'Thu' => 'Kam', 'Fri' => 'Jum', 'Sat' => 'Sab', 'Sun' => 'Min'];
                                 @endphp
                                 {{ $hariMap[\Carbon\Carbon::parse($day)->format('D')] }}
                             </span>
@@ -191,12 +185,12 @@
                                     {{ \Carbon\Carbon::parse($day)->format('d M') }}
                                 </p>
 
-                                <p>Total: {{ round($data['total'],1) }} jam</p>
+                                <p>{{ __('Total') }}: {{ round($data['total'],1) }} {{ __('jam') }}</p>
 
                                 <div class="mt-1 text-gray-500">
-                                    TPS: {{ round($data['TPS'],1) }}j <br>
-                                    Numerasi: {{ round($data['Numerasi'],1) }}j <br>
-                                    Literasi: {{ round($data['Literasi'],1) }}j
+                                    TPS: {{ round($data['TPS'],1) }}{{ __('j') }} <br>
+                                    Numerasi: {{ round($data['Numerasi'],1) }}{{ __('j') }} <br>
+                                    Literasi: {{ round($data['Literasi'],1) }}{{ __('j') }}
                                 </div>
 
                             </div>
@@ -211,13 +205,13 @@
             </div>
 
             <div class="bg-white p-3 rounded-2xl shadow-sm">
-                <p class="font-semibold mb-4">Fokus Belajar</p>
+                <p class="font-semibold mb-4">{{ __('Fokus Belajar') }}</p>
 
                 <!-- TPS -->
                 <div class="mb-3">
                     <div class="flex justify-between text-sm mb-1">
                         <span>TPS</span>
-                        <span>{{ round($tps, 2) }} jam</span>
+                        <span>{{ round($tps, 2) }} {{ __('jam') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"
@@ -229,7 +223,7 @@
                 <div class="mb-3">
                     <div class="flex justify-between text-sm mb-1">
                         <span>Numerasi</span>
-                        <span>{{ round($numerasi, 2) }} jam</span>
+                        <span>{{ round($numerasi, 2) }} {{ __('jam') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"
@@ -241,7 +235,7 @@
                 <div>
                     <div class="flex justify-between text-sm mb-1">
                         <span>Literasi</span>
-                        <span>{{ round($literasi, 2) }} jam</span>
+                        <span>{{ round($literasi, 2) }} {{ __('jam') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 h-2 rounded-full">
                         <div class="bg-primary h-2 rounded-full"
@@ -251,9 +245,9 @@
             </div>
 
             <div class="bg-primary text-white p-6 rounded-2xl text-center">
-                <p class="text-lg">🔥 Streak Belajar</p>
+                <p class="text-lg">🔥 {{ __('Streak Belajar') }}</p>
                 <p class="text-4xl font-bold">
-                    {{ $streak }} Hari
+                    {{ $streak }} {{ __('Hari') }}
                 </p>
             </div>
 
