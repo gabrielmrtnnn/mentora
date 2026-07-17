@@ -8,7 +8,7 @@
     <div class="mb-2">
         <a href="{{ route('tutor') }}"
            class="text-primary text-sm font-medium hover:underline">
-            ← Kembali ke daftar tutor
+            ← {{ __('Kembali ke daftar tutor') }}
         </a>
     </div>
 
@@ -22,7 +22,7 @@
         </h1>
 
         <p class="text-gray-500 mt-2">
-            Review dan approve calon tutor Mentora.
+            {{ __('Review dan approve calon tutor Mentora.') }}
         </p>
     </div>
 
@@ -98,7 +98,7 @@
 
                 <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-1">
-                        Alasan Menjadi Tutor
+                        {{ __('Alasan Menjadi Tutor') }}
                     </p>
 
                     <div class="bg-gray-50 rounded-xl p-4 text-gray-700">
@@ -111,14 +111,14 @@
                     <a href="{{ asset('storage/'.$app->utbk_file) }}"
                         target="_blank"
                         class="text-primary font-semibold hover:underline">
-                        📄 Lihat Hasil UTBK
+                        📄 {{ __('Lihat Hasil UTBK') }}
                     </a>
 
                     <form action="{{ route('admin.reject', $app->id) }}" method="POST">
                         @csrf
 
                         <button
-                            onclick="return confirm('Yakin ingin menolak pengajuan ini?')"
+                            onclick="return confirm('{{ __('Yakin ingin menolak pengajuan ini?') }}')"
                             class="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 transition">
                             Reject
                         </button>
@@ -143,11 +143,11 @@
                 <div class="text-5xl mb-3">📭</div>
 
                 <h3 class="font-bold text-lg mb-2">
-                    Tidak Ada Pengajuan Pending
+                    {{ __('Tidak Ada Pengajuan Pending') }}
                 </h3>
 
                 <p class="text-gray-500">
-                    Semua pengajuan sudah diproses.
+                    {{ __('Semua pengajuan sudah diproses.') }}
                 </p>
             </div>
 
@@ -200,11 +200,11 @@
                 <div class="text-5xl mb-3">🎓</div>
 
                 <h3 class="font-bold text-lg mb-2">
-                    Belum Ada Tutor Approved
+                    {{ __('Belum Ada Tutor Approved') }}
                 </h3>
 
                 <p class="text-gray-500">
-                    Belum ada tutor yang disetujui.
+                    {{ __('Belum ada tutor yang disetujui.') }}
                 </p>
             </div>
 

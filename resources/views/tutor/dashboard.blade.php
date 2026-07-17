@@ -19,7 +19,7 @@
                 </h1>
 
                 <p class="mt-4 text-blue-100 text-lg">
-                    Berikut ringkasan aktivitas mengajarmu hari ini.
+                    {{ __('Berikut ringkasan aktivitas mengajarmu hari ini.') }}
                 </p>
             </div>
 
@@ -108,7 +108,7 @@
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">Booking Requests</h2>
-                <p class="text-gray-500 text-sm mt-1">Menunggu persetujuan</p>
+                <p class="text-gray-500 text-sm mt-1">{{ __('Menunggu persetujuan') }}</p>
             </div>
             @if($pendingRequests->count() > 0)
                 <span class="bg-amber-100 text-amber-700 px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
@@ -171,8 +171,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-700">Tidak ada booking baru</h3>
-                <p class="text-gray-500 mt-1 text-sm">Semua permintaan dari student sudah diproses.</p>
+                <h3 class="text-xl font-bold text-gray-700">{{ __('Tidak ada booking baru') }}</h3>
+                <p class="text-gray-500 mt-1 text-sm">{{ __('Semua permintaan dari student sudah diproses.') }}</p>
             </div>
         @endforelse
     </div>
@@ -185,7 +185,7 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Today's Sessions</h2>
-                    <p class="text-gray-500 mt-1 text-sm">Jadwal mengajar hari ini</p>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Jadwal mengajar hari ini') }}</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -203,7 +203,7 @@
                         <div>
                             <h3 class="font-bold text-gray-800">{{ $session->student->name }}</h3>
                             <p class="text-gray-500 text-sm mt-0.5">
-                                {{ \Carbon\Carbon::parse($session->session_time)->format('H:i') }} • {{ $session->duration }} menit
+                                {{ \Carbon\Carbon::parse($session->session_time)->format('H:i') }} • {{ $session->duration }} {{ __('menit') }}
                             </p>
                         </div>
                     </div>
@@ -230,8 +230,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-700">Tidak ada sesi hari ini</h3>
-                    <p class="text-gray-500 mt-1 text-sm">Nikmati waktu luangmu atau siapkan materi esok hari.</p>
+                    <h3 class="text-lg font-bold text-gray-700">{{ __('Tidak ada sesi hari ini') }}</h3>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Nikmati waktu luangmu atau siapkan materi esok hari.') }}</p>
                 </div>
             @endforelse
         </div>
@@ -241,7 +241,7 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Upcoming Schedule</h2>
-                    <p class="text-gray-500 mt-1 text-sm">Jadwal beberapa hari ke depan</p>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Jadwal beberapa hari ke depan') }}</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -276,8 +276,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2.25m0 0v2.25m0-2.25h2.25m-2.25 0H9.75M2.25 12a9.75 9.75 0 1119.5 0 9.75 9.75 0 01-19.5 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-700">Belum ada jadwal</h3>
-                    <p class="text-gray-500 mt-1 text-sm">Jadwal berikutnya akan muncul di sini.</p>
+                    <h3 class="text-lg font-bold text-gray-700">{{ __('Belum ada jadwal') }}</h3>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Jadwal berikutnya akan muncul di sini.') }}</p>
                 </div>
             @endforelse
         </div>
@@ -291,7 +291,7 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Booking History</h2>
-                    <p class="text-gray-500 mt-1 text-sm">Aktivitas pesanan terakhir</p>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Aktivitas pesanan terakhir') }}</p>
                 </div>
                 <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-semibold border border-blue-100">
                     {{ $recentBookings->count() }} Records
@@ -307,7 +307,7 @@
                         <div>
                             <h3 class="font-bold text-gray-800">{{ $booking->student->name }}</h3>
                             <p class="text-gray-500 text-sm mt-0.5">
-                                Sesi pada {{ \Carbon\Carbon::parse($booking->session_date)->format('d M Y') }}
+                                {{ __('Sesi pada') }} {{ \Carbon\Carbon::parse($booking->session_date)->format('d M Y') }}
                             </p>
                         </div>
                     </div>
@@ -327,8 +327,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.252 2.252 0 00-.1.661z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-700">Belum ada history</h3>
-                    <p class="text-gray-500 mt-1 text-sm">Data riwayat booking akan tampil di sini.</p>
+                    <h3 class="text-lg font-bold text-gray-700">{{ __('Belum ada history') }}</h3>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __('Data riwayat booking akan tampil di sini.') }}</p>
                 </div>
             @endforelse
         </div>
@@ -352,7 +352,7 @@
                         </svg>
                     </div>
                     <p class="mt-4 text-sm text-gray-300 leading-relaxed">
-                        Pertahankan kualitas mengajarmu agar semakin banyak student yang percaya dan melakukan booking.
+                        {{ __('Pertahankan kualitas mengajarmu agar semakin banyak student yang percaya dan melakukan booking.') }}
                     </p>
                 </div>
             </div>
@@ -361,6 +361,20 @@
             <div class="bg-white rounded-3xl shadow-sm p-6">
                 <h2 class="text-lg font-bold mb-4 text-gray-800">Quick Actions</h2>
                 <div class="space-y-3">
+                    <a href="{{ route('booking.index') }}" class="flex items-center gap-4 rounded-2xl border border-gray-100 p-4 hover:border-blue-200 hover:bg-blue-50/50 transition group">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-100 transition">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-gray-800 text-sm">Semua Booking</p>
+                            <p class="text-xs text-gray-500">Kelola jadwal & pesanan</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </a>
 
                     <a href="{{ route('chat.index') }}" class="flex items-center gap-4 rounded-2xl border border-gray-100 p-4 hover:border-blue-200 hover:bg-blue-50/50 transition group">
                         <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600 group-hover:bg-teal-100 transition">
@@ -369,8 +383,8 @@
                             </svg>
                         </div>
                         <div class="flex-1">
-                            <p class="font-semibold text-gray-800 text-sm">Pesan Student</p>
-                            <p class="text-xs text-gray-500">Balas chat terbaru</p>
+                            <p class="font-semibold text-gray-800 text-sm">{{ __('Pesan Student') }}</p>
+                            <p class="text-xs text-gray-500">{{ __('Balas chat terbaru') }}</p>
                         </div>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-teal-600 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -386,7 +400,7 @@
                         </div>
                         <div class="flex-1">
                             <p class="font-semibold text-gray-800 text-sm">Edit Profile</p>
-                            <p class="text-xs text-gray-500">Perbarui info tutor</p>
+                            <p class="text-xs text-gray-500">{{ __('Perbarui info tutor') }}</p>
                         </div>
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -407,10 +421,10 @@
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.82 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.496 1.509 1.333 1.509 2.316V18" />
                         </svg>
-                        <h3 class="font-bold text-sm">Tips Hari Ini</h3>
+                        <h3 class="font-bold text-sm">{{ __('Tips Hari Ini') }}</h3>
                     </div>
                     <p class="text-amber-800 text-sm leading-relaxed">
-                        Tutor yang merespon chat dengan cepat biasanya mendapatkan lebih banyak booking dan rating yang lebih tinggi.
+                        {{ __('Tutor yang merespon chat dengan cepat biasanya mendapatkan lebih banyak booking dan rating yang lebih tinggi.') }}
                     </p>
                 </div>
             </div>

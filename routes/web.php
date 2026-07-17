@@ -19,6 +19,14 @@ use App\Http\Controllers\ReviewController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/language/{locale}', function (string $locale) {
+    if (in_array($locale, ['id', 'en'], true)) {
+        session(['locale' => $locale]);
+    }
+
+    return redirect()->back();
+})->name('language.switch');
+
 // Authentication & Google OAuth
 Route::get('/auth-redirect', [AuthRedirectController::class, 'handle'])->name('auth.redirect');
 Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');

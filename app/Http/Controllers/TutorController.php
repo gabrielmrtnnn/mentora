@@ -39,7 +39,7 @@ class TutorController extends Controller
         ]);
 
         if(!$request->has('tps') && !$request->has('literasi') && !$request->has('numerasi')) {
-            return back()->with('error', 'Pilih minimal satu bidang yang ingin diajarkan!');
+            return back()->with('error', __('Pilih minimal satu bidang yang ingin diajarkan!'));
         }
 
         // upload file

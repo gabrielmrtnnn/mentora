@@ -10,11 +10,11 @@
         </div>
 
         <h3 id="modalTitle" class="text-xl font-bold text-gray-900 mb-2">
-            Sesi selesai
+            {{ __('Sesi selesai') }}
         </h3>
 
         <p id="modalDescription" class="text-sm text-gray-500 mb-8">
-            Sesi kamu sudah selesai.
+            {{ __('Sesi kamu sudah selesai.') }}
         </p>
 
         <div class="flex gap-3">
@@ -22,13 +22,13 @@
             <button id="modalSecondaryBtn"
                 type="button"
                 class="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-50 rounded-2xl transition">
-                Nanti Aja
+                {{ __('Nanti Aja') }}
             </button>
 
             <button id="modalPrimaryBtn"
                 type="button"
                 class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition">
-                Lanjut
+                {{ __('Lanjut') }}
             </button>
 
         </div>

@@ -23,7 +23,7 @@
                         🧠 TPS
                     </h3>
                     <p class="text-sm text-gray-600">
-                        Tes Potensi Skolastik
+                        {{ __('Tes Potensi Skolastik') }}
                     </p>
                 </div>
             </label>
@@ -37,7 +37,7 @@
                         📖 Literasi
                     </h3>
                     <p class="text-sm text-gray-600">
-                        Membaca dan memahami bacaan
+                        {{ __('Membaca dan memahami bacaan') }}
                     </p>
                 </div>
             </label>
@@ -51,7 +51,7 @@
                         🔢 Numerasi
                     </h3>
                     <p class="text-sm text-gray-600">
-                        Matematika dan penalaran kuantitatif
+                        {{ __('Matematika dan penalaran kuantitatif') }}
                     </p>
                 </div>
             </label>
