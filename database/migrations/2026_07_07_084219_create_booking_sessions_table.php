@@ -42,7 +42,8 @@ return new class extends Migration
                 'pending',
                 'approved',
                 'completed',
-                'cancelled'
+                'cancelled',
+                'rejected'
             ])->default('pending');
 
             $table->timestamps();
