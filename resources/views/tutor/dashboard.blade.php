@@ -361,21 +361,6 @@
             <div class="bg-white rounded-3xl shadow-sm p-6">
                 <h2 class="text-lg font-bold mb-4 text-gray-800">Quick Actions</h2>
                 <div class="space-y-3">
-                    <a href="{{ route('booking.index') }}" class="flex items-center gap-4 rounded-2xl border border-gray-100 p-4 hover:border-blue-200 hover:bg-blue-50/50 transition group">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-100 transition">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <p class="font-semibold text-gray-800 text-sm">{{ __('Semua Booking') }}</p>
-                            <p class="text-xs text-gray-500">{{ __('Kelola jadwal & pesanan') }}</p>
-                        </div>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </a>
-
                     <a href="{{ route('chat.index') }}" class="flex items-center gap-4 rounded-2xl border border-gray-100 p-4 hover:border-blue-200 hover:bg-blue-50/50 transition group">
                         <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-teal-600 group-hover:bg-teal-100 transition">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
