@@ -195,6 +195,16 @@
             </div>
 
             @forelse($todaySessions as $session)
+            @php
+                $start = \Carbon\Carbon::parse(
+                    $session->session_date.' '.$session->session_time
+                );
+
+                $end = $start->copy()->addMinutes($session->duration);
+
+                $isOngoing = now()->between($start, $end);
+            @endphp
+
                 <div class="flex items-center justify-between py-4 border-b border-gray-100 last:border-0">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg">
@@ -207,23 +217,35 @@
                             </p>
                         </div>
                     </div>
-                    <div>
-                        @switch($session->status)
-                            @case('pending')
-                                <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-xs font-semibold border border-amber-100">Pending</span>
-                            @break
-                            @case('approved')
-                                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold border border-emerald-100">Approved</span>
-                            @break
-                            @case('completed')
-                                <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold border border-blue-100">Completed</span>
-                            @break
-                            @case('rejected')
-                                <span class="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-semibold border border-red-100">Rejected</span>
-                            @break
-                            @default
-                                <span class="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-semibold border border-red-100">Cancelled</span>
-                        @endswitch
+                    <div class="flex items-center gap-3">
+                        @if($isOngoing)
+                            <!-- Tombol Join Meeting diletakkan di sebelah kiri badge -->
+                            <a href="{{ route('meeting', $session->id) }}"
+                            class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition shadow-sm">
+                                <!-- Ikon Play -->
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                Join Meeting
+                            </a>
+                        @endif
+
+                        <!-- Indikator Status -->
+                        @if($isOngoing)
+                            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100/80 text-green-800 text-sm font-medium border border-green-200/50">
+                                <!-- Ikon Dot (dengan efek denyut/pulse) -->
+                                <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+                                Ongoing
+                            </span>
+                        @elseif($session->status == 'approved')
+                            <span class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium">
+                                Approved
+                            </span>
+                        @elseif($session->status == 'completed')
+                            <span class="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-700 text-sm font-medium">
+                                Completed
+                            </span>
+                        @endif
                     </div>
                 </div>
             @empty
