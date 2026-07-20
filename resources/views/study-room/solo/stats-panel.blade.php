@@ -36,4 +36,6 @@
 
     </div>
 
+    @include('study-room.components.learning-statistics', ['scope' => 'solo'])
+
 </div>

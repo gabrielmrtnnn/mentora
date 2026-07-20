@@ -25,10 +25,30 @@ class StudySessionController extends Controller
             ->whereDate('created_at', today())
             ->count();
 
+        // Statistik fokus memakai seluruh sesi pengguna, sama seperti di dashboard.
+        $focusMinutes = StudySession::query()
+            ->selectRaw('category, SUM(duration) as total')
+            ->where('user_id', $user->id)
+            ->groupBy('category')
+            ->pluck('total', 'category');
+
+        $tps = (int) ($focusMinutes['TPS'] ?? 0);
+        $numerasi = (int) ($focusMinutes['Numerasi'] ?? 0);
+        $literasi = (int) ($focusMinutes['Literasi'] ?? 0);
+        $maxFocusMinutes = max($tps, $numerasi, $literasi, 1);
+
         // 2. Ambil Daftar Room Study asli dari Database
         $studyGroups = StudyGroup::with('creator')->latest()->get();
 
-        return view('study-room.index', compact('todayMinutes', 'todaySessions', 'studyGroups'));
+        return view('study-room.index', compact(
+            'todayMinutes',
+            'todaySessions',
+            'studyGroups',
+            'tps',
+            'numerasi',
+            'literasi',
+            'maxFocusMinutes'
+        ));
     }
 
     // Fungsi untuk membuat Room baru

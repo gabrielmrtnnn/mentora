@@ -23,6 +23,10 @@
 
     </div>
 
+    <div class="mb-8">
+        @include('study-room.components.learning-statistics', ['layout' => 'horizontal', 'scope' => 'group'])
+    </div>
+
     <div class="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
 
         <div>
