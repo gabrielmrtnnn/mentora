@@ -222,6 +222,29 @@ let pendingAction = null;
 let selectedCategory = 'TPS';       // dipakai solo mode
 let groupSelectedCategory = 'TPS';  // dipakai group mode
 
+const categoryColors = {
+    TPS: '#2563eb',
+    Numerasi: '#4f46e5',
+    Literasi: '#0ea5e9',
+};
+
+function updateLearningStatisticsColor(scope, category) {
+    const statistics = document.querySelectorAll(`[data-learning-statistics="${scope}"]`);
+
+    statistics.forEach((statistic) => {
+        statistic.querySelectorAll('[data-learning-statistics-category]').forEach((statisticCategory) => {
+            const isSelected = statisticCategory.dataset.learningStatisticsCategory === category;
+            const bar = statisticCategory.querySelector('[data-learning-statistics-bar]');
+
+            if (bar) {
+                bar.style.backgroundColor = isSelected
+                    ? (categoryColors[category] || categoryColors.TPS)
+                    : '#d1d5db';
+            }
+        });
+    });
+}
+
 function initCategoryPicker(scope) {
     const container = document.getElementById(scope + 'CategoryPicker');
     if (!container) return;
@@ -252,10 +275,12 @@ function initCategoryPicker(scope) {
             }
 
             setActive(category);
+            updateLearningStatisticsColor(scope, category);
         });
     });
 
     setActive(scope === 'solo' ? selectedCategory : groupSelectedCategory);
+    updateLearningStatisticsColor(scope, scope === 'solo' ? selectedCategory : groupSelectedCategory);
 }
 
 // --- STOPWATCH SESI GROUP ---
