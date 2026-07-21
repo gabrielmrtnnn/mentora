@@ -149,7 +149,7 @@
                         <span class="sidebar-text ml-3 text-sm
                             max-w-0 opacity-0 overflow-hidden
                             whitespace-nowrap transition-all duration-300">
-                            Tutor Applications
+                            {{ __('Pengajuan Tutor') }}
                         </span>
                     </a>
                     @endif
