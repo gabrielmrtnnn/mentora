@@ -12,10 +12,30 @@
     }
 </style>
 
-<aside id="sidebar"
-    class="fixed top-0 left-0 h-full w-20 bg-white shadow-lg
-           flex flex-col p-4 z-[70]
-           transition-all duration-300 overflow-hidden">
+<aside id="sidebar" class="
+    fixed
+    top-0
+    left-0
+    h-full
+
+    w-64
+    lg:w-20
+
+    bg-white
+    shadow-lg
+    flex
+    flex-col
+    p-4
+
+    z-[80]
+
+    transition-all
+    duration-300
+
+    overflow-hidden
+
+    -translate-x-full
+    lg:translate-x-0">
 
     <!-- LOGO -->
     <div class="flex items-center px-2 mt-2 mb-8 pt-4">

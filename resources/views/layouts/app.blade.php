@@ -37,14 +37,14 @@
             <div id="sidebarBackdrop"
                 class="hidden fixed inset-0 bg-black/40 z-[65] lg:hidden"></div>
 
-            <button id="sidebarOpenBtn"
+            {{-- <button id="sidebarOpenBtn"
                 type="button"
                 aria-label="{{ __('Buka menu') }}"
                 class="lg:hidden fixed top-4 left-4 z-[75] p-2.5 bg-white rounded-xl shadow-md text-gray-600 hover:bg-gray-50 transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
                 </svg>
-            </button>
+            </button> --}}
 
             <div id="mainContent"
                 class="flex-1 flex flex-col h-full ml-0 lg:ml-20 transition-all duration-300">
@@ -62,113 +62,219 @@
         @endif
 
         <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener("DOMContentLoaded", () => {
 
-            const sidebar = document.getElementById('sidebar');
-            const main = document.getElementById('mainContent');
-            const banner = document.getElementById('topBanner');
-            const backdrop = document.getElementById('sidebarBackdrop');
-            const openBtn = document.getElementById('sidebarOpenBtn');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
+            const sidebar = document.getElementById("sidebar");
+            const main = document.getElementById("mainContent");
+            const banner = document.getElementById("topBanner");
 
-            const texts = document.querySelectorAll('.sidebar-text');
-            const profileTexts = document.querySelectorAll('.profile-text');
+            const backdrop = document.getElementById("sidebarBackdrop");
 
-            const wrapper = document.getElementById('profileWrapper');
-            const button = document.getElementById('profileButton');
-            const dropdown = document.getElementById('dropdownMenu');
+            const openBtn = document.getElementById("sidebarOpenBtn");
 
-            if (wrapper && button && dropdown) {
-                button.addEventListener('click', (e) => {
+            const closeBtn = document.getElementById("sidebarCloseBtn");
+
+            const texts = document.querySelectorAll(".sidebar-text");
+
+            const profileTexts = document.querySelectorAll(".profile-text");
+
+            // =========================
+            // PROFILE DROPDOWN
+            // =========================
+
+            const wrapper = document.getElementById("profileWrapper");
+            const button = document.getElementById("profileButton");
+            const dropdown = document.getElementById("dropdownMenu");
+
+            if(wrapper && button && dropdown){
+
+                button.addEventListener("click",(e)=>{
+
                     e.stopPropagation();
-                    dropdown.classList.toggle('hidden');
+
+                    dropdown.classList.toggle("hidden");
+
                 });
 
-                wrapper.addEventListener('mouseleave', () => {
-                    dropdown.classList.add('hidden');
+                if(window.innerWidth >= 1024){
+
+                    wrapper.addEventListener("mouseleave",()=>{
+
+                        dropdown.classList.add("hidden");
+
+                    });
+
+                }else{
+
+                    document.addEventListener("click",(e)=>{
+
+                        if(!wrapper.contains(e.target)){
+
+                            dropdown.classList.add("hidden");
+
+                        }
+
+                    });
+
+                }
+
+                document.addEventListener("click",(e)=>{
+
+                    if(!wrapper.contains(e.target)){
+
+                        dropdown.classList.add("hidden");
+
+                    }
+
                 });
+
             }
 
-            function expandSidebar() {
+            function showTexts(){
 
-                sidebar.classList.remove('w-20');
-                sidebar.classList.add('w-64');
+                texts.forEach(el=>{
 
-                main.classList.remove('lg:ml-20');
-                main.classList.add('lg:ml-64');
+                    el.classList.remove("opacity-0","max-w-0");
+
+                    el.classList.add("max-w-[200px]");
+
+                });
+
+                profileTexts.forEach(el=>{
+
+                    el.classList.remove("opacity-0","max-w-0");
+
+                    el.classList.add("max-w-[200px]");
+
+                });
+
+            }
+
+            function hideTexts(){
+
+                texts.forEach(el=>{
+
+                    el.classList.add("opacity-0","max-w-0");
+
+                    el.classList.remove("max-w-[200px]");
+
+                });
+
+                profileTexts.forEach(el=>{
+
+                    el.classList.add("opacity-0","max-w-0");
+
+                    el.classList.remove("max-w-[200px]");
+
+                });
+
+            }
+
+            function expandDesktop(){
+
+                sidebar.classList.remove("lg:w-20");
+
+                sidebar.classList.add("lg:w-64");
+
+                main.classList.remove("lg:ml-20");
+
+                main.classList.add("lg:ml-64");
 
                 if(banner){
-                    banner.classList.remove('lg:ml-20');
-                    banner.classList.add('lg:ml-64');
+
+                    banner.classList.remove("lg:ml-20");
+
+                    banner.classList.add("lg:ml-64");
+
                 }
 
-                texts.forEach(el => {
-                    el.classList.remove('opacity-0', 'max-w-0');
-                    el.classList.add('max-w-[200px]');
-                });
-                profileTexts.forEach(el => {
-                    el.classList.remove('opacity-0', 'max-w-0');
-                    el.classList.add('max-w-[200px]');
-                });
+                showTexts();
+
             }
 
-            function collapseSidebar() {
+            function collapseDesktop(){
 
-                sidebar.classList.remove('w-64');
-                sidebar.classList.add('w-20');
+                sidebar.classList.remove("lg:w-64");
 
-                main.classList.remove('lg:ml-64');
-                main.classList.add('lg:ml-20');
+                sidebar.classList.add("lg:w-20");
+
+                main.classList.remove("lg:ml-64");
+
+                main.classList.add("lg:ml-20");
 
                 if(banner){
-                    banner.classList.remove('lg:ml-64');
-                    banner.classList.add('lg:ml-20');
+
+                    banner.classList.remove("lg:ml-64");
+
+                    banner.classList.add("lg:ml-20");
+
                 }
 
-                texts.forEach(el => {
-                    el.classList.add('opacity-0', 'max-w-0');
-                    el.classList.remove('max-w-[200px]');
-                });
-                profileTexts.forEach(el => {
-                    el.classList.add('opacity-0', 'max-w-0');
-                    el.classList.remove('max-w-[200px]');
-                });
+                hideTexts();
+
             }
 
-            sidebar.addEventListener('mouseenter', expandSidebar);
+            function openDrawer(){
 
-            sidebar.addEventListener('mouseleave', collapseSidebar);
+                sidebar.classList.remove("-translate-x-full");
+                sidebar.classList.add("translate-x-0");
 
-            // --- MOBILE DRAWER ---
-            function openMobileSidebar() {
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                expandSidebar();
+                backdrop.classList.remove("hidden");
 
-                if (backdrop) {
-                    backdrop.classList.remove('hidden');
+                document.body.classList.add("overflow-hidden");
+
+                showTexts();
+
+            }
+
+            function closeDrawer(){
+
+                    sidebar.classList.add("-translate-x-full");
+                    sidebar.classList.remove("translate-x-0");
+
+                    backdrop.classList.add("hidden");
+
+                    document.body.classList.remove("overflow-hidden");
+
+                hideTexts();
+
+            }
+
+            function setup(){
+
+                if(window.innerWidth >= 1024){
+
+                    collapseDesktop();
+
+                    sidebar.onmouseenter = expandDesktop;
+
+                    sidebar.onmouseleave = collapseDesktop;
+
+                    sidebar.classList.remove("-translate-x-full");
+
+                    sidebar.classList.add("translate-x-0");
+
+                }else{
+
+                    sidebar.onmouseenter = null;
+
+                    sidebar.onmouseleave = null;
+
+                    closeDrawer();
+
                 }
-                document.body.classList.add('overflow-hidden');
+
             }
 
-            function closeMobileSidebar() {
-                sidebar.classList.add('-translate-x-full');
-                sidebar.classList.remove('translate-x-0');
-                collapseSidebar();
+            setup();
 
-                if (backdrop) {
-                    backdrop.classList.add('hidden');
-                }
-                document.body.classList.remove('overflow-hidden');
-            }
+            window.addEventListener("resize", setup);
 
-            if (openBtn) openBtn.addEventListener('click', openMobileSidebar);
-            if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
-            if (backdrop) backdrop.addEventListener('click', closeMobileSidebar);
+            openBtn?.addEventListener("click", openDrawer);
 
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') closeMobileSidebar();
-            });
+            closeBtn?.addEventListener("click", closeDrawer);
+
+            backdrop?.addEventListener("click", closeDrawer);
 
         });
         </script>
