@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="app-locale" content="{{ app()->getLocale() }}">
         <title>Mentora</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <script>
             // Dipakai widget JS (mis. timer study room) buat nerjemahin teks yang

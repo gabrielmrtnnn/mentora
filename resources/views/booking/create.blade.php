@@ -2,7 +2,6 @@
 
 @section('content')
 
-{{-- Hapus h-full di sini agar tinggi mengikuti konten --}}
 <div class="flex flex-col pb-10">
 
     <!-- BACK -->
@@ -13,7 +12,6 @@
         </a>
     </div>
 
-    {{-- Card Wrapper: Biarkan flex default (items-stretch) agar kiri & kanan sama tinggi --}}
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex">
 
         <div class="w-72 border-r bg-white flex flex-col flex-shrink-0">
@@ -64,7 +62,6 @@
 
         </div>
 
-        {{-- Area Formulir: Tidak ada class overflow lagi, biarkan meninggi secara alami --}}
         <div class="flex-1 bg-white">
             <div class="max-w-4xl mx-auto p-8">
 
