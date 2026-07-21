@@ -26,6 +26,9 @@
     <div class="bg-card rounded-2xl shadow-sm p-6">
         @include('profile.partials.update-skills-form')
     </div>
+    <div class="bg-card rounded-2xl shadow-sm p-6">
+        @include('profile.partials.update-bio-form')
+    </div>
     @endif
 
     <div class="bg-card rounded-2xl shadow-sm p-6">

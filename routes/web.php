@@ -99,6 +99,7 @@ Route::middleware(['auth', 'role:tutor'])->group(function () {
     
     // Tutor Skills Update
     Route::patch('/profile/skills', [ProfileController::class, 'updateSkills'])->name('profile.update-skills');
+    Route::patch('/profile/update-bio', [ProfileController::class, 'updateBio'])->name('profile.update-bio');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

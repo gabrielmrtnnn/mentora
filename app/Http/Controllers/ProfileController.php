@@ -74,5 +74,20 @@ class ProfileController extends Controller
 
         return back()->with('status', 'skills-updated');
     }
+
+    public function updateBio(Request $request)
+    {
+        $request->validate([
+            'bio' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $tutor = $request->user()->tutor;
+
+        $tutor->update([
+            'bio' => $request->bio,
+        ]);
+
+        return back()->with('status', 'bio-updated');
+    }
 }
 
