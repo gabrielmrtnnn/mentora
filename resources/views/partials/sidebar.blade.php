@@ -104,14 +104,14 @@
                     </span>
                 </div>
 
-                <svg id="tutorArrow" class="sidebar-text max-w-0 opacity-0 overflow-hidden w-4 h-4 transition-transform duration-300 {{ request()->routeIs('tutor*', 'booking.index', 'booking.create') ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="tutorArrow" class="sidebar-text max-w-0 opacity-0 overflow-hidden w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </button>
 
             <div id="tutorSubMenu"
-                 class="overflow-hidden transition-all duration-300 flex-col gap-1
-                 {{ request()->routeIs('tutor*', 'booking.index') ? 'flex max-h-40 mt-1' : 'flex max-h-0 mt-0' }}">
+                class="overflow-hidden transition-all duration-300 flex-col gap-1
+                flex max-h-0 mt-0">
 
                     @if (!auth()->check() || auth()->user()->role != 'tutor')
                         <a href="{{ route('tutor') }}"
