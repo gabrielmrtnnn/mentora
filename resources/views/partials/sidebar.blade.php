@@ -1,14 +1,21 @@
 <style>
-    /* Memaksa submenu tertutup rapat (tinggi 0 dan margin 0) 
-      saat sidebar berada dalam mode default/tertutup (class w-20).
-      Aturan ini akan menimpa (override) state dari JavaScript.
+    /* 
+      Hanya berlaku di Desktop (lg: min-width 1024px).
+      Jika sidebar TIDAK sedang di-hover (sedang dalam mode w-20),
+      paksa submenu tertutup rapat dan hilangkan ruang kosongnya.
     */
-    aside.w-20 #tutorSubMenu {
-        max-height: 0px !important;
-        margin-top: 0px !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        overflow: hidden !important;
+    @media (min-width: 1024px) {
+        aside:not(:hover) #tutorSubMenu {
+            max-height: 0px !important;
+            margin-top: 0px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            overflow: hidden !important;
+        }
+        
+        aside:not(:hover) #tutorArrow {
+            transform: rotate(0deg) !important;
+        }
     }
 </style>
 
