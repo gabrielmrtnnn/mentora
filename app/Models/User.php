@@ -10,14 +10,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// Tambahkan 'role' dan 'google_id' di sini
-#[Fillable(['name', 'email', 'password', 'role', 'google_id'])]
-#[Hidden(['password', 'remember_token'])]
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role', // Tambahkan role di sini
+        'google_id', // Tambahkan google_id di sini
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     /**
      * Get the attributes that should be cast.
