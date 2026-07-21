@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingSession;
 use App\Models\Tutor;
+use App\Services\StudyStreakService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -52,6 +53,8 @@ class BookingController extends Controller
             'note'         => $validated['note'],
             'status'       => 'pending',
         ]);
+
+        StudyStreakService::record(auth()->id());
 
         return redirect()
             ->route('booking.index')
