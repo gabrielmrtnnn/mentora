@@ -67,11 +67,11 @@
 
                 <div class="flex gap-3">
                     <a href="{{ route('booking.create',$tutor) }}" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90">
-                        Booking Session
+                        {{ __('Booking Sesi') }}
                     </a>
 
                     <a href="{{ route('chat.start',$tutor->id) }}" class="border border-primary text-primary px-6 py-3 rounded-xl">
-                        Chat Tutor
+                        {{ __('Chat Tutor') }}
                     </a>
 
                 </div>
@@ -83,7 +83,7 @@
 
                 <div class="bg-gray-50 rounded-2xl p-5">
                     <p class="text-sm text-gray-500">
-                        Rating
+                        {{ __('Rating') }}
                     </p>
 
                     <h2 class="text-2xl font-bold text-yellow-500 mt-1">
@@ -93,7 +93,7 @@
 
                 <div class="bg-gray-50 rounded-2xl p-5">
                     <p class="text-sm text-gray-500">
-                        Students
+                        {{ __('Student') }}
                     </p>
 
                     <h2 class="text-2xl font-bold mt-1">
@@ -103,7 +103,7 @@
 
                 <div class="bg-gray-50 rounded-2xl p-5">
                     <p class="text-sm text-gray-500">
-                        Sessions
+                        {{ __('Sesi') }}
                     </p>
 
                     <h2 class="text-2xl font-bold mt-1">

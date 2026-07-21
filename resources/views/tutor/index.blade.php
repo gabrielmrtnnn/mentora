@@ -22,7 +22,7 @@
             </p>
 
             <h1 class="text-5xl font-extrabold tracking-tight text-gray-900">
-                Tutor
+                {{ __('Tutor') }}
             </h1>
 
             <p class="text-gray-500 mt-2">
@@ -39,7 +39,7 @@
 
                     <a href="{{ route('tutor.apply.page') }}"
                     class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
-                        Apply as Tutor
+                        {{ __('Daftar sebagai Tutor') }}
                     </a>
 
                 @elseif(auth()->user()->role === 'tutor')
@@ -62,7 +62,7 @@
             @else
                 <a href="{{ route('login') }}"
                 class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-sm hover:shadow-lg transition">
-                    Login
+                    {{ __('Masuk') }}
                 </a>
             @endauth
         </div>

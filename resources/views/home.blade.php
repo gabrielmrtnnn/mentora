@@ -3,18 +3,50 @@
 @section('content')
 
 <section id="topBanner"
-    class="fixed top-0 left-0 right-0 z-50 
-           bg-gradient-to-r from-blue-600 to-blue-700 
-           text-white px-6 py-3 shadow-md 
-           transition-all duration-300 ml-20">
-    <div class="max-w-7xl mx-auto flex items-center justify-between pl-16 pr-6 py-3">
-        <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
-            <p class="text-lg md:text-xl font-bold tracking-wide">
-                🎯 SNBT 2026
-            </p>
-            <p class="text-sm md:text-base opacity-80">
-                {{ __('dimulai dalam') }}
-            </p>
+class="
+    fixed
+    top-0
+    left-0
+    right-0
+    z-50
+    bg-gradient-to-r
+    from-blue-600
+    to-blue-700
+    text-white
+    px-6
+    py-3
+    shadow-md
+    transition-all
+    duration-300
+    ml-0
+    lg:ml-20">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+        <div class="flex items-center gap-4">
+
+            <button id="sidebarOpenBtn"
+                type="button"
+                class="lg:hidden p-2 bg-white rounded-xl shadow text-gray-600 hover:bg-gray-100 transition">
+                <svg class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke-width="2">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
+                </svg>
+            </button>
+
+            <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                <p class="text-lg md:text-xl font-bold tracking-wide">
+                    🎯 SNBT 2026
+                </p>
+
+                <p class="text-sm md:text-base opacity-80">
+                    {{ __('dimulai dalam') }}
+                </p>
+            </div>
+
         </div>
 
         <div class="flex items-center gap-3 text-center">
