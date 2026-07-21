@@ -42,7 +42,7 @@
             <div class="max-w-md w-full mx-auto mt-4 lg:mt-0">
                 <!-- Logo Mobile -->
                 <div class="lg:hidden flex justify-center mb-4">
-                    <img src="{{ asset('images/image_737ace.png') }}" alt="Mentora Logo" class="h-10 w-auto drop-shadow-sm">
+                    <img src="{{ asset('images/logo.png') }}" alt="Mentora Logo" class="h-10 w-auto drop-shadow-sm">
                 </div>
 
                 <h1 class="text-2xl font-extrabold mb-1 text-gray-900 tracking-tight">

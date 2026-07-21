@@ -12,17 +12,14 @@
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans p-4 sm:p-8 antialiased text-gray-800">
 
-    <!-- Container Utama: Ukuran max-width-4xl (sedikit lebih lebar dari form register) agar proporsional -->
     <div class="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col lg:flex-row border border-gray-100">
 
-        <!-- SISI KIRI: Branding (Lebih lapang) -->
         <div class="lg:w-5/12 bg-gradient-to-br from-blue-50 to-indigo-50/50 flex items-center justify-center hidden lg:flex p-10 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent to-transparent"></div>
             
             <img src="{{ asset('images/logo.png') }}" alt="Mentora Logo" class="w-full max-w-[200px] h-auto drop-shadow-md hover:scale-105 transition-transform duration-500 ease-out relative z-10">
         </div>
 
-        <!-- SISI KANAN: Form Login (Padding vertikal dan horizontal diperbesar jadi p-8 sm:p-12) -->
         <div class="lg:w-7/12 p-8 sm:p-12 relative flex flex-col justify-center bg-white">
             
             <!-- Language Switcher -->
@@ -43,10 +40,9 @@
             <div class="max-w-md w-full mx-auto mt- lg:mt-0">
                 <!-- Logo Mobile -->
                 <div class="lg:hidden flex justify-center mb-8">
-                    <img src="{{ asset('images/image_737ace.png') }}" alt="Mentora Logo" class="h-14 w-auto drop-shadow-sm">
+                    <img src="{{ asset('images/logo.png') }}" alt="Mentora Logo" class="h-14 w-auto drop-shadow-sm">
                 </div>
 
-                <!-- Teks Heading diperbesar jadi text-3xl -->
                 <h1 class="text-3xl font-extrabold mb-2 text-gray-900 tracking-tight">
                     {{ __('Masuk') }} 👋
                 </h1>
