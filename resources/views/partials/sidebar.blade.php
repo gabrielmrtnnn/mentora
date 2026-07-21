@@ -80,7 +80,7 @@
                     <span class="sidebar-text ml-3
                         max-w-0 opacity-0 overflow-hidden
                         whitespace-nowrap transition-all duration-300">
-                        Tutor
+                        {{ __('Tutor') }}
                     </span>
                 </div>
 
@@ -169,7 +169,7 @@
             <span class="sidebar-text ml-3
                 max-w-0 opacity-0 overflow-hidden
                 whitespace-nowrap transition-all duration-300">
-                Forum
+                {{ __('Forum') }}
             </span>
         </a>
 

@@ -7,7 +7,7 @@
     <div class="mb-8">
         <a href="{{ route('booking.index') }}"
            class="text-primary font-semibold hover:underline">
-            ← {{ __('Kembali ke My Booking') }}
+            ← {{ __('Kembali ke Booking Saya') }}
         </a>
     </div>
 
@@ -35,26 +35,26 @@
                         @case('pending')
 
                             <span class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold">
-                                Pending
+                                {{ __('Menunggu Konfirmasi') }}
                             </span>
 
                         @break
 
-                        @case('confirmed')
+                        @case('approved')
                             <span class="px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
-                                Confirmed
+                                {{ __('Disetujui') }}
                             </span>
                         @break
 
                         @case('completed')
                             <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold">
-                                Completed
+                                {{ __('Selesai') }}
                             </span>
                         @break
 
                         @default
                             <span class="px-4 py-2 rounded-full bg-red-100 text-red-700 font-semibold">
-                                Cancelled
+                                {{ __('Ditolak') }}
                             </span>
                     @endswitch
                 </div>
@@ -125,9 +125,9 @@
                         {{ __('Chat Tutor') }}
                     </a>
 
-                    @if($booking->status=='confirmed')
+                    @if($booking->status=='approved')
                         <button class="px-6 py-3 rounded-xl bg-primary text-white font-semibold">
-                            Join Meeting
+                            {{ __('Gabung Meeting') }}
                         </button>
                     @endif
                 </div>

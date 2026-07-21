@@ -69,7 +69,7 @@
             <div class="max-w-4xl mx-auto p-8">
 
                 <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
-                    Booking Session
+                    {{ __('Booking Sesi') }}
                 </h1>
                 <p class="text-gray-500 mt-3 mb-10 text-lg">
                     {{ __('Pilih jadwal belajar yang sesuai bersama tutor pilihanmu.') }}

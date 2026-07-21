@@ -10,11 +10,11 @@
         <div class="relative flex items-center justify-between">
             <div>
                 <p class="uppercase tracking-widest text-sm opacity-80 font-medium">
-                    Tutor Dashboard
+                    {{ __('Dashboard Tutor') }}
                 </p>
 
                 <h1 class="text-4xl md:text-5xl font-black mt-2">
-                    Welcome Back,
+                    {{ __('Selamat Datang,') }}
                     {{ auth()->user()->name }}
                 </h1>
 
@@ -38,7 +38,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Total Students</p>
+                    <p class="text-gray-500 font-medium">{{ __('Total Siswa') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $totalStudents }}
                     </h2>
@@ -55,7 +55,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Upcoming Sessions</p>
+                    <p class="text-gray-500 font-medium">{{ __('Sesi Mendatang') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $upcoming }}
                     </h2>
@@ -72,7 +72,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Completed</p>
+                    <p class="text-gray-500 font-medium">{{ __('Selesai') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $completed }}
                     </h2>
@@ -89,7 +89,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Rating</p>
+                    <p class="text-gray-500 font-medium">{{ __('Rating') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ number_format($tutor->rating ?? 5, 1) }}
                     </h2>
@@ -107,7 +107,7 @@
     <div class="bg-white rounded-3xl shadow-sm p-6 md:p-8">
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Booking Requests</h2>
+                <h2 class="text-2xl font-bold text-gray-800">{{ __('Permintaan Booking') }}</h2>
                 <p class="text-gray-500 text-sm mt-1">{{ __('Menunggu persetujuan') }}</p>
             </div>
             @if($pendingRequests->count() > 0)
@@ -147,7 +147,7 @@
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                                Reject
+                                {{ __('Tolak') }}
                             </button>
                         </form>
 
@@ -158,7 +158,7 @@
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                 </svg>
-                                Approve
+                                {{ __('Setujui') }}
                             </button>
                         </form>
                     </div>
@@ -184,7 +184,7 @@
         <div class="bg-white rounded-3xl shadow-sm p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Today's Sessions</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">{{ __('Sesi Hari Ini') }}</h2>
                     <p class="text-gray-500 mt-1 text-sm">{{ __('Jadwal mengajar hari ini') }}</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
@@ -226,7 +226,7 @@
                                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                                     <path d="M8 5v14l11-7z"/>
                                 </svg>
-                                Join Meeting
+                                {{ __('Gabung Meeting') }}
                             </a>
                         @endif
 
@@ -235,15 +235,15 @@
                             <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100/80 text-green-800 text-sm font-medium border border-green-200/50">
                                 <!-- Ikon Dot (dengan efek denyut/pulse) -->
                                 <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
-                                Ongoing
+                                {{ __('Berlangsung') }}
                             </span>
                         @elseif($session->status == 'approved')
                             <span class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium">
-                                Approved
+                                {{ __('Disetujui') }}
                             </span>
                         @elseif($session->status == 'completed')
                             <span class="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-700 text-sm font-medium">
-                                Completed
+                                {{ __('Selesai') }}
                             </span>
                         @endif
                     </div>
@@ -265,7 +265,7 @@
         <div class="bg-white rounded-3xl shadow-sm p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Upcoming Schedule</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">{{ __('Jadwal Mendatang') }}</h2>
                     <p class="text-gray-500 mt-1 text-sm">{{ __('Jadwal beberapa hari ke depan') }}</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600">
@@ -315,7 +315,7 @@
         <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Booking History</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">{{ __('Riwayat Mengajar') }}</h2>
                     <p class="text-gray-500 mt-1 text-sm">{{ __('Aktivitas pesanan terakhir') }}</p>
                 </div>
                 <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-semibold border border-blue-100">
@@ -369,7 +369,7 @@
                     </svg>
                 </div>
                 <div class="relative z-10">
-                    <p class="uppercase tracking-widest text-xs font-semibold text-gray-300">Tutor Rating</p>
+                    <p class="uppercase tracking-widest text-xs font-semibold text-gray-300">{{ __('Rating Tutor') }}</p>
                     <div class="flex items-center gap-2 mt-2">
                         <h2 class="text-5xl font-black">{{ number_format($tutor->rating ?? 5, 1) }}</h2>
                         <svg class="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">

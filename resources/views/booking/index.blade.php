@@ -15,7 +15,7 @@ use Carbon\Carbon;
         <div class="flex justify-between items-end mt-2">
             <div>
                 <h1 class="text-5xl font-extrabold text-gray-900">
-                    My Booking
+                    {{ __('Booking Saya') }}
                 </h1>
                 <p class="text-gray-500 mt-2">
                     {{ __('Semua sesi belajar yang pernah kamu booking.') }}
@@ -59,15 +59,15 @@ use Carbon\Carbon;
                                     <div class="flex flex-col items-end gap-3">
                                         @if($booking->status == 'pending')
                                             <span class="px-5 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
-                                                Pending
+                                                {{ __('Menunggu Konfirmasi') }}
                                             </span>
                                         @elseif($booking->status == 'approved')
                                             <span class="px-5 py-2 rounded-full bg-green-100 text-green-700 font-semibold text-sm">
-                                                Approved
+                                                {{ __('Disetujui') }}
                                             </span>
                                         @elseif($booking->status == 'completed')
                                             <span class="px-5 py-2 rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
-                                                Completed
+                                                {{ __('Selesai') }}
                                             </span>
                                             
                                             {{-- RATE TUTOR BUTTON --}}
@@ -78,12 +78,12 @@ use Carbon\Carbon;
                                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                                         <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
                                                     </svg>
-                                                    Rate Tutor
+                                                    {{ __('Beri Rating Tutor') }}
                                                 </button>
                                             @endif
                                         @else
                                             <span class="px-5 py-2 rounded-full bg-red-100 text-red-700 font-semibold text-sm">
-                                                Rejected
+                                                {{ __('Ditolak') }}
                                             </span>
                                         @endif
                                     </div>
@@ -137,7 +137,7 @@ use Carbon\Carbon;
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
                                 </svg>
-                                Chat Tutor
+                                {{ __('Chat Tutor') }}
                             </a>
 
                             <div class="meeting-action-container" 
@@ -150,11 +150,11 @@ use Carbon\Carbon;
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
                                         </svg>
-                                        Join Meeting
+                                        {{ __('Gabung Meeting') }}
                                     </a>
 
                                     <button class="countdown-button w-full bg-black/20 text-white/80 py-3.5 rounded-2xl cursor-not-allowed font-semibold text-sm backdrop-blur-sm" disabled>
-                                        Preparing Meeting...
+                                        {{ __('Menyiapkan Meeting...') }}
                                     </button>
                                 @endif
                             </div>

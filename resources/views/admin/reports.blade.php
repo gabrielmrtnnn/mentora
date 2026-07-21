@@ -11,7 +11,7 @@
         </p>
 
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
-            Report Forum
+            {{ __('Laporan Forum') }}
         </h1>
 
         <p class="text-gray-500 mt-2">

@@ -8,7 +8,7 @@
             </p>
 
             <h1 class="text-5xl font-extrabold text-gray-900 mt-2">
-                Tutor
+                {{ __('Tutor') }}
             </h1>
 
             <p class="text-gray-500 mt-2">
@@ -26,7 +26,7 @@
                 ? 'bg-primary text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
 
-            🔍 Find Tutor
+            🔍 {{ __('Cari Tutor') }}
 
         </a>
 
@@ -36,7 +36,7 @@
                 ? 'bg-primary text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
 
-            📅 My Booking
+            📅 {{ __('Booking Saya') }}
 
         </a>
 

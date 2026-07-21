@@ -91,7 +91,7 @@
                     </div>
 
                     <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
-                        Pending
+                        {{ __('Menunggu Konfirmasi') }}
                     </span>
 
                 </div>
@@ -120,7 +120,7 @@
                         <button
                             onclick="return confirm('{{ __('Yakin ingin menolak pengajuan ini?') }}')"
                             class="bg-red-500 text-white px-5 py-2 rounded-xl font-semibold hover:bg-red-600 transition">
-                            Reject
+                            {{ __('Tolak') }}
                         </button>
                     </form>
 
@@ -129,7 +129,7 @@
 
                         <button
                             class="bg-primary text-white px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition">
-                            Approve Tutor
+                            {{ __('Setujui Tutor') }}
                         </button>
                     </form>
 
@@ -180,14 +180,14 @@
                             </p>
 
                             <span class="inline-block mt-1 px-2 py-1 bg-primary text-white rounded-full text-xs">
-                                Tutor
+                                {{ __('Tutor') }}
                             </span>
                         </div>
 
                     </div>
 
                     <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                        Approved
+                        {{ __('Disetujui') }}
                     </span>
 
                 </div>
