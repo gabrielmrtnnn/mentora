@@ -37,14 +37,25 @@
             <div id="sidebarBackdrop"
                 class="hidden fixed inset-0 bg-black/40 z-[65] lg:hidden"></div>
 
-            {{-- <button id="sidebarOpenBtn"
-                type="button"
-                aria-label="{{ __('Buka menu') }}"
-                class="lg:hidden fixed top-4 left-4 z-[75] p-2.5 bg-white rounded-xl shadow-md text-gray-600 hover:bg-gray-50 transition">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-                </svg>
-            </button> --}}
+            @if (!request()->routeIs('home'))
+                <button id="sidebarOpenBtn"
+                    type="button"
+                    aria-label="{{ __('Buka menu') }}"
+                    class="lg:hidden fixed top-4 left-4 z-[75] p-2.5 bg-white rounded-xl shadow-md text-gray-600 hover:bg-gray-50 transition">
+
+                    <svg class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
+                    </svg>
+
+                </button>
+                @endif
 
             <div id="mainContent"
                 class="flex-1 flex flex-col h-full ml-0 lg:ml-20 transition-all duration-300">
