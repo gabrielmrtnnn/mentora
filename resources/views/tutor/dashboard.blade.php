@@ -14,7 +14,7 @@
                 </p>
 
                 <h1 class="text-4xl md:text-5xl font-black mt-2">
-                    Welcome Back,
+                    {{ __('Selamat Datang Kembali') }},
                     {{ auth()->user()->name }}
                 </h1>
 
@@ -38,7 +38,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Total Students</p>
+                    <p class="text-gray-500 font-medium">{{ __('Total Murid') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $totalStudents }}
                     </h2>
@@ -55,7 +55,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Upcoming Sessions</p>
+                    <p class="text-gray-500 font-medium">{{ __('Sesi Mendatang') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $upcoming }}
                     </h2>
@@ -72,7 +72,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Completed</p>
+                    <p class="text-gray-500 font-medium">{{ __('Sesi Selesai') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ $completed }}
                     </h2>
@@ -89,7 +89,7 @@
         <div class="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300">
             <div class="flex justify-between items-center">
                 <div>
-                    <p class="text-gray-500 font-medium">Rating</p>
+                    <p class="text-gray-500 font-medium">{{ __('Penilaian') }}</p>
                     <h2 class="text-4xl font-black mt-2 text-gray-800">
                         {{ number_format($tutor->rating ?? 5, 1) }}
                     </h2>
@@ -220,14 +220,16 @@
                     <div class="flex items-center gap-3">
                         @if($isOngoing)
                             <!-- Tombol Join Meeting diletakkan di sebelah kiri badge -->
-                            <a href="{{ route('meeting', $session->id) }}"
-                            class="inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition shadow-sm">
+                            <button type="button" 
+                                    class="join-jitsi-btn inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition shadow-sm"
+                                    data-slug="booking-{{ $session->id }}">
+                                
                                 <!-- Ikon Play -->
                                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
+                                    <path d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
                                 </svg>
                                 Join Meeting
-                            </a>
+                            </button>
                         @endif
 
                         <!-- Indikator Status -->
@@ -441,5 +443,24 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.join-jitsi-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const slug = btn.dataset.slug;
+                const url = `https://meet.jit.si/${encodeURIComponent(slug)}#config.prejoinPageEnabled=false`;
+                
+                const jitsiWindow = window.open(url, '_blank');
+
+                if (!jitsiWindow) {
+                    alert('Popup diblokir oleh browser. Izinkan popup untuk meet.jit.si, lalu klik Join Meeting lagi.');
+                }
+            });
+        });
+    });
+</script>
+@endpush
 
 @endsection

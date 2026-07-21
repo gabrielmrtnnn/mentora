@@ -5,7 +5,6 @@ use Carbon\Carbon;
 @extends('layouts.app')
 
 @section('content')
-
 <div class="h-full flex flex-col">
     <div class="mb-8 shrink-0">
         <p class="text-sm font-semibold text-primary">
@@ -22,8 +21,7 @@ use Carbon\Carbon;
                 </p>
             </div>
 
-            <a href="{{ route('tutor') }}"
-               class="bg-primary text-white px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition shadow-sm hover:shadow-md">
+            <a href="{{ route('tutor') }}" class="bg-primary text-white px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition shadow-sm hover:shadow-md">
                 + {{ __('Booking Baru') }}
             </a>
         </div>
@@ -37,7 +35,6 @@ use Carbon\Carbon;
             @endphp
             
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition overflow-hidden">
-                
                 <div class="flex flex-col lg:flex-row items-stretch min-h-[340px]">
                     
                     <div class="flex-1 p-8 flex flex-col">
@@ -55,7 +52,6 @@ use Carbon\Carbon;
                                         <p class="text-gray-500 mt-1">{{ __('Tutor Mentora') }}</p>
                                     </div>
 
-                                    {{-- STATUS & RATE BUTTON WRAPPER --}}
                                     <div class="flex flex-col items-end gap-3">
                                         @if($booking->status == 'pending')
                                             <span class="px-5 py-2 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
@@ -70,7 +66,6 @@ use Carbon\Carbon;
                                                 Completed
                                             </span>
                                             
-                                            {{-- RATE TUTOR BUTTON --}}
                                             @if(!$booking->review)
                                                 <button type="button" 
                                                         onclick="openReviewModal('{{ $booking->id }}', '{{ $booking->tutor->user->name }}')"
@@ -78,7 +73,7 @@ use Carbon\Carbon;
                                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                                         <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
                                                     </svg>
-                                                    Rate Tutor
+                                                    {{ __('Nilai Tutor')}}
                                                 </button>
                                             @endif
                                         @else
@@ -145,13 +140,17 @@ use Carbon\Carbon;
                                  data-end="{{ $end->toIso8601String() }}">
                                  
                                 @if($booking->status == "approved")
-                                    <a href="{{ route('meeting', $booking) }}"
-                                       class="join-button hidden w-full flex justify-center items-center gap-2 bg-white text-primary py-3.5 rounded-2xl font-bold transition hover:bg-gray-100 shadow-lg">
+                                    <button
+                                    type="button"
+                                    class="join-button join-jitsi-btn hidden w-full flex justify-center items-center gap-2 bg-white text-primary py-3.5 rounded-2xl font-bold transition hover:bg-gray-100 shadow-lg"
+                                    data-slug="booking-{{ $booking->id }}"
+                                    data-name="Sesi Belajar {{ $booking->tutor->user->name }}">
+                                        
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
                                         </svg>
-                                        Join Meeting
-                                    </a>
+                                        {{ __('Gabung Meeting') }}
+                                    </button>
 
                                     <button class="countdown-button w-full bg-black/20 text-white/80 py-3.5 rounded-2xl cursor-not-allowed font-semibold text-sm backdrop-blur-sm" disabled>
                                         Preparing Meeting...
@@ -225,101 +224,26 @@ use Carbon\Carbon;
         });
     }
 
-    function openReviewModal(bookingId, tutorName) {
-        document.getElementById('modalBookingId').value = bookingId;
-        document.getElementById('modalTutorName').innerText = tutorName;
-        document.getElementById('reviewModal').classList.remove('hidden');
-    }
+    document.querySelectorAll('.join-jitsi-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const slug = btn.dataset.slug;
+            
+            // Format URL Jitsi persis seperti di Study Group
+            const url = `https://meet.jit.si/${encodeURIComponent(slug)}#config.prejoinPageEnabled=false`;
+            
+            // Buka di tab baru
+            const jitsiWindow = window.open(url, '_blank');
 
-    function closeReviewModal() {
-        document.getElementById('reviewModal').classList.add('hidden');
-        document.getElementById('reviewForm').reset();
-    }
+            // Peringatan jika browser user memblokir popup
+            if (!jitsiWindow) {
+                alert('Popup diblokir oleh browser. Izinkan popup untuk meet.jit.si, lalu klik Join Meeting lagi.');
+            }
+        });
+    });
 
     updateMeetingButtons();
     setInterval(updateMeetingButtons, 1000);
 </script>
 @endsection
 
-{{-- MODAL REVIEW POPUP --}}
-<div id="reviewModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
-
-    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                
-                <form id="reviewForm" action="{{ route('review.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="booking_id" id="modalBookingId">
-                    
-                    <div class="bg-white px-8 pb-4 pt-8">
-                        <div class="flex justify-between items-center mb-5">
-                            <h3 class="text-2xl font-bold text-gray-900" id="modal-title">Rate Tutor</h3>
-                            <button type="button" onclick="closeReviewModal()" class="text-gray-400 hover:text-gray-600 transition">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        
-                        <p class="text-gray-500 text-sm mb-6">
-                            {{ __('Bagaimana pengalaman belajarmu dengan') }} <span id="modalTutorName" class="font-bold text-gray-800">Tutor</span>?
-                        </p>
-
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('Penilaian') }}</label>
-                            <div class="star-rating text-4xl cursor-pointer">
-                                <input type="radio" id="star5" name="rating" value="5" class="hidden" required />
-                                <label for="star5" class="text-gray-300 transition hover:scale-110">★</label>
-                                
-                                <input type="radio" id="star4" name="rating" value="4" class="hidden" />
-                                <label for="star4" class="text-gray-300 transition hover:scale-110">★</label>
-                                
-                                <input type="radio" id="star3" name="rating" value="3" class="hidden" />
-                                <label for="star3" class="text-gray-300 transition hover:scale-110">★</label>
-                                
-                                <input type="radio" id="star2" name="rating" value="2" class="hidden" />
-                                <label for="star2" class="text-gray-300 transition hover:scale-110">★</label>
-                                
-                                <input type="radio" id="star1" name="rating" value="1" class="hidden" />
-                                <label for="star1" class="text-gray-300 transition hover:scale-110">★</label>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="comment" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Ulasan (Opsional)') }}</label>
-                            <textarea id="comment" name="comment" rows="4" 
-                                      class="block w-full rounded-2xl border-gray-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm p-4 border bg-gray-50 focus:bg-white transition" 
-                                      placeholder="{{ __('Ceritakan pengalamanmu belajar di sesi ini...') }}"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-50/50 border-t border-gray-100 px-8 py-5 flex justify-end gap-3 rounded-b-3xl">
-                        <button type="button" onclick="closeReviewModal()" 
-                                class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 font-bold transition">
-                            {{ __('Batal') }}
-                        </button>
-                        <button type="submit" 
-                                class="px-5 py-2.5 bg-primary text-white rounded-xl hover:bg-blue-600 font-bold transition shadow-sm hover:shadow-md">
-                            {{ __('Kirim Review') }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .star-rating {
-        display: flex;
-        flex-direction: row-reverse; 
-        justify-content: flex-end;
-    }
-    .star-rating input:checked ~ label,
-    .star-rating label:hover,
-    .star-rating label:hover ~ label {
-        color: #fbbf24;
-    }
-</style>
+@include('booking.components.review-modal')
