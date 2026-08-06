@@ -53,6 +53,7 @@ class TutorDashboardController extends Controller
 
         $todaySessions = BookingSession::with('student')
             ->where('tutor_id', $tutor->id)
+            ->where('status', 'approved')
             ->whereDate('session_date', today())
             ->orderBy('session_time')
             ->get();
